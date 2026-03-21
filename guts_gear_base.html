@@ -1,89 +1,2503 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; connect-src 'self'">
-    <title>Page not found &middot; GitHub Pages</title>
-    <style type="text/css" media="screen">
-      body {
-        background-color: #f1f1f1;
-        margin: 0;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      }
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GUTS GEAR</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+  --teal:#1e90ff;--teal-d:#1470cc;--teal-dim:rgba(30,144,255,.15);
+  --orange:#ff6b00;--orange-dim:rgba(255,107,0,.15);
+  --blue:#1e90ff;--blue-dim:rgba(30,144,255,.12);
+  --cream:#e8f4ff;--cream-dim:rgba(232,244,255,.1);
+  --bg:#0a1628;--bg2:#0d1e34;--bg3:#112240;--bg4:#142850;
+  --border:rgba(30,144,255,.12);--border2:rgba(30,144,255,.22);
+  --text:#e8f4ff;--text2:#4a7aaa;--text3:#2a4a6a;
+  --fn:'Barlow Condensed',sans-serif;--fj:'Meiryo','Yu Gothic',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--fj);min-height:100vh;overflow-x:hidden}
 
-      .container { margin: 50px auto 40px auto; width: 600px; text-align: center; }
+/* ── HEADER ── */
+header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:32px;height:32px;background:var(--orange);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--fn);font-weight:900;font-size:13px;color:#fff;letter-spacing:1px}
+.logo-text{font-family:var(--fn);font-weight:900;font-size:20px;letter-spacing:2px;color:#fff}
+.logo-sub{font-size:9px;color:var(--text2);letter-spacing:3px;font-family:var(--fn)}
+.hdr-r{display:flex;align-items:center;gap:10px}
+.sdot{width:8px;height:8px;border-radius:50%;background:var(--text3);transition:all .3s}
+.sdot.on{background:var(--teal);box-shadow:0 0 8px var(--teal);animation:blink 2s infinite}
+.sdot.cal{background:var(--orange);box-shadow:0 0 8px var(--orange);animation:blink .4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.slabel{font-size:11px;color:var(--text2);font-family:var(--fn);letter-spacing:.5px;min-width:120px}
+#connectBtn{background:var(--orange);color:#fff;border:none;border-radius:7px;padding:7px 18px;font-family:var(--fn);font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;letter-spacing:1px}
+#connectBtn:hover{background:#e05e00}
+#connectBtn.on{background:var(--bg3);color:var(--text2);border:1px solid var(--border2)}
 
-      a { color: #4183c4; text-decoration: none; }
-      a:hover { text-decoration: underline; }
+/* ── VIEWS ── */
+.view{display:none}.view.active{display:block}
+main{padding:16px 20px 60px;max-width:1100px;margin:0 auto}
 
-      h1 { width: 800px; position:relative; left: -100px; letter-spacing: -1px; line-height: 60px; font-size: 60px; font-weight: 100; margin: 0px 0 50px 0; text-shadow: 0 1px 0 #fff; }
-      p { color: rgba(0, 0, 0, 0.5); margin: 20px 0; line-height: 1.6; }
+/* ── CARD ── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.ctitle{font-family:var(--fn);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.ctitle .dot{width:5px;height:5px;border-radius:50%;background:var(--teal)}
 
-      ul { list-style: none; margin: 25px 0; padding: 0; }
-      li { display: table-cell; font-weight: bold; width: 1%; }
+/* ══════════════════════════
+   VIEW 1: 種目選択
+══════════════════════════ */
+.sport-hero{text-align:center;padding:28px 20px 20px}
+.sport-hero h1{font-family:var(--fn);font-size:42px;font-weight:900;letter-spacing:4px;color:#fff;line-height:1}
+.sport-hero h1 span{color:var(--orange)}
+.sport-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+@media(max-width:700px){.sport-grid{grid-template-columns:repeat(2,1fr)}}
+.sport-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 12px;cursor:pointer;transition:all .2s;text-align:center}
+.sport-card:hover{border-color:var(--orange);background:var(--bg3);transform:translateY(-2px)}
+.sport-icon-wrap{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:26px}
+.sport-card-name{font-family:var(--fn);font-size:15px;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:3px}
+.sport-card-sub{font-size:11px;color:var(--text2);line-height:1.4}
 
-      .logo { display: inline-block; margin-top: 35px; }
-      .logo-img-2x { display: none; }
-      @media
-      only screen and (-webkit-min-device-pixel-ratio: 2),
-      only screen and (   min--moz-device-pixel-ratio: 2),
-      only screen and (     -o-min-device-pixel-ratio: 2/1),
-      only screen and (        min-device-pixel-ratio: 2),
-      only screen and (                min-resolution: 192dpi),
-      only screen and (                min-resolution: 2dppx) {
-        .logo-img-1x { display: none; }
-        .logo-img-2x { display: inline-block; }
-      }
+/* ══════════════════════════
+   VIEW 2: 指標ライブラリ
+══════════════════════════ */
+.lib-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.lib-header h2{font-family:var(--fn);font-size:22px;font-weight:700;flex:1}
+.sport-badge{font-family:var(--fn);font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;letter-spacing:.5px}
+.back-link{font-size:12px;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:4px;padding:6px 12px;border:1px solid var(--border);border-radius:7px;transition:all .2s}
+.back-link:hover{color:var(--text);border-color:var(--border2)}
+.lib-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:700px){.lib-grid{grid-template-columns:1fr}}
 
-      #suggestions {
-        margin-top: 35px;
-        color: #ccc;
-      }
-      #suggestions a {
-        color: #666666;
-        font-weight: 200;
-        font-size: 14px;
-        margin: 0 10px;
-      }
+/* 装着位置タブ */
+.mount-tab{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-family:var(--fn);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.mount-tab svg{flex-shrink:0}
+.mount-tab:hover{border-color:var(--orange);color:var(--text)}
+.mount-tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+/* 指標カード無効 */
+.ind-card.disabled{opacity:.35;pointer-events:none}
+.ind-card.disabled .ind-card-top{filter:grayscale(.8)}
+.mount-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--fn);font-size:10px;font-weight:700;letter-spacing:1px;padding:4px 10px;border-radius:5px;background:var(--orange-dim);color:var(--orange);border:1px solid rgba(255,107,0,.3);margin-bottom:10px}
+/* 指標カード */
+.ind-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .2s}
+.ind-card:hover{border-color:var(--border2);background:var(--bg3)}
+.ind-card.expanded{border-color:var(--teal)}
+.ind-card-top{padding:14px 16px;display:flex;align-items:center;gap:12px}
+.ind-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.ind-info{flex:1;min-width:0}
+.ind-name{font-family:var(--fn);font-size:15px;font-weight:700;color:var(--text);letter-spacing:.5px;margin-bottom:2px}
+.ind-tagline{font-size:11px;color:var(--text2);line-height:1.4}
+.ind-expand-icon{font-size:12px;color:var(--text3);transition:transform .2s;flex-shrink:0}
+.ind-card.expanded .ind-expand-icon{transform:rotate(180deg)}
 
-    </style>
-  </head>
-  <body>
+/* 展開パネル */
+.ind-detail{display:none;border-top:1px solid var(--border);padding:14px 16px}
+.ind-card.expanded .ind-detail{display:block}
+.ind-anim-wrap{height:90px;background:var(--bg3);border-radius:8px;margin-bottom:12px;position:relative;overflow:hidden}
+.ind-desc{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:10px}
+.ind-sports-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.sport-pill{font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;font-family:var(--fn);letter-spacing:.5px}
+.ind-select-btn{width:100%;padding:9px;border-radius:8px;border:1px solid var(--teal);background:var(--teal-dim);color:var(--teal);font-family:var(--fn);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.ind-select-btn:hover{background:var(--teal);color:#fff}
+.ind-select-btn.selected{background:var(--teal);color:#fff}
 
-    <div class="container">
+/* 選択済みバー */
+.selected-bar{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.selected-bar-label{font-size:11px;color:var(--text2);font-family:var(--fn)}
+.sel-tags{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.sel-tag{font-size:11px;font-family:var(--fn);font-weight:700;padding:4px 10px;border-radius:20px;background:var(--teal-dim);color:var(--teal);border:1px solid rgba(58,171,168,.3);display:flex;align-items:center;gap:4px;cursor:pointer}
+.sel-tag .x{opacity:.6;font-size:10px}
+.go-btn{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:8px 20px;font-family:var(--fn);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;flex-shrink:0;letter-spacing:1px}
+.go-btn:hover{background:#e05e00}
+.go-btn:disabled{opacity:.3;cursor:not-allowed}
 
-      <h1>404</h1>
-      <p><strong>File not found</strong></p>
+/* ══════════════════════════
+   VIEW 3: 測定
+══════════════════════════ */
+.meas-layout{display:grid;grid-template-columns:1fr 300px;gap:14px;align-items:start}
+@media(max-width:860px){.meas-layout{grid-template-columns:1fr}}
+.wave-wrap{height:180px;position:relative}
+.axis-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.axis-btn{flex:1;min-width:44px;padding:5px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--fn);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
+.axis-btn.active-abs{border-color:var(--orange);background:var(--orange-dim);color:var(--orange)}
+.axis-btn.active-ax{border-color:var(--teal);background:var(--teal-dim);color:var(--teal)}
+.axis-btn.active-ay{border-color:var(--blue);background:var(--blue-dim);color:var(--blue)}
+.axis-btn.active-az{border-color:#9b59b6;background:rgba(155,89,182,.12);color:#9b59b6}
+.axis-btn.active-gyro{border-color:#2ecc71;background:rgba(46,204,113,.1);color:#2ecc71}
+.axis-bars{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.abar-item{background:var(--bg3);border-radius:7px;padding:7px 9px}
+.abar-label{font-family:var(--fn);font-size:10px;color:var(--text3);letter-spacing:1px;margin-bottom:3px}
+.abar-val{font-family:var(--fn);font-size:16px;font-weight:700;line-height:1}
+.abar-track{height:3px;background:var(--border);border-radius:2px;margin-top:4px;overflow:hidden}
+.abar-fill{height:100%;border-radius:2px;transition:width .15s}
+.info-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.live-val{font-family:var(--fn);font-size:28px;font-weight:700;color:var(--teal);line-height:1}
+.live-val span{font-size:12px;font-weight:400;color:var(--text2);margin-left:4px}
+.abadge{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-family:var(--fn);font-size:12px;font-weight:600;border:1px solid var(--border);color:var(--text2);transition:all .3s}
+.abadge.active{background:var(--orange-dim);border-color:var(--orange);color:var(--orange)}
+.start-ctrl{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+/* start-ctrl はそのまま */
+#startBtn{flex:1;padding:8px;border-radius:7px;border:none;background:var(--orange);color:#fff;font-family:var(--fn);font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;letter-spacing:1px}
+#startBtn:hover{background:#e05e00}
+#startBtn:disabled{background:var(--bg3);color:var(--text3);cursor:not-allowed}
+#startBtn.rec{background:#c0392b}
+#calBtn{padding:6px 12px;border-radius:7px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:var(--fn);font-size:11px;cursor:pointer}
+.autost{font-size:10px;color:var(--text3);min-height:14px;margin-top:4px;font-family:var(--fn)}
+.autost.w{color:var(--blue)}.autost.t{color:var(--orange)}
 
-      <p>
-        The site configured at this address does not
-        contain the requested file.
-      </p>
+/* 選択済み指標パネル */
+.sel-ind-panel{background:var(--bg3);border-radius:10px;padding:12px 14px;margin-top:10px}
+.mcat{font-family:var(--fn);font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin:10px 0 6px;display:flex;align-items:center;gap:6px}
+.mcat:first-child{margin-top:0}
+.mcat-line{flex:1;height:1px;background:var(--border)}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mi{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px 11px;display:flex;justify-content:space-between;align-items:center}
+.mi.wide{grid-column:1/-1}
+.mlbl{font-size:10px;color:var(--text2);margin-bottom:2px;line-height:1.3}
+.msub{font-size:9px;color:var(--text3)}
+.mv{font-family:var(--fn);font-size:20px;font-weight:700;color:var(--text);line-height:1;text-align:right}
+.mv.lg{font-size:24px}
+.mv.sm{font-size:16px}
+.munit{font-size:9px;color:var(--text2);display:block;text-align:right;margin-top:1px}
+.mbar{height:2px;background:var(--border);border-radius:2px;margin-top:5px;overflow:hidden}
+.mbar-f{height:100%;border-radius:2px;background:var(--teal);transition:width .4s}
+.trendv{font-family:var(--fn);font-size:18px;font-weight:900;text-align:right;line-height:1}
+.trendv.up{color:#e74c3c}.trendv.dn{color:var(--teal)}.trendv.fl{color:var(--text3)}
+.gauge-row{display:flex;gap:8px;margin-top:8px}
+.gi{flex:1;background:var(--bg3);border-radius:7px;padding:7px;text-align:center}
+.gi-val{font-family:var(--fn);font-size:15px;font-weight:700;line-height:1}
+.gi-lbl{font-size:9px;color:var(--text2);margin-top:2px}
+.log-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:var(--fn);font-size:11px;cursor:pointer;transition:all .2s}
+.log-btn:hover{background:var(--bg3);color:var(--text)}
+.log-btn.danger:hover{border-color:#e74c3c;color:#e74c3c}
 
-      <p>
-        If this is your site, make sure that the filename case matches the URL
-        as well as any file permissions.<br>
-        For root URLs (like <code>http://example.com/</code>) you must provide an
-        <code>index.html</code> file.
-      </p>
+/* ══════════════════════════
+   VIEW 4: レビュー
+══════════════════════════ */
+.rev-banner{background:linear-gradient(135deg,rgba(255,107,0,.15),rgba(30,144,255,.12));border:1px solid var(--orange);border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.rev-banner h2{font-family:var(--fn);font-size:19px;font-weight:700;color:var(--orange);letter-spacing:1px}
+.rev-banner p{font-size:11px;color:var(--text2);margin-top:2px}
+#backBtn{padding:7px 18px;border-radius:7px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:var(--fn);font-size:12px;font-weight:600;cursor:pointer}
+.rev-axis-sel{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.ras-btn{padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--fn);font-size:11px;cursor:pointer}
+.ras-btn.sel{border-color:var(--teal);background:var(--teal-dim);color:var(--teal)}
+.rev-outer{position:relative;width:100%;height:220px;cursor:crosshair;user-select:none;-webkit-user-select:none}
+#revCanvas{width:100%;height:100%;display:block}
+#selOv{position:absolute;top:0;height:100%;background:rgba(232,138,10,.15);border-left:2px solid var(--orange);border-right:2px solid var(--orange);pointer-events:none;display:none}
+.taxis{display:flex;justify-content:space-between;font-family:var(--fn);font-size:9px;color:var(--text3);margin-top:3px}
+.drag-hint{font-size:10px;color:var(--text3);font-family:var(--fn);margin-top:4px;text-align:center}
+#selInfo{display:none;background:var(--bg3);border:1px solid var(--orange);border-radius:9px;padding:12px 16px;margin-top:10px}
+.si-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.si-stats{display:flex;gap:14px;flex-wrap:wrap}
+.sstat{text-align:center}
+.sstat-val{font-family:var(--fn);font-size:18px;font-weight:700;color:var(--orange);line-height:1}
+.sstat-lbl{font-size:9px;color:var(--text2);margin-top:2px}
+#rangeAiBtn{background:linear-gradient(135deg,var(--orange),var(--teal));color:#fff;border:none;border-radius:7px;padding:8px 18px;font-family:var(--fn);font-weight:700;font-size:13px;cursor:pointer;flex-shrink:0;letter-spacing:.5px}
+#rangeAiBtn:disabled{opacity:.4;cursor:not-allowed}
+.rmet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+@media(max-width:600px){.rmet-grid{grid-template-columns:repeat(2,1fr)}}
+.rmet{background:var(--bg3);border-radius:8px;padding:9px 11px;border:1px solid var(--border)}
+.rmet-val{font-family:var(--fn);font-size:20px;font-weight:700;color:var(--text);line-height:1}
+.rmet-lbl{font-size:10px;color:var(--text2);margin-top:2px}
+.rmet-sub{font-size:9px;color:var(--text3)}
+.range-card{display:none}.range-card.active{display:block}
+.ai-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.aiout{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:14px;min-height:80px;font-size:13px;line-height:1.8;color:var(--text2);white-space:pre-wrap;font-family:var(--fj)}
+.aiout.active{color:var(--text)}
+.ai-dots span{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--teal);animation:bk 1.2s infinite;margin-left:3px}
+.ai-dots span:nth-child(2){animation-delay:.2s}.ai-dots span:nth-child(3){animation-delay:.4s}
+@keyframes bk{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
 
-      <p>
-        <a href="https://help.github.com/pages/">Read the full documentation</a>
-        for more information about using <strong>GitHub Pages</strong>.
-      </p>
+/* CALIB */
+#calibOv{display:none;position:fixed;inset:0;background:rgba(13,17,23,.93);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:18px}
+#calibOv.active{display:flex}
+.cring{width:80px;height:80px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--orange);animation:spin .8s linear infinite;position:relative;display:flex;align-items:center;justify-content:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cnum{font-family:var(--fn);font-size:32px;font-weight:900;color:var(--orange);position:absolute}
+.ctxt{font-size:14px;color:var(--text2)}.csub{font-size:11px;color:var(--text3)}
 
-      <div id="suggestions">
-        <a href="https://githubstatus.com">GitHub Status</a> &mdash;
-        <a href="https://twitter.com/githubstatus">@githubstatus</a>
+/* ══ アニメーション (指標カード内) ══ */
+@keyframes waveMove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes barBounce{0%,100%{height:20%}50%{height:85%}}
+@keyframes sway{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@keyframes peakPulse{0%,100%{opacity:.3;transform:scaleY(.3)}50%{opacity:1;transform:scaleY(1)}}
+@keyframes fadeDown{0%{opacity:1;transform:translateY(0)}100%{opacity:.4;transform:translateY(8px)}}
+@keyframes specBar{0%,100%{transform:scaleY(.2)}50%{transform:scaleY(1)}}
+@keyframes drift{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes tiltOsc{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+</style>
+</head>
+<body>
+
+<div id="calibOv">
+  <div class="cring"><span class="cnum" id="calibNum">2</span></div>
+  <div class="ctxt">静止してください</div>
+  <div class="csub">ベースライン計測中</div>
+</div>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">GG</div>
+    <div>
+      <div class="logo-text">GUTS GEAR</div>
+      <div class="logo-sub">SPORTS SENSOR LAB</div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <div class="sdot" id="sdot"></div>
+    <div class="slabel" id="slabel">未接続</div>
+    <button id="connectBtn">BLE 接続</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ══ VIEW 1: 種目選択 ══ -->
+<div id="v-sport" class="view active">
+  <div class="sport-hero">
+    <h1>GUTS <span>GEAR</span></h1>
+  </div>
+  <div class="sport-grid">
+    <div class="sport-card" onclick="selectSport('ball','#1e90ff')">
+      <div class="sport-icon-wrap" style="background:rgba(30,144,255,.15)">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="14" r="11" stroke="#1e90ff" stroke-width="2"/>
+          <path d="M14 3 C10 7 10 12 14 14 C18 16 22 14 22 14" stroke="#1e90ff" stroke-width="1.5" fill="none"/>
+          <path d="M6 8 C8 10 12 11 14 14 C16 17 15 21 14 25" stroke="#1e90ff" stroke-width="1.5" fill="none"/>
+          <path d="M22 20 C18 18 14 18 12 16 C10 14 8 10 6 8" stroke="#1e90ff" stroke-width="1.5" fill="none"/>
+        </svg>
+      </div>
+      <div class="sport-card-name">球技</div>
+      <div class="sport-card-sub">サッカー・バスケ・バレー</div>
+    </div>
+    <div class="sport-card" onclick="selectSport('swing','#ff6b00')">
+      <div class="sport-icon-wrap" style="background:rgba(255,107,0,.15)">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="22" cy="6" r="3.5" stroke="#ff6b00" stroke-width="2"/>
+          <path d="M20 9 L8 22" stroke="#ff6b00" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M5 18 L10 24" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+          <path d="M3 21 L7 25" stroke="#ff6b00" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+        </svg>
+      </div>
+      <div class="sport-card-name">スイング系</div>
+      <div class="sport-card-sub">野球・テニス・卓球・ゴルフ</div>
+    </div>
+    <div class="sport-card" onclick="selectSport('training','#1e90ff')">
+      <div class="sport-icon-wrap" style="background:rgba(30,144,255,.15)">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect x="3" y="12" width="4" height="8" rx="2" fill="#1e90ff"/>
+          <rect x="21" y="12" width="4" height="8" rx="2" fill="#1e90ff"/>
+          <rect x="7" y="14" width="14" height="4" rx="2" fill="#1e90ff"/>
+          <rect x="10" y="10" width="8" height="8" rx="1" fill="#1e90ff" opacity=".3"/>
+        </svg>
+      </div>
+      <div class="sport-card-name">体幹トレーニング</div>
+      <div class="sport-card-sub">腕立て・スクワット・プランク</div>
+    </div>
+    <div class="sport-card" onclick="selectSport('budo','#ff6b00')">
+      <div class="sport-icon-wrap" style="background:rgba(255,107,0,.15)">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="6" r="3" stroke="#ff6b00" stroke-width="2"/>
+          <path d="M14 9 L14 18" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+          <path d="M14 13 L8 10" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+          <path d="M14 13 L20 10" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+          <path d="M14 18 L10 24" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+          <path d="M14 18 L18 24" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="sport-card-name">武道・格闘技</div>
+      <div class="sport-card-sub">柔道・空手・剣道・ボクシング</div>
+    </div>
+    <div class="sport-card" onclick="selectSport('track','#1e90ff')">
+      <div class="sport-icon-wrap" style="background:rgba(30,144,255,.15)">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="17" cy="5" r="3" stroke="#1e90ff" stroke-width="2"/>
+          <path d="M17 8 L15 14 L10 17" stroke="#1e90ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M15 14 L17 20 L14 26" stroke="#1e90ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M17 20 L22 23" stroke="#1e90ff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="sport-card-name">陸上・走り</div>
+      <div class="sport-card-sub">短距離・長距離・跳躍</div>
+    </div>
+    <div class="sport-card" onclick="selectSport('gym','#ff6b00')">
+      <div class="sport-icon-wrap" style="background:rgba(255,107,0,.15)">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="5" r="3" stroke="#ff6b00" stroke-width="2"/>
+          <path d="M14 8 L14 16" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+          <path d="M8 11 L14 13 L20 11" stroke="#ff6b00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14 16 L11 22" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+          <path d="M14 16 L17 22" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+          <path d="M8 11 L5 16" stroke="#ff6b00" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+          <path d="M20 11 L23 16" stroke="#ff6b00" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+        </svg>
+      </div>
+      <div class="sport-card-name">体操・ダンス</div>
+      <div class="sport-card-sub">器械体操・新体操・ダンス</div>
+    </div>
+    <div class="sport-card" onclick="selectSport('daily','#2ecc71')">
+      <div class="sport-icon-wrap" style="background:rgba(46,204,113,.15)">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="17" cy="4" r="2.5" stroke="#2ecc71" stroke-width="2"/>
+          <path d="M17 7 L15 13 L11 16" stroke="#2ecc71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M15 13 L16 19 L13 25" stroke="#2ecc71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M16 19 L20 23" stroke="#2ecc71" stroke-width="2" stroke-linecap="round"/>
+          <ellipse cx="7" cy="24" rx="2.5" ry="1.2" fill="#2ecc71" opacity=".4"/>
+          <ellipse cx="13" cy="26" rx="2.5" ry="1.2" fill="#2ecc71" opacity=".65"/>
+        </svg>
+      </div>
+      <div class="sport-card-name">日常動作</div>
+      <div class="sport-card-sub">歩く・階段・立ち座り・荷物</div>
+    </div>
+    <div class="sport-card" onclick="selectSport('free','#e8f4ff')">
+      <div class="sport-icon-wrap" style="background:rgba(255,255,255,.08)">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="14" r="10" stroke="#e8f4ff" stroke-width="2" opacity=".5"/>
+          <line x1="14" y1="4" x2="14" y2="8" stroke="#e8f4ff" stroke-width="2" stroke-linecap="round"/>
+          <line x1="14" y1="20" x2="14" y2="24" stroke="#e8f4ff" stroke-width="2" stroke-linecap="round"/>
+          <line x1="4" y1="14" x2="8" y2="14" stroke="#e8f4ff" stroke-width="2" stroke-linecap="round"/>
+          <line x1="20" y1="14" x2="24" y2="14" stroke="#e8f4ff" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="14" cy="14" r="3" fill="#e8f4ff" opacity=".8"/>
+        </svg>
+      </div>
+      <div class="sport-card-name">自由測定</div>
+      <div class="sport-card-sub">全指標から自由に選ぶ</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ VIEW 2: 指標ライブラリ ══ -->
+<div id="v-lib" class="view">
+  <div class="lib-header">
+    <div class="back-link" onclick="goTo('v-sport')">← 種目選択</div>
+    <h2 id="libTitle">指標ライブラリ</h2>
+    <div class="sport-badge" id="sportBadge"></div>
+  </div>
+
+  <div class="selected-bar">
+    <div class="selected-bar-label">選択中:</div>
+    <div class="sel-tags" id="selTags"><span style="font-size:11px;color:var(--text3)">指標を選んでください</span></div>
+    <button class="go-btn" id="goMeasBtn" disabled onclick="goTo('v-meas')">測定へ →</button>
+  </div>
+
+  <!-- 装着位置サジェスト -->
+  <div id="mountSuggest" style="display:none;margin-bottom:12px"></div>
+
+  <div class="lib-grid" id="libGrid"></div>
+</div>
+
+<!-- ══ VIEW 3: 測定 ══ -->
+<div id="v-meas" class="view">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+    <div class="back-link" onclick="goTo('v-lib')">← 指標選択</div>
+    <div style="font-family:var(--fn);font-size:16px;font-weight:700;flex:1">測定</div>
+    <div id="measSportBadge" class="sport-badge"></div>
+  </div>
+
+  <!-- 参加者パネル -->
+  <div class="card" id="playerPanel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div class="ctitle" style="margin-bottom:0"><div class="dot" style="background:var(--orange)"></div>参加者</div>
+      <button onclick="openAddPlayer()" id="addPlayerBtn" style="padding:5px 14px;border-radius:6px;border:1px solid var(--orange);background:var(--orange-dim);color:var(--orange);font-family:var(--fn);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.5px">+ 追加</button>
+    </div>
+    <div id="playerList" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+      <div style="font-size:12px;color:var(--text3);font-family:var(--fn)">参加者を追加してください（最大5人）</div>
+    </div>
+    <!-- 参加者追加フォーム -->
+    <div id="addPlayerForm" style="display:none;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:14px;margin-top:8px">
+      <div style="font-family:var(--fn);font-size:11px;font-weight:700;letter-spacing:1px;color:var(--text2);margin-bottom:10px">新しい参加者</div>
+
+      <!-- 必須項目 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div>
+          <div style="font-size:10px;color:var(--text2);margin-bottom:4px;font-family:var(--fn)">名前 <span style="color:var(--orange)">*</span></div>
+          <input id="inp_name" type="text" placeholder="例: 田中" maxlength="10"
+            style="width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--fj);font-size:14px;padding:7px 10px;outline:none">
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text2);margin-bottom:4px;font-family:var(--fn)">性別 <span style="color:var(--orange)">*</span></div>
+          <select id="inp_gender" style="width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--fj);font-size:14px;padding:7px 10px;outline:none">
+            <option value="m">男性</option>
+            <option value="f">女性</option>
+            <option value="x">その他</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text2);margin-bottom:4px;font-family:var(--fn)">年齢 <span style="color:var(--orange)">*</span></div>
+          <input id="inp_age" type="number" value="15" min="6" max="80" step="1"
+            style="width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--fn);font-size:16px;font-weight:700;padding:7px 10px;outline:none;text-align:center">
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text2);margin-bottom:4px;font-family:var(--fn)">利き手・利き足 <span style="color:var(--orange)">*</span></div>
+          <select id="inp_dominant" style="width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--fj);font-size:14px;padding:7px 10px;outline:none">
+            <option value="right">右利き</option>
+            <option value="left">左利き</option>
+            <option value="both">両利き</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text2);margin-bottom:4px;font-family:var(--fn)">体重 (kg) <span style="color:var(--orange)">*</span></div>
+          <input id="inp_weight" type="number" value="55" min="20" max="200" step="0.5"
+            style="width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--fn);font-size:16px;font-weight:700;padding:7px 10px;outline:none;text-align:center">
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text2);margin-bottom:4px;font-family:var(--fn)">身長 (cm) <span style="color:var(--orange)">*</span></div>
+          <input id="inp_height" type="number" value="160" min="100" max="220" step="1"
+            style="width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--fn);font-size:16px;font-weight:700;padding:7px 10px;outline:none;text-align:center">
+        </div>
       </div>
 
-      <a href="/" class="logo logo-img-1x">
-        <img width="32" height="32" title="" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFMTZCRDY3REIzRjAxMUUyQUQzREIxQzRENUFFNUM5NiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFMTZCRDY3RUIzRjAxMUUyQUQzREIxQzRENUFFNUM5NiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkUxNkJENjdCQjNGMDExRTJBRDNEQjFDNEQ1QUU1Qzk2IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkUxNkJENjdDQjNGMDExRTJBRDNEQjFDNEQ1QUU1Qzk2Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+SM9MCAAAA+5JREFUeNrEV11Ik1EY3s4+ddOp29Q5b0opCgKFsoKoi5Kg6CIhuwi6zLJLoYLopq4qsKKgi4i6CYIoU/q5iDAKs6syoS76IRWtyJ+p7cdt7sf1PGOD+e0c3dygAx/67ZzzPM95/877GYdHRg3ZjMXFxepQKNS6sLCwJxqNNuFpiMfjVs4ZjUa/pmmjeD6VlJS8NpvNT4QQ7mxwjSsJiEQim/1+/9lgMHgIr5ohuxG1WCw9Vqv1clFR0dCqBODElV6v90ogEDjGdYbVjXhpaendioqK07CIR7ZAqE49PT09BPL2PMgTByQGsYiZlQD4uMXtdr+JxWINhgINYhGT2MsKgMrm2dnZXgRXhaHAg5jEJodUAHxux4LudHJE9RdEdA+i3Juz7bGHe4mhE9FNrgwBCLirMFV9Okh5eflFh8PR5nK5nDabrR2BNJlKO0T35+Li4n4+/J+/JQCxhmu5h3uJoXNHPbmWZAHMshWB8l5/ipqammaAf0zPDDx1ONV3vurdidqwAQL+pEc8sLcAe1CCvQ3YHxIW8Pl85xSWNC1hADDIv0rIE/o4J0k3kww4xSlwIhcq3EFFOm7KN/hUGOQkt0CFa5WpNJlMvxBEz/IVQAxg/ZRZl9wiHA63yDYieM7DnLP5CiAGsC7I5sgtYKJGWe2A8seFqgFJrJjEPY1Cn3pJ8/9W1e5VWsFDTEmFrBcoDhZJEQkXuhICMyKpjhahqN21hRYATKfUOlDmkygrR4o4C0VOLGJKrOITKB4jijzdXygBKixyC5TDQdnk/Pz8qRw6oOWGlsTKGOQW6OH6FBWsyePxdOXLTgxiyebILZCjz+GLgMIKnXNzc49YMlcRdHXcSwxFVgTInQhC9G33UhNoJLuqq6t345p9y3eUy8OTk5PjAHuI9uo4b07FBaOhsu0A4Unc+T1TU1Nj3KsSSE5yJ65jqF2DDd8QqWYmAZrIM2VlZTdnZmb6AbpdV9V6ec9znf5Q7HjYumdRE0JOp3MjitO4SFa+cZz8Umqe3TCbSLvdfkR/kWDdNQl5InuTcysOcpFT35ZrbBxx4p3JAHlZVVW1D/634VRt+FvLBgK/v5LV9WS+10xMTEwtRw7XvqOL+e2Q8V3AYIOIAXQ26/heWVnZCVfcyKHg2CBgTpmPmjYM8l24GyaUHyaIh7XwfR9ErE8qHoDfn2LTNAVC0HX6MFcBIP8Bi+6F6cdW/DICkANRfx99fEYFQ7Nph5i/uQiA214gno7K+guhaiKg9gC62+M8eR7XsBsYJ4ilam60Fb7r7uAj8wFyuwM1oIOWgfmDy6RXEEQzJMPe23DXrVS7rtyD3Df8z/FPgAEAzWU5Ku59ZAUAAAAASUVORK5CYII=">
-      </a>
+      <!-- 任意項目トグル -->
+      <div onclick="toggleOptional()" style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:6px;padding:6px 0;border-top:1px solid var(--border)">
+        <div style="font-size:10px;color:var(--text2);font-family:var(--fn);font-weight:600;letter-spacing:1px">詳細を入力する（任意）</div>
+        <div id="optionalArrow" style="font-size:10px;color:var(--text3);transition:transform .2s">▼</div>
+      </div>
+      <div id="optionalFields" style="display:none;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div>
+          <div style="font-size:10px;color:var(--text2);margin-bottom:4px;font-family:var(--fn)">体調</div>
+          <select id="inp_condition" style="width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--fj);font-size:14px;padding:7px 10px;outline:none">
+            <option value="">未回答</option>
+            <option value="great">絶好調 💪</option>
+            <option value="normal">普通 😊</option>
+            <option value="tired">疲れ気味 😓</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text2);margin-bottom:4px;font-family:var(--fn)">競技経験年数</div>
+          <select id="inp_experience" style="width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--fj);font-size:14px;padding:7px 10px;outline:none">
+            <option value="">未回答</option>
+            <option value="0">はじめて</option>
+            <option value="1">1年未満</option>
+            <option value="2">1〜3年</option>
+            <option value="3">3〜5年</option>
+            <option value="4">5年以上</option>
+          </select>
+        </div>
+      </div>
 
-      <a href="/" class="logo logo-img-2x">
-        <img width="32" height="32" title="" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpEQUM1QkUxRUI0MUMxMUUyQUQzREIxQzRENUFFNUM5NiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpEQUM1QkUxRkI0MUMxMUUyQUQzREIxQzRENUFFNUM5NiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkUxNkJENjdGQjNGMDExRTJBRDNEQjFDNEQ1QUU1Qzk2IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkUxNkJENjgwQjNGMDExRTJBRDNEQjFDNEQ1QUU1Qzk2Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+hfPRaQAAB6lJREFUeNrsW2mME2UYbodtt+2222u35QheoCCYGBQligIJgkZJNPzgigoaTEj8AdFEMfADfyABkgWiiWcieK4S+QOiHAYUj2hMNKgYlEujpNttu9vttbvdw+chU1K6M535pt3ubHCSyezR+b73eb73+t7vrfXsufOW4bz6+vom9/b23ovnNNw34b5xYGAgODg46Mbt4mesVmsWd1qSpHhdXd2fuP/Afcput5/A88xwymcdBgLqenp6FuRyuWV4zu/v759QyWBjxoz5t76+/gun09mK5xFyakoCAPSaTCazNpvNPoYVbh6O1YKGRF0u13sNDQ27QMzfpiAAKj0lnU6/gBVfAZW2WWpwwVzy0IgP3G73FpjI6REhAGA9qVRqA1b9mVoBVyIC2tDi8Xg24+dUzQiAbS/s7Ox8G2o/3mKCC+Zw0efzPQEfcVjYrARX3dbV1bUtHo8fMgt42f+Mp0yUTVQbdWsAHVsikdiHkHaPxcQXQufXgUBgMRxme9U0AAxfH4vFvjM7eF6UkbJS5qoQwEQGA57Ac5JllFyUVZZ5ckUEgMVxsK2jlSYzI+QXJsiyjzNEAJyJAzb/KQa41jJKL8pODMQiTEAymXw5n8/P0IjD3bh7Rgog59aanxiIRTVvV/oj0tnHca/WMrVwODwB3raTGxzkBg/gnZVapFV62Wy2n5AO70HM/5wbJ0QnXyQSaVPDIuNZzY0V3ntHMwxiwHA0Gj2Np7ecIBDgaDAYXKCQJM1DhrgJ3nhulcPbl8j4NmHe46X/g60fwbz3aewjkqFQaAqebWU1AOqyQwt8Id6qEHMc97zu7u7FGGsn7HAiVuosVw7P35C1nccdgSCxop1dHeZswmfHMnxBo6ZTk+jN8dl/vF7vWofDsa+MLN9oEUBMxOb3+1eoEsBVw6Zmua49r8YmhAKDiEPcMwBsxMiqQ+ixzPFxZyqRpXARG/YOr1ObFJ0gUskXBbamcR1OKmMUvDxHRAu8/LmY3jFLMUpFqz9HxG65smYJdyKyECOxDiEAe/p1gjF2oonivZAsxVgl2daa4EQWCW6J55qFAFFZiJWYLxNQy2qOSUzGRsyXCUDIeliwAHEO4WSlWQBRFoZakXcKmCXmyXAKs0Ve9vl8q42WoIYpJU4hV3hKcNs8m9gl7p/xQ73eF5kB4j5mNrWmTJRNwAzqiV1CxjVTZCIkEq+Z1bZFZSN2CenmVAFVy4Plz8xKAGWjjAKFk6lCBMDR/MJjLLMSQNm43xAiQKTaA+9/wewhDjL+JVI1kkTSSOTcKbMTwPqESAot6dn6Fr1gHwVJju6IRuyiByPuUUBAg5DGkAgBmxlvdgIEK9gDkohdY/BJo4CAG0R8miRSsGABkgVQs4KXu098IgUXSSRsFAoKZiVAVDY2WUiiPTjYRi41KwGisrGsLtlsth8Fiwnz2fBkQvWfRtlE3iF2yW63/yCacXZ1dW02GwGyTFaRd4idJnCKHRaCxYRHoG5LTKT6SyiToP1fJHbmAYPYRR0UnZQtMnA6s0zg+GZBlt0Gdo7EPHgpE3Q6nZ8YyLhc8Xj8MJh/aKTAY+5FPAKHLE7RdwuYJZmNwzyCMkBCYyKROJBMJl9B/PXXCjjmCmDOVzH3fiPpObEWGqoKe4EBl8v1hlqsdLvd23mkxHM9pc9kMpmno9HoeTii7ewbHEZPPx1ztLS1tV3AnGuMjiNjvbQFuHw6zDo5By7dTPAQNBgMLrRarTkSls1mnwT7uwp9virx9QzbW/HuV/j5d/b+6jniKlllP8lkeONJDk+dq9GsQTnC4fB1heO0K47Hwe7WdDr9nAKgXwOBwHI+C45Htj1d6sd429TUNEcmUdc+PRaLHcvn87dXW4ugzdsaGxufL94NFv9zi1J7GVbhlvb2dnaJ3SVrxfc+n2+NTsZ7/H7/Mr3g5XdSIHyJSH1PZ+7fToyl2+ErqilgZ4NaLYB9goVGaHjR93Hv1ZrU4XDsFT20kH3PObzbWk0CgG1jacVIUnAQb9F+VexyLMzkpcLv0IJV7AHQIOCAUYHx7v5qgScmYHtTqSAyZLEJTK22Bie4iq3xsqpm4SAf9Hq9a2DnJ4uLK3SEULcdRvp3i3zHySqpficxEdsQc1NrlYXXvR+O7qASSezXB+h1SuUomgg9LL8BUoV4749EIolKh+EiqWmqVEZlDgHks2pxHw7xTqUQw9J5NcAXOK10AGIoZ6Zli6JY6Z1Q461KoZ4NiKLHarW+KDsxlDUPHZ5zPQZqUVDPJsTqb5n9malbpAh8C2XXDLl62+WZIDFRUlNVOiwencnNU3aQEkL+cDMSoLvZo2fQB7AJssNAuFuvorlDVVkkg2I87+jo2K2QAVphDrfyViK5VqtO34OkaxXCp+7drdDBCAdubm6eidX+2WwqT5komwh4YQLk+H4aE93h8Xg2gvHekQZOGSgLZTLyDTLJ4Lx9/KZWKBSainT4Iy3FqQBfnUZR42PKQFksBr9QKVXCPusD3OiA/RkQ5kP8qV/Jl1WywAp/6+dcmPM2zL1UrUahe4JqfnWWKXIul3uUbfP8njAFLW1OFr3gdFtZ72cNH+PtQT7/brW+NXqJAHh0y9V8/U/A1U7AfwIMAD7mS3pCbuWJAAAAAElFTkSuQmCC">
-      </a>
+      <div style="display:flex;gap:8px">
+        <button onclick="closeAddPlayer()" style="flex:1;padding:8px;border-radius:7px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:var(--fn);font-size:13px;font-weight:700;cursor:pointer">キャンセル</button>
+        <button onclick="confirmAddPlayer()" style="flex:2;padding:8px;border-radius:7px;border:none;background:var(--orange);color:#fff;font-family:var(--fn);font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px">追加する</button>
+      </div>
     </div>
-  </body>
+    <!-- 現在測定中 -->
+    <div id="currentPlayerBar" style="display:none;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;margin-top:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--orange);animation:blink .8s infinite"></div>
+        <div id="currentPlayerName" style="font-family:var(--fn);font-size:15px;font-weight:700;color:#fff">—</div>
+        <div id="currentPlayerInfo" style="font-size:11px;color:var(--text2)"></div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button onclick="addTakeForCurrentPlayer()" id="addTakeBtn" style="padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:var(--fn);font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.5px" disabled>+ テイク追加</button>
+        <button onclick="nextPlayer()" id="nextPlayerBtn" style="padding:5px 14px;border-radius:6px;border:none;background:var(--teal);color:#fff;font-family:var(--fn);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.5px" disabled>次の人へ →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="meas-layout">
+    <div>
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div class="ctitle" style="margin-bottom:0"><div class="dot"></div>リアルタイム波形</div>
+        </div>
+        <div class="wave-wrap"><canvas id="waveChart"></canvas></div>
+        <div class="axis-row">
+          <button class="axis-btn active-abs" data-axis="abs" id="axAbs">ABS</button>
+          <button class="axis-btn" data-axis="ax" id="axX">AX</button>
+          <button class="axis-btn" data-axis="ay" id="axY">AY</button>
+          <button class="axis-btn" data-axis="az" id="axZ">AZ</button>
+          <button class="axis-btn" data-axis="gyro" id="axGyr">GYRO</button>
+        </div>
+        <div class="axis-bars">
+          <div class="abar-item"><div class="abar-label">AX</div><div class="abar-val" id="livAx" style="color:var(--teal)">—</div><div class="abar-track"><div class="abar-fill" id="barAx" style="background:var(--teal);width:50%"></div></div></div>
+          <div class="abar-item"><div class="abar-label">AY</div><div class="abar-val" id="livAy" style="color:var(--blue)">—</div><div class="abar-track"><div class="abar-fill" id="barAy" style="background:var(--blue);width:50%"></div></div></div>
+          <div class="abar-item"><div class="abar-label">AZ</div><div class="abar-val" id="livAz" style="color:#9b59b6">—</div><div class="abar-track"><div class="abar-fill" id="barAz" style="background:#9b59b6;width:50%"></div></div></div>
+          <div class="abar-item"><div class="abar-label">GX</div><div class="abar-val" id="livGx" style="color:#2ecc71">—</div><div class="abar-track"><div class="abar-fill" id="barGx" style="background:#2ecc71;width:50%"></div></div></div>
+          <div class="abar-item"><div class="abar-label">GY</div><div class="abar-val" id="livGy" style="color:#2ecc71">—</div><div class="abar-track"><div class="abar-fill" id="barGy" style="background:#2ecc71;width:50%"></div></div></div>
+          <div class="abar-item"><div class="abar-label">GZ</div><div class="abar-val" id="livGz" style="color:#2ecc71">—</div><div class="abar-track"><div class="abar-fill" id="barGz" style="background:#2ecc71;width:50%"></div></div></div>
+        </div>
+        <div class="info-row">
+          <div>
+            <div class="live-val" id="livAbs">—<span>G</span></div>
+            <div style="font-size:10px;color:var(--text3);margin-top:2px">ベースライン: <span id="baseDisp">未取得</span></div>
+          </div>
+          <div class="abadge" id="actBadge"><span id="actIcon">○</span><span id="actLbl">待機中</span></div>
+        </div>
+        <div class="start-ctrl">
+          <button id="startBtn" disabled style="flex:1">▶ スタート</button>
+          <button id="calBtn">CAL</button>
+        </div>
+      </div>
+
+      <!-- ピーク履歴 -->
+      <div class="card">
+        <div class="ctitle"><div class="dot" style="background:var(--blue)"></div>ピーク履歴</div>
+        <div style="position:relative;height:100px"><canvas id="strChart"></canvas></div>
+        <div class="gauge-row" style="margin-top:8px">
+          <div class="gi"><div class="gi-val" id="sCad" style="color:var(--teal)">—</div><div class="gi-lbl">最高テンポ</div></div>
+          <div class="gi"><div class="gi-val" id="sAct" style="color:var(--orange)">—</div><div class="gi-lbl">アクティブ率%</div></div>
+          <div class="gi"><div class="gi-val" id="sCons" style="color:var(--blue)">—</div><div class="gi-lbl">安定性</div></div>
+        </div>
+      </div>
+
+      <!-- ログ -->
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="ctitle" style="margin-bottom:0"><div class="dot" style="background:var(--text3)"></div>ログ</div>
+          <div style="display:flex;gap:6px">
+            <button class="log-btn" id="csvBtn">CSV</button>
+            <button class="log-btn danger" id="clearBtn">リセット</button>
+          </div>
+        </div>
+        <div id="sessStatus" style="margin-top:6px;font-family:var(--fn);font-size:11px;color:var(--text3)">ブルーボードを接続してください</div>
+        <div class="gauge-row" id="gaugeRow" style="display:none">
+          <div class="gi"><div class="gi-val" id="gTot" style="color:var(--teal)">0</div><div class="gi-lbl">総サンプル</div></div>
+          <div class="gi"><div class="gi-val" id="gDur" style="color:var(--blue)">0:00</div><div class="gi-lbl">記録時間</div></div>
+          <div class="gi"><div class="gi-val" id="gHz" style="color:var(--orange)">50</div><div class="gi-lbl">受信 Hz</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: 選択済み指標 -->
+    <div class="card" id="activeMetricsPanel" style="overflow-y:auto;max-height:calc(100vh - 80px)">
+      <div class="ctitle"><div class="dot" style="background:var(--orange)"></div>選択中の指標</div>
+      <div id="activeMetricsBody"></div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+        <button id="reviewBtn" disabled style="width:100%;padding:9px;border-radius:8px;border:1px solid var(--orange);background:var(--orange-dim);color:var(--orange);font-family:var(--fn);font-size:13px;font-weight:700;cursor:pointer;opacity:.4;transition:all .2s;letter-spacing:.5px">
+          📊 区間分析モードへ →
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ VIEW 4: レビュー ══ -->
+<div id="v-review" class="view">
+  <div class="rev-banner">
+    <div><h2>区間分析モード</h2><p>波形をドラッグして区間を選択 → AI分析</p></div>
+    <button id="backBtn">← 測定に戻る</button>
+  </div>
+  <div class="card">
+    <div class="ctitle"><div class="dot"></div>全セッション波形</div>
+    <div class="rev-axis-sel" id="revAxisSel">
+      <button class="ras-btn sel" data-rax="abs">ABS</button>
+      <button class="ras-btn" data-rax="ax">AX</button>
+      <button class="ras-btn" data-rax="ay">AY</button>
+      <button class="ras-btn" data-rax="az">AZ</button>
+      <button class="ras-btn" data-rax="gx">GX</button>
+      <button class="ras-btn" data-rax="gy">GY</button>
+      <button class="ras-btn" data-rax="gz">GZ</button>
+    </div>
+    <div class="rev-outer" id="revOuter">
+      <canvas id="revCanvas"></canvas>
+      <div id="selOv"></div>
+    </div>
+    <div class="taxis" id="taxis"></div>
+    <div class="drag-hint">← ドラッグで区間選択 →</div>
+    <div id="selInfo">
+      <div class="si-row">
+        <div class="si-stats">
+          <div class="sstat"><div class="sstat-val" id="sDur">—</div><div class="sstat-lbl">区間長</div></div>
+          <div class="sstat"><div class="sstat-val" id="sPeaks">—</div><div class="sstat-lbl">ピーク数</div></div>
+          <div class="sstat"><div class="sstat-val" id="sCadR">—</div><div class="sstat-lbl">平均テンポ</div></div>
+          <div class="sstat"><div class="sstat-val" id="sImpR">—</div><div class="sstat-lbl">平均パワーG</div></div>
+          <div class="sstat"><div class="sstat-val" id="sMaxG">—</div><div class="sstat-lbl">最大角速度</div></div>
+        </div>
+        <button id="rangeAiBtn" disabled>🤖 AI分析</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ctitle"><div class="dot" style="background:var(--orange)"></div>セッションサマリー</div>
+    <div class="rmet-grid">
+      <div class="rmet"><div class="rmet-val" id="rv_peaks">—</div><div class="rmet-lbl">総ピーク数</div></div>
+      <div class="rmet"><div class="rmet-val" id="rv_dur">—</div><div class="rmet-lbl">計測時間</div></div>
+      <div class="rmet"><div class="rmet-val" id="rv_maxImp">—</div><div class="rmet-lbl">最大パワー G</div></div>
+      <div class="rmet"><div class="rmet-val" id="rv_maxG">—</div><div class="rmet-lbl">最大角速度 °/s</div></div>
+    </div>
+  </div>
+  <div class="card range-card" id="rangeCard">
+    <div class="ai-top">
+      <div class="ctitle" style="margin-bottom:0"><div class="dot" style="background:var(--cream)"></div>AI 区間分析</div>
+      <div id="rangeLbl" style="font-family:var(--fn);font-size:11px;color:var(--orange)"></div>
+    </div>
+    <div class="aiout" id="rangeOut"></div>
+  </div>
+</div>
+
+<!-- ══ VIEW 5: 比較 ══ -->
+<div id="v-compare" class="view">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+    <div class="back-link" onclick="goTo('v-meas')">← 測定に戻る</div>
+    <div style="font-family:var(--fn);font-size:18px;font-weight:900;letter-spacing:1px;flex:1;color:#fff">分析・比較</div>
+    <div id="cmpSportBadge" class="sport-badge"></div>
+  </div>
+
+  <!-- 参加者タグ -->
+  <div class="card">
+    <div class="ctitle"><div class="dot" style="background:var(--orange)"></div>参加者</div>
+    <div id="cmpPlayerTags" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+  </div>
+
+  <!-- 参加者セレクタ（ビッグナンバー用） -->
+  <div class="card" id="bigNumCard">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <div class="ctitle" style="margin-bottom:0"><div class="dot"></div>区間データ詳細</div>
+      <div id="bigNumPlayerSel" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    </div>
+    <div id="bigNumGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px"></div>
+  </div>
+
+  <!-- テイク間比較 -->
+  <div class="card" id="takeCompareCard" style="display:none">
+    <div class="ctitle"><div class="dot" style="background:var(--orange)"></div>テイク間の変化</div>
+    <div style="position:relative;height:180px;margin-bottom:14px"><canvas id="takeBarChart"></canvas></div>
+    <div id="takeDetailGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px"></div>
+  </div>
+
+  <!-- 参加者間比較テーブル -->
+  <div class="card">
+    <div class="ctitle"><div class="dot" style="background:var(--blue)"></div>参加者間 比較 <span style="font-size:9px;color:var(--text3);margin-left:4px">（緑 = 最良値）</span></div>
+    <div style="overflow-x:auto">
+      <table id="cmpTable" style="width:100%;border-collapse:collapse;font-size:12px"></table>
+    </div>
+  </div>
+
+  <!-- レーダーチャート -->
+  <div class="card" id="radarCard">
+    <div class="ctitle"><div class="dot" style="background:var(--teal)"></div>指標バランス（レーダー）</div>
+    <div id="radarGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px"></div>
+  </div>
+
+  <!-- 波形重ね合わせ -->
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="ctitle" style="margin-bottom:0"><div class="dot"></div>波形重ね合わせ</div>
+      <div style="display:flex;gap:5px" id="cmpAxisSel">
+        <button class="ras-btn sel" data-cax="abs" onclick="setCmpAxis(this,'abs')">ABS</button>
+        <button class="ras-btn" data-cax="ax" onclick="setCmpAxis(this,'ax')">AX</button>
+        <button class="ras-btn" data-cax="ay" onclick="setCmpAxis(this,'ay')">AY</button>
+        <button class="ras-btn" data-cax="az" onclick="setCmpAxis(this,'az')">AZ</button>
+      </div>
+    </div>
+    <div id="cmpLegend" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px"></div>
+    <div style="position:relative;height:200px"><canvas id="cmpWaveChart"></canvas></div>
+  </div>
+
+  <!-- 再測定 -->
+  <div class="card">
+    <div class="ctitle"><div class="dot" style="background:var(--orange)"></div>再測定 / テイク追加</div>
+    <div id="retakeList" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ══════════════ SVGアイコン定義 ══════════════
+const IND_ICONS = {
+  rhythm:   `<svg viewBox="0 0 22 22" fill="none"><polyline points="2,11 5,11 7,5 9,17 11,8 13,14 15,11 20,11" stroke="#1e90ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  power:    `<svg viewBox="0 0 22 22"><polygon points="12,2 4,13 10,13 8,22 18,9 12,9" fill="#ff6b00"/></svg>`,
+  balance:  `<svg viewBox="0 0 22 22"><rect x="10" y="2" width="2" height="18" rx="1" fill="#1e90ff"/><rect x="2" y="10" width="18" height="2" rx="1" fill="#1e90ff"/><circle cx="11" cy="11" r="4" fill="#1e90ff" opacity=".4"/></svg>`,
+  fatigue:  `<svg viewBox="0 0 22 22" fill="none"><polyline points="2,6 7,6 10,12 14,8 20,16" stroke="#ff6b00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="16,16 20,16 20,12" stroke="#ff6b00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  rotation: `<svg viewBox="0 0 22 22" fill="none"><path d="M5 11 A6 6 0 1 1 11 17" stroke="#1e90ff" stroke-width="2.5" stroke-linecap="round"/><polygon points="7,14 11,17 7,20" fill="#1e90ff"/></svg>`,
+  fft:      `<svg viewBox="0 0 22 22"><rect x="2" y="14" width="3" height="6" rx="1" fill="#ff6b00"/><rect x="7" y="9" width="3" height="11" rx="1" fill="#ff6b00" opacity=".85"/><rect x="12" y="4" width="3" height="16" rx="1" fill="#ff6b00" opacity=".7"/><rect x="17" y="11" width="3" height="9" rx="1" fill="#ff6b00" opacity=".8"/></svg>`,
+  work:     `<svg viewBox="0 0 22 22"><path d="M11 2 L13.5 8.5 L20 9 L15 14 L16.5 20.5 L11 17 L5.5 20.5 L7 14 L2 9 L8.5 8.5 Z" fill="#1e90ff"/></svg>`,
+  reaction: `<svg viewBox="0 0 22 22"><polygon points="3,2 21,11 3,20 7,11" fill="#ff6b00"/></svg>`,
+};
+
+// 装着位置 × 指標マッピング
+const MOUNT_POSITIONS = {
+  wrist: {
+    label: '手首',
+    desc: '手首への装着 — スイング・打撃・ラケット動作の加速度と回転を精度よく計測できます',
+    indicators: ['rhythm','power','rotation','reaction','fft','work'],
+  },
+  ankle: {
+    label: '足首',
+    desc: '足首への装着 — 走り・蹴り・踏み込みの瞬間パワーとリズムを計測できます',
+    indicators: ['rhythm','power','balance','fatigue','fft','work'],
+  },
+  waist: {
+    label: '腰',
+    desc: '腰への装着 — 体幹の安定性・上下動・疲労による姿勢変化を計測できます',
+    indicators: ['balance','fatigue','fft','work','rhythm'],
+  },
+  chest: {
+    label: '胸・背中',
+    desc: '胸または背中への装着 — 体幹の前後バランス・呼吸リズム・姿勢変化を計測できます',
+    indicators: ['balance','fatigue','fft','rhythm','work'],
+  },
+};
+
+let currentMount = 'wrist';
+
+function selectMount(btn, mount) {
+  document.querySelectorAll('.mount-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentMount = mount;
+  const pos = MOUNT_POSITIONS[mount];
+  document.getElementById('mountDesc').textContent = pos.desc;
+  // 選択済み指標のうち使えないものをクリア
+  selectedIndicators.forEach(id => {
+    if (!pos.indicators.includes(id)) {
+      selectedIndicators.delete(id);
+      const btn2 = document.getElementById('selbtn-' + id);
+      if (btn2) { btn2.textContent = 'この指標を測定に追加する'; btn2.classList.remove('selected'); }
+    }
+  });
+  buildLibGrid(currentSport);
+  updateSelBar();
+}
+
+// ══════════════ 指標データ定義 ══════════════
+const INDICATORS = [
+  {
+    id: 'rhythm',
+    name: 'リズム・テンポ',
+    tagline: '動きの「周期」を測る',
+    color: '#1e90ff',
+    mountType: 'any',
+    mounts: { wrist:'手首の外側', ankle:'足首の外側', waist:'腰ベルト', chest:'胸の中央' },
+    sports: ['ball','swing','training','budo','track','gym','daily','free'],
+    sportLabels: {ball:'ドリブルテンポ', swing:'スイングリズム', training:'レップテンポ', budo:'技のリズム', track:'ピッチ', gym:'演技テンポ', daily:'歩行リズム', free:'リズム・テンポ'},
+    desc: '1分間に何回動くか（テンポ）と、その一定さ（安定性）を測ります。歩くリズムが乱れると体への負担が増え、疲れやすくなります。',
+    tryAction: '普通に10歩歩いてみよう。次に意識してゆっくり歩いてみて。グラフのリズムがどう変わるか見てみよう',
+    tryAnim: 'walk',
+    animType: 'wave',
+    metrics: ['tempo','maxTempo','interval','tempoCV']
+  },
+  {
+    id: 'power',
+    name: 'パワー・衝撃',
+    tagline: '瞬間の「力の強さ」を測る',
+    color: '#ff6b00',
+    mountType: 'specific',
+    mounts: { wrist:'手首の外側', ankle:'足首の外側' },
+    sports: ['ball','swing','training','budo','track','gym','daily','free'],
+    sportLabels: {ball:'キック・シュート力', swing:'スイングパワー', training:'挙上パワー', budo:'打撃・技の威力', track:'けり出しパワー', gym:'着地衝撃', daily:'踏み込み・着地衝撃', free:'パワー・衝撃'},
+    desc: '動いた瞬間にどれくらいの加速度（G）が出たかを測ります。階段を上るときの踏み込みや荷物を持ち上げる瞬間など、日常の「力」を数値で見えるようにします。',
+    tryAction: '足首につけて階段を1段上ってみよう。踏み込む瞬間にグラフがピークになるよ。強く踏むと数値が大きくなる',
+    tryAnim: 'kick',
+    animType: 'peak',
+    metrics: ['power','maxPower','avgPower','powerCV']
+  },
+  {
+    id: 'balance',
+    name: 'バランス・ブレ',
+    tagline: '「左右・上下のズレ」を測る',
+    color: '#1e90ff',
+    mountType: 'specific',
+    mounts: { ankle:'足首の内側', waist:'腰ベルト', chest:'胸の中央' },
+    sports: ['ball','swing','training','budo','track','gym','daily','free'],
+    sportLabels: {ball:'走りの安定性', swing:'スイング軸のブレ', training:'体幹の安定性', budo:'軸のブレ・重心', track:'フォームブレ', gym:'体幹安定性', daily:'姿勢・歩きのブレ', free:'バランス・ブレ'},
+    desc: '体が左右・上下にどれだけブレているかを測ります。疲れているときや猫背のときはブレが大きくなります。歩き方の癖や左右差も見えてきます。',
+    tryAction: '腰につけて10歩歩いてみよう。次に目をつぶって歩いてみて。どちらがブレ（σ）が大きかった？',
+    tryAnim: 'balance',
+    animType: 'sway',
+    metrics: ['latBr','vertAmp','vertCm','stability']
+  },
+  {
+    id: 'fatigue',
+    name: '疲労',
+    tagline: '「後半の変化」で疲れを見る',
+    color: '#ff6b00',
+    mountType: 'any',
+    mounts: { ankle:'足首の外側', waist:'腰ベルト', chest:'胸の中央' },
+    sports: ['ball','swing','training','budo','track','daily','free'],
+    sportLabels: {ball:'後半のパワー低下', swing:'終盤のスイング', training:'セット後半の疲れ', budo:'後半の技の威力', track:'後半ペース低下', daily:'動作の後半変化', free:'疲労'},
+    desc: '前半と後半で動きのパワーがどう変わったかを比べます。同じ動作でも後半になると力が落ちてくる。その変化を数値で確認できます。',
+    tryAction: '同じ動きを20回くり返してみよう。最初と最後でデータがどう変わるか見てみよう。数値が下がれば疲労の証拠',
+    tryAnim: 'repeat',
+    animType: 'fadedown',
+    metrics: ['fatigue','formScore','runPct']
+  },
+  {
+    id: 'rotation',
+    name: '角速度・回転',
+    tagline: '「回転の速さ」を測る',
+    color: '#1e90ff',
+    mountType: 'specific',
+    mounts: { wrist:'手首の外側' },
+    sports: ['swing','budo','gym','free'],
+    sportLabels: {swing:'スイングの回転速度', budo:'回転・腰の回転速度', gym:'回転技の速さ', free:'角速度・回転'},
+    desc: 'ジャイロセンサーで体の回転速度（°/秒）を測ります。スイングでどれくらい速く体を回せているか、技の切れが毎回同じかどうかがわかります。',
+    tryAction: 'バットやラケットを振るように手首をひねってみよう。速く振るほど数値が大きくなるよ',
+    tryAnim: 'swing',
+    animType: 'rotation',
+    metrics: ['maxG','avgG','angAcc']
+  },
+  {
+    id: 'fft',
+    name: 'FFT・周波数',
+    tagline: '「隠れたリズム」を見つける',
+    color: '#ff6b00',
+    mountType: 'any',
+    mounts: { wrist:'手首の外側', ankle:'足首の外側', waist:'腰ベルト', chest:'胸の中央' },
+    sports: ['ball','swing','training','budo','track','gym','daily','free'],
+    sportLabels: {ball:'動きの主要周波数', swing:'スイング周期', training:'レップの周期性', budo:'技の周期パターン', track:'走り周波数', gym:'演技の周期性', daily:'歩行・動作の周波数', free:'FFT・周波数'},
+    desc: '加速度データをFFT（高速フーリエ変換）という計算で分析して、動きの「隠れたリズム」を周波数で見ます。歩き方の癖や習慣的な動きのパターンが数値として見えてきます。',
+    tryAction: '普通に歩いてみよう。グラフに「山」が見えたら、それが歩行の周波数。速く歩くと山が右に動くよ',
+    tryAnim: 'jump',
+    animType: 'fft',
+    metrics: ['fftFreq','fftCad','fftPeak','fftPattern']
+  },
+  {
+    id: 'work',
+    name: '総仕事量',
+    tagline: '「運動量の合計」を計算する',
+    color: '#1e90ff',
+    mountType: 'any',
+    mounts: { wrist:'手首の外側', ankle:'足首の外側', waist:'腰ベルト', chest:'胸の中央' },
+    sports: ['ball','swing','training','budo','track','gym','daily','free'],
+    sportLabels: {ball:'総運動量', swing:'練習の総負荷', training:'総トレーニング量', budo:'稽古の総負荷', track:'推定走行負荷', gym:'演技の負荷', daily:'日常の総活動量', free:'総仕事量'},
+    desc: '動きのピークを積み上げて、全体の「総仕事量」を推定します。学校からの帰り道など、日常の活動量を数値で比べることができます。',
+    tryAction: '歩きながら測定してみよう。歩数が増えるたびに棒グラフが積み上がっていくのを確認してみて',
+    tryAnim: 'accumulate',
+    animType: 'accumulate',
+    metrics: ['work','power_output','kcal']
+  },
+  {
+    id: 'reaction',
+    name: '反応速度',
+    tagline: '「動き出しの鋭さ」を測る',
+    color: '#ff6b00',
+    mountType: 'specific',
+    mounts: { wrist:'手首の外側' },
+    sports: ['ball','swing','training','budo','track','daily','free'],
+    sportLabels: {ball:'守備・反応の速さ', swing:'打球への反応', training:'動き出しの鋭さ', budo:'技への反応速度', track:'スタートダッシュ', daily:'とっさの動き', free:'反応速度'},
+    desc: '加速度が急に大きくなるまでの変化を見ます。「あ、つまずきそう！」という瞬間のとっさの動きや、朝起きた直後と午後で反応の速さがどう違うかも測れます。',
+    tryAction: '静止した状態から「よーい、どん！」で素早く手を動かしてみよう。スパイクが鋭いほど反応が速い証拠',
+    tryAnim: 'spike',
+    animType: 'spike',
+    metrics: ['angAcc','maxAngAcc','avgAngAcc']
+  }
+];
+
+// 種目別に優先表示する指標の順序
+const SPORT_IND_ORDER = {
+  ball:     ['power','rhythm','reaction','balance','fatigue','fft','work','rotation'],
+  swing:    ['power','rotation','reaction','rhythm','balance','fatigue','fft','work'],
+  training: ['power','rhythm','balance','fatigue','work','fft','reaction','rotation'],
+  budo:     ['reaction','rotation','power','balance','rhythm','fatigue','fft','work'],
+  track:    ['rhythm','power','balance','fatigue','reaction','fft','work','rotation'],
+  gym:      ['rotation','balance','rhythm','power','fft','work','reaction','fatigue'],
+  daily:    ['rhythm','balance','fatigue','work','fft','power','reaction','rotation'],
+  free:     ['rhythm','power','balance','fatigue','rotation','fft','work','reaction'],
+};
+
+const SPORT_INFO = {
+  ball:     { name: '球技',           color: '#1e90ff', bg: 'rgba(30,144,255,.15)' },
+  swing:    { name: 'スイング系',     color: '#ff6b00', bg: 'rgba(255,107,0,.15)'  },
+  training: { name: '体幹トレーニング',color: '#1e90ff', bg: 'rgba(30,144,255,.15)' },
+  budo:     { name: '武道・格闘技',   color: '#ff6b00', bg: 'rgba(255,107,0,.15)'  },
+  track:    { name: '陸上・走り',     color: '#1e90ff', bg: 'rgba(30,144,255,.15)' },
+  gym:      { name: '体操・ダンス',   color: '#ff6b00', bg: 'rgba(255,107,0,.15)'  },
+  daily:    { name: '日常動作',       color: '#2ecc71', bg: 'rgba(46,204,113,.12)' },
+  free:     { name: '自由測定',       color: '#e8f4ff', bg: 'rgba(232,244,255,.08)'},
+};
+
+// ══════════════ STATE ══════════════
+// ── 参加者管理 ──
+const PLAYER_COLORS = ['#ff6b00','#1e90ff','#2ecc71','#e040fb','#ffd700'];
+// テイクカラー（同一人物の複数テイクを薄い色で区別）
+const TAKE_OPACITY = [1, 0.65, 0.4];
+let players = [];
+// players = [{id, name, weight, height, gender, color, takes:[]}]
+// takes = [{takeNum, label, data}]
+let currentPlayerIdx = -1;
+let currentTakeIdx = -1; // 現在測定中のテイク番号
+
+function openAddPlayer() {
+  if (players.length >= 5) { alert('参加者は最大5人までです'); return; }
+  document.getElementById('addPlayerForm').style.display = 'block';
+  document.getElementById('inp_name').focus();
+}
+function closeAddPlayer() {
+  document.getElementById('addPlayerForm').style.display = 'none';
+}
+function toggleOptional() {
+  const fields = document.getElementById('optionalFields');
+  const arrow = document.getElementById('optionalArrow');
+  const isOpen = fields.style.display === 'grid';
+  fields.style.display = isOpen ? 'none' : 'grid';
+  arrow.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+function confirmAddPlayer() {
+  const name = document.getElementById('inp_name').value.trim();
+  if (!name) { alert('名前を入力してください'); return; }
+  const weight = parseFloat(document.getElementById('inp_weight').value) || 55;
+  const height = parseFloat(document.getElementById('inp_height').value) || 160;
+  const gender = document.getElementById('inp_gender').value;
+  const age = parseInt(document.getElementById('inp_age').value) || 15;
+  const dominant = document.getElementById('inp_dominant').value;
+  const condition = document.getElementById('inp_condition').value;
+  const experience = document.getElementById('inp_experience').value;
+  const color = PLAYER_COLORS[players.length % PLAYER_COLORS.length];
+  players.push({ id: Date.now(), name, weight, height, gender, age, dominant, condition, experience, color, takes: [] });
+  document.getElementById('inp_name').value = '';
+  document.getElementById('inp_condition').value = '';
+  document.getElementById('inp_experience').value = '';
+  // 任意項目を閉じる
+  document.getElementById('optionalFields').style.display = 'none';
+  document.getElementById('optionalArrow').style.transform = '';
+  closeAddPlayer();
+  renderPlayerList();
+  if (players.length === 1) activatePlayer(0, 0);
+}
+
+function renderPlayerList() {
+  const list = document.getElementById('playerList');
+  if (players.length === 0) {
+    list.innerHTML = '<div style="font-size:12px;color:var(--text3);font-family:var(--fn)">参加者を追加してください（最大5人）</div>';
+    document.getElementById('currentPlayerBar').style.display = 'none';
+    document.getElementById('addPlayerBtn').disabled = false;
+    updateCompareBtn(0);
+    return;
+  }
+  list.innerHTML = players.map((p, pi) => {
+    const isCurPlayer = pi === currentPlayerIdx;
+    const takesHtml = p.takes.length > 0
+      ? p.takes.map((t, ti) => {
+          const isCurTake = isCurPlayer && ti === currentTakeIdx;
+          return `<span onclick="event.stopPropagation();activatePlayer(${pi},${ti})"
+            style="font-size:9px;font-family:var(--fn);font-weight:700;padding:2px 6px;border-radius:3px;cursor:pointer;
+            background:${isCurTake ? p.color : p.color+'33'};color:${isCurTake?'#fff':p.color};border:1px solid ${p.color}55">
+            ${t.label}${t.data?'✓':'…'}
+          </span>`;
+        }).join('') : '';
+    return `<div onclick="activatePlayer(${pi},${p.takes.length})"
+      style="display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;
+      border:1px solid ${isCurPlayer?p.color:'rgba(255,255,255,.08)'};
+      background:${isCurPlayer?p.color+'22':'var(--bg3)'};cursor:pointer;transition:all .15s;flex-wrap:wrap">
+      <div style="width:8px;height:8px;border-radius:50%;background:${p.color};flex-shrink:0"></div>
+      <div style="font-family:var(--fn);font-size:13px;font-weight:700;color:${isCurPlayer?'#fff':p.color}">${p.name}</div>
+      <div style="font-size:10px;color:var(--text2)">${p.age ? p.age+'歳 · ' : ''}${p.weight}kg ${{right:'右',left:'左',both:'両'}[p.dominant]||''}</div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-left:4px">${takesHtml}</div>
+      ${isCurPlayer && currentTakeIdx >= p.takes.length ? `<div style="font-size:9px;background:${p.color};color:#fff;padding:1px 6px;border-radius:3px;font-family:var(--fn)">測定中</div>` : ''}
+      <div onclick="event.stopPropagation();removePlayer(${pi})" style="margin-left:auto;font-size:11px;color:var(--text3);cursor:pointer;opacity:.6">✕</div>
+    </div>`;
+  }).join('');
+  document.getElementById('addPlayerBtn').disabled = players.length >= 5;
+  const totalTakes = players.reduce((s,p) => s + p.takes.filter(t=>t.data).length, 0);
+  updateCompareBtn(totalTakes);
+}
+
+function activatePlayer(pi, ti) {
+  if (pi < 0 || pi >= players.length) return;
+  if (isRec) { if (!confirm('計測中です。切り替えますか？')) return; stopRec(); }
+  currentPlayerIdx = pi;
+  currentTakeIdx = ti;
+  const p = players[pi];
+  // 既存テイクを選択 or 新テイク準備
+  if (ti < p.takes.length && p.takes[ti].data) {
+    // 完了済みテイクの確認 → 再測定確認
+    if (!confirm(`${p.name} の ${p.takes[ti].label} は完了済みです。再測定しますか？`)) return;
+    p.takes[ti].data = null;
+  }
+  resetMeasState();
+  renderPlayerList();
+  const bar = document.getElementById('currentPlayerBar');
+  bar.style.display = 'flex';
+  const takeLabel = ti < p.takes.length ? p.takes[ti].label : `テイク${p.takes.length + 1}`;
+  document.getElementById('currentPlayerName').textContent = `${p.name}　${takeLabel}`;
+  const gLabel = {m:'男性',f:'女性',x:'その他'}[p.gender] || '';
+  const domLabel = {right:'右利き',left:'左利き',both:'両利き'}[p.dominant] || '';
+  const condLabel = {great:'絶好調💪',normal:'普通',tired:'疲れ気味😓'}[p.condition] || '';
+  const expLabel = {0:'はじめて',1:'1年未満',2:'1〜3年',3:'3〜5年',4:'5年以上'}[p.experience] || '';
+  const infoItems = [gLabel, p.age ? `${p.age}歳` : '', `${p.weight}kg`, domLabel, condLabel, expLabel].filter(Boolean);
+  document.getElementById('currentPlayerInfo').textContent = infoItems.join(' / ');
+}
+
+function removePlayer(idx) {
+  if (!confirm(`「${players[idx].name}」を削除しますか？`)) return;
+  players.splice(idx, 1);
+  if (currentPlayerIdx >= players.length) currentPlayerIdx = players.length - 1;
+  if (players.length === 0) { currentPlayerIdx = -1; currentTakeIdx = -1; }
+  renderPlayerList();
+  if (currentPlayerIdx >= 0) activatePlayer(currentPlayerIdx, 0);
+}
+
+function nextPlayer() {
+  saveCurrentPlayerData();
+  // 未完了のテイク（data===null）を探す（次の人 → 次のテイク順）
+  for (let i = 1; i <= players.length; i++) {
+    const pi = (currentPlayerIdx + i) % players.length;
+    const p = players[pi];
+    const undoneTake = p.takes.findIndex(t => !t.data);
+    if (undoneTake >= 0) { activatePlayer(pi, undoneTake); return; }
+  }
+  // 全員のテイクが完了
+  alert('全員の測定が完了しました！比較画面へ進みます。');
+  goTo('v-compare');
+  buildCompareView();
+}
+
+function addTakeForCurrentPlayer() {
+  if (currentPlayerIdx < 0) { alert('先に参加者を選択してください'); return; }
+  saveCurrentPlayerData();
+  const p = players[currentPlayerIdx];
+  const nextTakeIdx = p.takes.length;
+  activatePlayer(currentPlayerIdx, nextTakeIdx);
+}
+
+function saveCurrentPlayerData() {
+  if (currentPlayerIdx < 0 || currentPlayerIdx >= players.length) return;
+  const p = players[currentPlayerIdx];
+  const n = peakCount;
+  const avgImp = n > 0 ? sumImpact / n : 0;
+  const secEl = sessStart ? Math.floor((Date.now() - sessStart) / 1000) : 0;
+  const data = {
+    peakCount: n, maxImpact, sumImpact, avgImpact: avgImp,
+    maxCadence, highFrames, maxGyro, sessStart, secEl,
+    fullLog: [...fullLog], peakTimes: [...peakTimes], peakImpacts: [...peakImpacts],
+    vCad: document.getElementById('vCad')?.textContent || '—',
+    vMaxImp: document.getElementById('vMaxImp')?.textContent || '—',
+    vAvgImp: document.getElementById('vAvgImp')?.textContent || '—',
+    vForm: document.getElementById('vForm')?.textContent || '—',
+    vFat: document.getElementById('vFat')?.textContent || '—',
+    vMaxG: document.getElementById('vMaxG')?.textContent || '—',
+    vDist: document.getElementById('vDist')?.textContent || '—',
+    vFFTFreq: document.getElementById('vFFTFreq')?.textContent || '—',
+    vStability: document.getElementById('vStability')?.textContent || '—',
+  };
+  const takeLabel = `テイク${currentTakeIdx + 1}`;
+  if (currentTakeIdx < p.takes.length) {
+    p.takes[currentTakeIdx].data = data;
+  } else {
+    p.takes.push({ takeNum: currentTakeIdx + 1, label: takeLabel, data });
+  }
+  renderPlayerList();
+  document.getElementById('nextPlayerBtn').disabled = false;
+  document.getElementById('addTakeBtn').disabled = false;
+}
+
+function resetMeasState() {
+  isRec = false; clearInterval(sessTmr); clearTimeout(stoppedTmr);
+  peakCount=0; peakTimes=[]; peakImpacts=[];
+  maxImpact=0; sumImpact=0; highFrames=0; maxCadence=0;
+  highTimeSec=0; lowTimeSec=0; lastPeakIsHigh=false; lastPeakTs=null;
+  maxGyro=0; sumGyro=0; gyroCount=0; axBufs={ax:[],ay:[],az:[]};
+  fftBufAbs=new Array(FFT_N).fill(0); fftResult={freq:0,power:0,spectrum:[]}; fftFrameCount=0;
+  prevGx=null; prevGy=null; prevGz=null; prevGt=null; maxAngAcc=0; angAccBuf=[];
+  azAmpBuf=new Array(100).fill(0); vertAmp=0; vertAmpCm=0;
+  fullLog=[]; totalSamps=0; sessStart=null;
+  smoothBuf=[]; sPrev2=null; sPrev1=null; peakCooldownUntil=0;
+  Object.keys(wBuf).forEach(k => wBuf[k].fill(null));
+  waveChart.update('none');
+  strChart.data.labels=[]; strChart.data.datasets[0].data=[]; strChart.data.datasets[0].backgroundColor=[]; strChart.update('none');
+  document.getElementById('startBtn').textContent='▶ スタート';
+  document.getElementById('startBtn').classList.remove('rec');
+  document.getElementById('startBtn').disabled=!bleConn;
+  const rb=document.getElementById('reviewBtn'); rb.disabled=true; rb.style.opacity='.4';
+  document.getElementById('nextPlayerBtn').disabled=true;
+  document.getElementById('addTakeBtn').disabled=true;
+  setABadge('stopped');
+  buildActiveMetrics();
+}
+
+function updateCompareBtn(doneCount) {
+  let btn = document.getElementById('goCompareBtn');
+  if (!btn) {
+    const reviewBtnWrap = document.getElementById('reviewBtn')?.parentElement;
+    if (reviewBtnWrap) {
+      btn = document.createElement('button');
+      btn.id = 'goCompareBtn';
+      btn.style.cssText = 'width:100%;padding:9px;border-radius:8px;border:1px solid var(--blue);background:var(--blue-dim);color:var(--teal);font-family:var(--fn);font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;letter-spacing:.5px;opacity:.4;transition:all .2s';
+      btn.textContent = '📊 比較画面へ →';
+      btn.onclick = () => { goTo('v-compare'); buildCompareView(); };
+      reviewBtnWrap.appendChild(btn);
+    }
+  }
+  if (btn) {
+    btn.disabled = doneCount < 2;
+    btn.style.opacity = doneCount >= 2 ? '1' : '.4';
+    btn.textContent = `📊 比較画面へ（${doneCount}人完了）→`;
+  }
+}
+
+// ── 比較画面構築 ──
+let cmpAxis = 'abs';
+let cmpWaveChartInst = null;
+
+function setCmpAxis(btn, ax) {
+  document.querySelectorAll('#cmpAxisSel .ras-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  cmpAxis = ax;
+  buildCmpWave();
+}
+
+function buildCompareView() {
+  const info = SPORT_INFO[currentSport] || {name:'',color:'#fff',bg:''};
+  const badge = document.getElementById('cmpSportBadge');
+  badge.textContent = info.name;
+  badge.style.cssText = `background:${info.bg};color:${info.color};border:1px solid ${info.color}40`;
+
+  // 参加者タグ
+  const tags = document.getElementById('cmpPlayerTags');
+  tags.innerHTML = players.map(p => {
+    const doneCount = p.takes.filter(t=>t.data).length;
+    const domLabel = {right:'右',left:'左',both:'両'}[p.dominant]||'';
+    const condIcon = {great:'💪',normal:'😊',tired:'😓'}[p.condition]||'';
+    return `<div style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;border:1px solid ${p.color}44;background:${p.color}18">
+      <div style="width:8px;height:8px;border-radius:50%;background:${p.color}"></div>
+      <span style="font-family:var(--fn);font-size:12px;font-weight:700;color:${p.color}">${p.name}</span>
+      <span style="font-size:10px;color:var(--text2)">${p.age||''}歳 ${domLabel}利き ${condIcon}</span>
+      <span style="font-size:9px;color:${doneCount>0?'#2ecc71':'#e74c3c'};font-family:var(--fn)">${doneCount}テイク</span>
+    </div>`;
+  }).join('');
+
+  // 再測定ボタン
+  const retake = document.getElementById('retakeList');
+  retake.innerHTML = players.map((p, pi) => `
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <span style="font-family:var(--fn);font-size:11px;font-weight:700;color:${p.color}">${p.name}</span>
+      ${p.takes.map((t,ti)=>`
+        <button onclick="retakePlayer(${pi},${ti})" style="padding:4px 12px;border-radius:6px;border:1px solid ${p.color}44;background:${p.color}18;color:${p.color};font-family:var(--fn);font-size:11px;font-weight:700;cursor:pointer">
+          ${t.label} 再測定
+        </button>`).join('')}
+      <button onclick="retakePlayer(${pi},${p.takes.length})" style="padding:4px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--text2);font-family:var(--fn);font-size:11px;cursor:pointer">
+        + テイク追加
+      </button>
+    </div>`).join('');
+
+  // ビッグナンバー参加者セレクタ
+  const bigSel = document.getElementById('bigNumPlayerSel');
+  bigSel.innerHTML = players.map((p,pi)=>`
+    <button onclick="selectBigNumPlayer(${pi})" id="bns-${pi}"
+      style="padding:4px 12px;border-radius:6px;border:1px solid ${p.color}55;background:${pi===0?p.color+'33':'transparent'};
+      color:${p.color};font-family:var(--fn);font-size:11px;font-weight:700;cursor:pointer">
+      ${p.name}
+    </button>`).join('');
+
+  // 初期表示
+  if (players.length > 0) selectBigNumPlayer(0);
+
+  buildCmpTable();
+  buildCmpWave();
+  buildRadarCharts();
+}
+
+// ビッグナンバー
+let _bigNumPlayerIdx = 0;
+let _bigNumTakeIdx = 0;
+window._takeBarInst = null;
+
+function selectBigNumPlayer(pi) {
+  _bigNumPlayerIdx = pi;
+  // セレクタの見た目を更新
+  players.forEach((p,i) => {
+    const btn = document.getElementById('bns-'+i);
+    if (btn) btn.style.background = i===pi ? p.color+'33' : 'transparent';
+  });
+  const p = players[pi];
+  if (!p) return;
+  // 最新の完了テイクを選択
+  const done = p.takes.filter(t=>t.data);
+  _bigNumTakeIdx = done.length > 0 ? p.takes.indexOf(done[done.length-1]) : -1;
+  renderBigNums(p, _bigNumTakeIdx);
+  renderTakeCompare(p);
+}
+
+function renderBigNums(p, takeIdx) {
+  const grid = document.getElementById('bigNumGrid');
+  const d = takeIdx >= 0 && p.takes[takeIdx]?.data ? p.takes[takeIdx].data : null;
+  const metrics = [
+    { lbl:'最大パワー', val: d ? d.maxImpact.toFixed(2) : '—', unit:'G', color:'var(--orange)', pct: d ? Math.min(100, d.maxImpact/4*100) : 0 },
+    { lbl:'平均テンポ', val: d ? (d.maxCadence>0?Math.round(d.maxCadence):'—') : '—', unit:'rpm', color:'var(--teal)', pct: d ? Math.min(100, d.maxCadence/120*100) : 0 },
+    { lbl:'パワー均一性', val: d?.vForm||'—', unit:'/100', color:'var(--blue)', pct: d?.vForm ? parseInt(d.vForm) : 0 },
+    { lbl:'最大角速度', val: d ? (d.maxGyro>0?Math.round(d.maxGyro):'—') : '—', unit:'°/s', color:'#2ecc71', pct: d ? Math.min(100, d.maxGyro/400*100) : 0 },
+  ];
+  grid.innerHTML = metrics.map(m => `
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 12px;text-align:center;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:${m.color}"></div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:6px">${m.lbl}</div>
+      <div style="font-family:var(--fn);font-size:30px;font-weight:900;line-height:1;color:${m.color};margin-bottom:2px">${m.val}</div>
+      <div style="font-family:var(--fn);font-size:10px;color:var(--text2);margin-bottom:8px">${m.unit}</div>
+      <div style="height:3px;background:var(--bg);border-radius:2px;overflow:hidden">
+        <div style="height:100%;background:${m.color};border-radius:2px;width:${m.pct}%;transition:width .6s"></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderTakeCompare(p) {
+  const card = document.getElementById('takeCompareCard');
+  const done = p.takes.filter(t=>t.data);
+  if (done.length < 2) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+
+  // 棒グラフ
+  if (window._takeBarInst) { window._takeBarInst.destroy(); window._takeBarInst = null; }
+  const ctx = document.getElementById('takeBarChart');
+  const labels = done.map(t=>t.label);
+  const powers = done.map(t=>parseFloat(t.data.maxImpact.toFixed(3)));
+  const cadences = done.map(t=>t.data.maxCadence>0?Math.round(t.data.maxCadence):0);
+  window._takeBarInst = new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets: [
+      { label:'最大パワー G', data: powers, backgroundColor: done.map((_,i)=>`rgba(255,107,0,${0.4+i*0.2})`), borderRadius: 5, yAxisID:'y' },
+      { label:'最高テンポ rpm', data: cadences, backgroundColor: done.map((_,i)=>`rgba(30,144,255,${0.35+i*0.2})`), borderRadius: 5, yAxisID:'y2' },
+    ]},
+    options: {
+      responsive:true, maintainAspectRatio:false, animation:false,
+      plugins:{ legend:{ labels:{ color:'#4a7aaa', font:{family:"'Barlow Condensed',sans-serif",size:11} } } },
+      scales:{
+        x:{ ticks:{color:'#4a7aaa',font:{family:"'Barlow Condensed',sans-serif"}}, grid:{color:'rgba(255,255,255,.03)'} },
+        y:{ ticks:{color:'#ff6b00',font:{size:9}}, grid:{color:'rgba(255,255,255,.04)'}, border:{display:false} },
+        y2:{ position:'right', ticks:{color:'#1e90ff',font:{size:9}}, grid:{display:false}, border:{display:false} }
+      }
+    }
+  });
+
+  // テイク詳細カード
+  const grid = document.getElementById('takeDetailGrid');
+  grid.innerHTML = done.map((t,i)=>{
+    const d = t.data;
+    const prev = i>0 ? done[i-1].data : null;
+    const diff = (cur,prv,key) => {
+      if(!prev||!prv) return '';
+      const c=parseFloat(cur), p=parseFloat(prv);
+      if(isNaN(c)||isNaN(p)||p===0) return '';
+      const pct = Math.round((c-p)/p*100);
+      if(pct===0) return '';
+      const up = pct>0;
+      return `<span style="font-size:9px;padding:1px 5px;border-radius:3px;font-family:var(--fn);font-weight:700;background:${up?'rgba(46,204,113,.2)':'rgba(231,76,60,.2)'};color:${up?'#2ecc71':'#e74c3c'}">${up?'+':''}${pct}%</span>`;
+    };
+    return `<div style="background:var(--bg3);border:1px solid ${i===done.length-1?p.color+'55':'rgba(30,144,255,.12)'};border-radius:10px;padding:12px 14px">
+      <div style="font-family:var(--fn);font-size:11px;font-weight:700;color:${p.color};margin-bottom:8px">${t.label}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+        <div style="font-size:11px;color:var(--text2)">最大パワー</div>
+        <div style="display:flex;align-items:center;gap:5px">
+          <div style="font-family:var(--fn);font-size:15px;font-weight:700;color:var(--text)">${d.maxImpact.toFixed(2)} G</div>
+          ${diff(d.maxImpact, prev?.maxImpact, 'maxImpact')}
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+        <div style="font-size:11px;color:var(--text2)">最高テンポ</div>
+        <div style="display:flex;align-items:center;gap:5px">
+          <div style="font-family:var(--fn);font-size:15px;font-weight:700;color:var(--text)">${d.maxCadence>0?Math.round(d.maxCadence):'—'} rpm</div>
+          ${diff(d.maxCadence, prev?.maxCadence, 'maxCadence')}
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0">
+        <div style="font-size:11px;color:var(--text2)">均一性</div>
+        <div style="font-family:var(--fn);font-size:15px;font-weight:700;color:var(--text)">${d.vForm||'—'}</div>
+      </div>
+    </div>`;
+  }).join('').replace(/var\(--border\)/g,'rgba(30,144,255,.12)');
+}
+
+// レーダーチャート
+const _radarCharts = [];
+function buildRadarCharts() {
+  _radarCharts.forEach(c=>c.destroy());
+  _radarCharts.length = 0;
+  const grid = document.getElementById('radarGrid');
+  grid.innerHTML = '';
+  const allTakes = [];
+  players.forEach(p => {
+    p.takes.forEach((t,ti) => {
+      if (t.data) allTakes.push({name:`${p.name} ${t.label}`, color:p.color, opacity:TAKE_OPACITY[ti]||0.3, data:t.data});
+    });
+  });
+  if (allTakes.length < 2) { document.getElementById('radarCard').style.display='none'; return; }
+  document.getElementById('radarCard').style.display='block';
+
+  // 正規化関数
+  const norm = (val, max) => Math.min(100, Math.round(parseFloat(val||0)/max*100));
+  const toRadar = d => [
+    norm(d.maxImpact, 4),
+    norm(d.maxCadence, 120),
+    parseInt(d.vForm)||0,
+    norm(d.maxGyro, 400),
+    norm(d.peakCount, 30),
+  ];
+  const labels = ['パワー','テンポ','均一性','角速度','ピーク数'];
+
+  // 参加者間比較（最新テイクのみ）
+  const latestPerPlayer = players.map(p=>{
+    const done=p.takes.filter(t=>t.data);
+    return done.length>0?{name:p.name,color:p.color,data:done[done.length-1].data}:null;
+  }).filter(Boolean);
+
+  if (latestPerPlayer.length >= 2) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText='background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center';
+    wrap.innerHTML=`<div style="font-family:var(--fn);font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text2)">参加者間比較</div><div style="position:relative;height:200px"><canvas id="rc-players"></canvas></div>`;
+    grid.appendChild(wrap);
+    const ctx = wrap.querySelector('canvas');
+    _radarCharts.push(new Chart(ctx, {
+      type:'radar',
+      data:{ labels, datasets: latestPerPlayer.map(p=>({
+        label:p.name, data:toRadar(p.data),
+        borderColor:p.color, backgroundColor:p.color+'22',
+        pointBackgroundColor:p.color, borderWidth:2
+      }))},
+      options:{ responsive:true, maintainAspectRatio:false, animation:false,
+        plugins:{legend:{labels:{color:'#4a7aaa',font:{family:"'Barlow Condensed',sans-serif",size:10}}}},
+        scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(255,255,255,.08)'},
+          pointLabels:{color:'#4a7aaa',font:{family:"'Barlow Condensed',sans-serif",size:10}},
+          angleLines:{color:'rgba(255,255,255,.06)'}}}
+      }
+    }));
+  }
+
+  // テイク間比較（複数テイクがいる参加者）
+  players.forEach(p => {
+    const done = p.takes.filter(t=>t.data);
+    if (done.length < 2) return;
+    const wrap = document.createElement('div');
+    wrap.style.cssText='background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center';
+    wrap.innerHTML=`<div style="font-family:var(--fn);font-size:13px;font-weight:700;margin-bottom:10px;color:${p.color}">${p.name} テイク変化</div><div style="position:relative;height:200px"><canvas id="rc-${p.id}"></canvas></div>`;
+    grid.appendChild(wrap);
+    const ctx = wrap.querySelector('canvas');
+    _radarCharts.push(new Chart(ctx, {
+      type:'radar',
+      data:{ labels, datasets: done.map((t,ti)=>({
+        label:t.label, data:toRadar(t.data),
+        borderColor:p.color, backgroundColor:p.color+(ti===done.length-1?'22':'0a'),
+        pointBackgroundColor:p.color, borderWidth: ti===done.length-1?2:1.5,
+        borderDash: ti===done.length-1?[]:[4,3]
+      }))},
+      options:{ responsive:true, maintainAspectRatio:false, animation:false,
+        plugins:{legend:{labels:{color:'#4a7aaa',font:{family:"'Barlow Condensed',sans-serif",size:10}}}},
+        scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(255,255,255,.08)'},
+          pointLabels:{color:'#4a7aaa',font:{family:"'Barlow Condensed',sans-serif",size:10}},
+          angleLines:{color:'rgba(255,255,255,.06)'}}}
+      }
+    }));
+  });
+}
+
+function retakePlayer(pi, ti) {
+  goTo('v-meas');
+  activatePlayer(pi, ti);
+}
+
+function buildCmpWave() {
+  if (cmpWaveChartInst) { cmpWaveChartInst.destroy(); cmpWaveChartInst = null; }
+  const ctx = document.getElementById('cmpWaveChart');
+  if (!ctx) return;
+
+  // 全テイクを展開して1つのリストに
+  const allTakes = [];
+  players.forEach(p => {
+    p.takes.forEach((t, ti) => {
+      if (!t.data || !t.data.fullLog.length) return;
+      // 同一人物の複数テイクは同色で透明度を変える
+      const opacity = TAKE_OPACITY[ti] || 0.3;
+      allTakes.push({ name: `${p.name} ${t.label}`, color: p.color, opacity, log: t.data.fullLog });
+    });
+  });
+
+  const legend = document.getElementById('cmpLegend');
+  legend.innerHTML = allTakes.map(t =>
+    `<div style="display:flex;align-items:center;gap:5px">
+      <div style="width:20px;height:3px;border-radius:2px;background:${t.color};opacity:${t.opacity}"></div>
+      <span style="font-family:var(--fn);font-size:11px;color:${t.color};opacity:${t.opacity}">${t.name}</span>
+    </div>`
+  ).join('');
+
+  if (!allTakes.length) return;
+  const MAX = 1000;
+  const datasets = allTakes.map(t => {
+    const step = Math.max(1, Math.floor(t.log.length / MAX));
+    const data = [];
+    for (let i = 0; i < t.log.length; i += step) {
+      const d = t.log[i];
+      data.push(cmpAxis==='abs'?d.abs : cmpAxis==='ax'?d.ax : cmpAxis==='ay'?d.ay : d.az);
+    }
+    return { label: t.name, data, borderColor: t.color, borderWidth: 1.5, pointRadius: 0,
+      fill: false, tension: .2, spanGaps: false,
+      borderDash: [], globalAlpha: t.opacity,
+      segment: { borderColor: ctx => { const c = t.color; const o = Math.round(t.opacity*255).toString(16).padStart(2,'0'); return c + o; } }
+    };
+  });
+
+  cmpWaveChartInst = new Chart(ctx, {
+    type: 'line',
+    data: { labels: Array(datasets[0]?.data.length || 0).fill(''), datasets },
+    options: {
+      animation: false, responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+      scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.05)' },
+        ticks: { color: '#2a4a6a', font: { family: "'Barlow Condensed',sans-serif", size: 9 }, callback: v => v.toFixed(1) },
+        border: { display: false } } }
+    }
+  });
+}
+
+function buildCmpTable() {
+  const table = document.getElementById('cmpTable');
+  // 全テイクのリスト
+  const allTakes = [];
+  players.forEach(p => {
+    p.takes.forEach((t, ti) => {
+      if (!t.data) return;
+      allTakes.push({ name: `${p.name} ${t.label}`, color: p.color, opacity: TAKE_OPACITY[ti]||0.3, data: t.data });
+    });
+  });
+  if (!allTakes.length) { table.innerHTML = ''; return; }
+
+  const rows = [
+    { label: '最大パワー G',   key: 'maxImpact',  fmt: v=>v.toFixed(2), higher: true },
+    { label: '平均パワー G',   key: 'avgImpact',  fmt: v=>v.toFixed(2), higher: true },
+    { label: '最高テンポ rpm', key: 'maxCadence', fmt: v=>Math.round(v), higher: true },
+    { label: 'ピーク数',       key: 'peakCount',  fmt: v=>v, higher: true },
+    { label: '最大角速度 °/s', key: 'maxGyro',    fmt: v=>Math.round(v), higher: true },
+    { label: 'フォームスコア', key: 'vForm',      fmt: v=>v, higher: true,  isSnap: true },
+    { label: '疲労指数',       key: 'vFat',       fmt: v=>v, higher: false, isSnap: true },
+    { label: '安定性',         key: 'vStability', fmt: v=>v, higher: true,  isSnap: true },
+    { label: '推定仕事量 J',   key: 'vDist',      fmt: v=>v, higher: true,  isSnap: true },
+  ];
+
+  const head = `<thead><tr style="border-bottom:1px solid var(--border)">
+    <th style="text-align:left;padding:8px 10px;font-family:var(--fn);font-size:10px;color:var(--text2);letter-spacing:1px">指標</th>
+    ${allTakes.map(t=>`<th style="text-align:right;padding:8px 10px;font-family:var(--fn);font-size:11px;font-weight:700;color:${t.color};opacity:${t.opacity}">${t.name}</th>`).join('')}
+  </tr></thead>`;
+
+  const body = rows.map(row => {
+    const vals = allTakes.map(t => row.isSnap ? t.data[row.key]||'—' : t.data[row.key]??'—');
+    const nums = vals.map(v=>parseFloat(v)).filter(n=>!isNaN(n));
+    const best = nums.length>0 ? (row.higher?Math.max(...nums):Math.min(...nums)) : null;
+    // テイク間の差分（同一人物の場合）
+    const cells = vals.map((v,i) => {
+      const n = parseFloat(v);
+      const isBest = best!==null && !isNaN(n) && n===best;
+      let diffHtml = '';
+      if (i > 0 && !row.isSnap) {
+        const prev = parseFloat(vals[i-1]);
+        if (!isNaN(n) && !isNaN(prev) && prev !== 0) {
+          const pct = Math.round((n - prev) / prev * 100);
+          const up = row.higher ? pct > 0 : pct < 0;
+          if (pct !== 0) diffHtml = `<div style="font-size:9px;color:${up?'#2ecc71':'#e74c3c'};font-family:var(--fn)">${pct>0?'+':''}${pct}%</div>`;
+        }
+      }
+      return `<td style="text-align:right;padding:7px 10px;border-bottom:1px solid var(--border)">
+        <div style="font-family:var(--fn);font-size:15px;font-weight:700;color:${isBest?'#2ecc71':'var(--text)'}">${typeof v==='number'?row.fmt(v):v}</div>
+        ${diffHtml}
+      </td>`;
+    }).join('');
+    return `<tr><td style="padding:7px 10px;font-size:11px;color:var(--text2);border-bottom:1px solid var(--border)">${row.label}</td>${cells}</tr>`;
+  }).join('');
+
+  table.innerHTML = head + `<tbody>${body}</tbody>`;
+}
+
+// ══════════════ STATE ══════════════
+let currentSport = null;
+let selectedIndicators = new Set();
+let bleDevice, bleTX, bleRX, bleConn = false;
+let baseline = null, calibBuf = [];
+let isRec = false, stoppedTmr = null;
+let peakCount = 0, peakTimes = [], peakImpacts = [];
+let maxImpact = 0, sumImpact = 0, highFrames = 0;
+let maxCadence = 0;
+let sessStart = null, sessTmr = null, totalSamps = 0;
+let fullLog = [];
+let selData = null, revChart = null;
+let selStart = null, selEnd = null, isDrag = false, dragX0 = 0;
+let curAxis = 'abs', revAxis = 'abs';
+let maxGyro = 0, sumGyro = 0, gyroCount = 0;
+let axBufs = { ax: [], ay: [], az: [] };
+const FFT_N = 256;
+let fftBufAbs = new Array(FFT_N).fill(0);
+let fftResult = { freq: 0, power: 0, spectrum: [] };
+let fftFrameCount = 0;
+let prevGx = null, prevGy = null, prevGz = null, prevGt = null;
+let maxAngAcc = 0, angAccBuf = [];
+let azAmpBuf = new Array(100).fill(0);
+let vertAmp = 0, vertAmpCm = 0;
+let highTimeSec = 0, lowTimeSec = 0;
+let lastPeakIsHigh = false, lastPeakTs = null;
+const WAVE_BUF = 300;
+const STOP_MS = 2000, HIGH_RPM = 40;
+
+// ── 改善されたピーク検出パラメータ ──
+const SMOOTH_N = 5;          // 移動平均サンプル数
+const MIN_INTERVAL = 300;    // 最小ピーク間隔 ms（300ms = 最大200rpm）
+const PEAK_COOLDOWN = 150;   // ピーク後のクールダウン ms
+const NOISE_SIGMA_K = 2.5;   // ノイズ閾値 = baseline_σ × K
+let smoothBuf = [];          // 移動平均バッファ
+let baselineSamples = [];    // ベースライン計測中のサンプル（σ計算用）
+let dynamicThresh = 0.15;    // 動的閾値（ベースラインσから計算）
+let peakCooldownUntil = 0;   // このtimestamp以前はピーク不可
+// 改善された3点ピーク検出用バッファ（スムージング後の値）
+let sPrev2 = null, sPrev1 = null; // 2つ前、1つ前のスムージング値
+const wBuf = {
+  abs: Array(WAVE_BUF).fill(null), ax: Array(WAVE_BUF).fill(null),
+  ay: Array(WAVE_BUF).fill(null), az: Array(WAVE_BUF).fill(null),
+  gyro: Array(WAVE_BUF).fill(null)
+};
+
+// ══════════════ ナビゲーション ══════════════
+function goTo(viewId) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(viewId).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function selectSport(sport, color) {
+  currentSport = sport;
+  selectedIndicators.clear();
+  const info = SPORT_INFO[sport];
+  document.getElementById('libTitle').textContent = info.name + ' の指標';
+  const badge = document.getElementById('sportBadge');
+  badge.textContent = info.name;
+  badge.style.cssText = `background:${info.bg};color:${info.color};border:1px solid ${info.color}40`;
+  const measBadge = document.getElementById('measSportBadge');
+  measBadge.textContent = info.name;
+  measBadge.style.cssText = badge.style.cssText;
+  buildLibGrid(sport);
+  updateSelBar();
+  const suggest = document.getElementById('mountSuggest');
+  if (suggest) suggest.style.display = 'none';
+  goTo('v-lib');
+}
+
+// ══════════════ 指標ライブラリ構築 ══════════════
+function buildLibGrid(sport) {
+  const order = SPORT_IND_ORDER[sport] || SPORT_IND_ORDER.free;
+  const sorted = order.map(id => INDICATORS.find(i => i.id === id)).filter(Boolean);
+  const grid = document.getElementById('libGrid');
+  grid.innerHTML = sorted.map(ind => buildIndCard(ind, sport)).join('');
+  sorted.forEach(ind => startAnim(ind));
+}
+
+function buildIndCard(ind, sport) {
+  const label = ind.sportLabels[sport] || ind.name;
+  const iconSvg = IND_ICONS[ind.id] || '';
+  const sportTagsHtml = Object.entries(ind.sportLabels).map(([s, l]) =>
+    `<span class="sport-pill" style="background:${SPORT_INFO[s]?.bg||'rgba(255,255,255,.1)'};color:${SPORT_INFO[s]?.color||'#fff'}">${l}</span>`
+  ).join('');
+
+  // 装着位置バッジ
+  const isAny = ind.mountType === 'any';
+  const mountBadgeHtml = isAny
+    ? `<div style="display:inline-flex;align-items:center;gap:5px;font-family:var(--fn);font-size:10px;font-weight:700;padding:4px 10px;border-radius:5px;background:rgba(30,144,255,.12);color:var(--teal);border:1px solid rgba(30,144,255,.25);margin-bottom:10px">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="var(--teal)"><circle cx="5" cy="5" r="4" fill="none" stroke="var(--teal)" stroke-width="1.2"/><line x1="5" y1="2" x2="5" y2="8" stroke="var(--teal)" stroke-width="1.2"/><line x1="2" y1="5" x2="8" y2="5" stroke="var(--teal)" stroke-width="1.2"/></svg>
+        どこにつけても測れる
+      </div>`
+    : `<div style="margin-bottom:10px">
+        <div style="font-family:var(--fn);font-size:9px;font-weight:600;letter-spacing:1.5px;color:var(--text3);margin-bottom:5px">装着位置</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px">${Object.entries(ind.mounts).map(([k,text])=>`
+          <span style="display:inline-flex;align-items:center;gap:4px;font-family:var(--fn);font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;background:rgba(255,107,0,.12);color:var(--orange);border:1px solid rgba(255,107,0,.25)">
+            <svg width="8" height="8" viewBox="0 0 8 8" fill="var(--orange)"><circle cx="4" cy="3" r="2"/><path d="M4 5.5 L2.5 7.5 L4 6.5 L5.5 7.5 Z" opacity=".7"/></svg>
+            ${MOUNT_POSITIONS[k]?.label||k} — ${text}
+          </span>`).join('')}
+        </div>
+      </div>`;
+
+  // やってみてアクション
+  const tryHtml = ind.tryAction
+    ? `<div style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;margin-bottom:10px;display:flex;gap:10px;align-items:flex-start">
+        <div style="flex-shrink:0;margin-top:1px">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="4" r="2.5" stroke="${ind.color}" stroke-width="1.5"/>
+            <path d="M10 7 L10 13" stroke="${ind.color}" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M10 10 L7 8.5" stroke="${ind.color}" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M10 10 L13 8.5" stroke="${ind.color}" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M10 13 L8 17" stroke="${ind.color}" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M10 13 L12 17" stroke="${ind.color}" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div style="font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:1.5px;color:${ind.color};margin-bottom:3px">やってみよう</div>
+          <div style="font-size:12px;color:var(--text);line-height:1.6">${ind.tryAction}</div>
+        </div>
+      </div>` : '';
+
+  return `
+  <div class="ind-card" id="icard-${ind.id}" onclick="toggleCard('${ind.id}')">
+    <div class="ind-card-top">
+      <div class="ind-icon" style="background:${ind.color}25;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <div style="width:22px;height:22px">${iconSvg}</div>
+      </div>
+      <div class="ind-info">
+        <div class="ind-name">${label}</div>
+        <div class="ind-tagline">${ind.tagline}</div>
+        <div style="margin-top:3px;display:flex;align-items:center;gap:5px">
+          ${isAny
+            ? `<span style="font-size:10px;color:var(--teal);font-family:var(--fn);font-weight:600">どこにつけてもOK</span>`
+            : Object.keys(ind.mounts).map(k => `<span style="font-size:10px;color:var(--orange);font-family:var(--fn);font-weight:700;background:rgba(255,107,0,.1);padding:1px 6px;border-radius:3px">${MOUNT_POSITIONS[k]?.label||k}</span>`).join('')
+          }
+        </div>
+      </div>
+      <div class="ind-expand-icon">▼</div>
+    </div>
+    <div class="ind-detail">
+      <div class="ind-anim-wrap" id="anim-${ind.id}"></div>
+      ${tryHtml}
+      <div class="ind-desc" style="margin-bottom:10px">${ind.desc}</div>
+      ${mountBadgeHtml}
+      <div class="ind-sports-row">${sportTagsHtml}</div>
+      <button class="ind-select-btn" id="selbtn-${ind.id}" onclick="event.stopPropagation();toggleSelect('${ind.id}')">
+        この指標を測定に追加する
+      </button>
+    </div>
+  </div>`;
+}
+
+
+function toggleCard(id) {
+  const card = document.getElementById('icard-' + id);
+  if (!card || card.classList.contains('disabled')) return;
+  const wasExpanded = card.classList.contains('expanded');
+  document.querySelectorAll('.ind-card').forEach(c => c.classList.remove('expanded'));
+  if (!wasExpanded) {
+    card.classList.add('expanded');
+    startAnim(INDICATORS.find(i => i.id === id));
+  }
+}
+
+function toggleSelect(id) {
+  if (selectedIndicators.has(id)) {
+    selectedIndicators.delete(id);
+    const btn = document.getElementById('selbtn-' + id);
+    if (btn) { btn.textContent = 'この指標を測定に追加する'; btn.classList.remove('selected'); }
+  } else {
+    selectedIndicators.add(id);
+    const btn = document.getElementById('selbtn-' + id);
+    if (btn) { btn.textContent = '✓ 追加済み'; btn.classList.add('selected'); }
+  }
+  updateSelBar();
+  applyMountFilter();
+}
+
+function applyMountFilter() {
+  const suggest = document.getElementById('mountSuggest');
+  if (selectedIndicators.size === 0) {
+    document.querySelectorAll('.ind-card').forEach(c => c.classList.remove('disabled'));
+    suggest.style.display = 'none';
+    return;
+  }
+  // 'specific'な選択済み指標だけで装着位置を確定する
+  const mountCount = {};
+  selectedIndicators.forEach(id => {
+    const ind = INDICATORS.find(i => i.id === id);
+    if (!ind || ind.mountType === 'any') return;
+    Object.keys(ind.mounts).forEach(m => { mountCount[m] = (mountCount[m] || 0) + 1; });
+  });
+  const bestMount = Object.entries(mountCount).sort((a,b)=>b[1]-a[1])[0]?.[0];
+  if (!bestMount) {
+    // specific指標が未選択 → グレーアウトなし、バナーなし
+    document.querySelectorAll('.ind-card').forEach(c => c.classList.remove('disabled'));
+    suggest.style.display = 'none';
+    return;
+  }
+  const pos = MOUNT_POSITIONS[bestMount];
+  INDICATORS.forEach(ind => {
+    const card = document.getElementById('icard-' + ind.id);
+    if (!card) return;
+    if (ind.mountType === 'any') { card.classList.remove('disabled'); return; }
+    const canUse = Object.keys(ind.mounts).includes(bestMount);
+    const isSelected = selectedIndicators.has(ind.id);
+    if (!canUse && !isSelected) card.classList.add('disabled');
+    else card.classList.remove('disabled');
+  });
+  suggest.style.display = 'block';
+  suggest.innerHTML = `<div style="background:var(--bg2);border:1px solid rgba(255,107,0,.3);border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:10px">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--orange)"><circle cx="8" cy="6" r="4"/><path d="M8 11 L6 15 L8 13.5 L10 15 Z"/></svg>
+    <div>
+      <span style="font-family:var(--fn);font-size:13px;font-weight:700;color:var(--orange)">${pos?.label}につけてください</span>
+      <span style="font-size:11px;color:var(--text2);margin-left:8px">${pos?.desc.split('—')[1]?.trim()||''}</span>
+    </div>
+  </div>`;
+}
+
+function updateSelBar() {
+  const tags = document.getElementById('selTags');
+  const btn = document.getElementById('goMeasBtn');
+  if (selectedIndicators.size === 0) {
+    tags.innerHTML = '<span style="font-size:11px;color:var(--text3)">指標を選んでください</span>';
+    btn.disabled = true;
+    return;
+  }
+  tags.innerHTML = [...selectedIndicators].map(id => {
+    const ind = INDICATORS.find(i => i.id === id);
+    const label = ind?.sportLabels[currentSport] || ind?.name || id;
+    return `<div class="sel-tag" onclick="toggleSelect('${id}')">
+      <span>${label}</span><span class="x">✕</span>
+    </div>`;
+  }).join('');
+  btn.disabled = false;
+  buildActiveMetrics();
+}
+
+// ══════════════ アニメーション ══════════════
+function startAnim(ind) {
+  if (!ind) return;
+  const wrap = document.getElementById('anim-' + ind.id);
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', '90');
+  svg.setAttribute('viewBox', '0 0 320 90');
+  const c = ind.color;
+
+  if (ind.animType === 'wave') {
+    svg.innerHTML = `
+      <defs><style>
+        @keyframes wm{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+        .wline{animation:wm 2s linear infinite}
+      </style></defs>
+      <g class="wline">
+        <polyline points="0,45 20,20 40,70 60,20 80,70 100,20 120,70 140,20 160,70 180,20 200,70 220,20 240,70 260,20 280,70 300,20 320,70 340,20 360,70 380,20 400,70 420,20 440,70 460,20 480,70 500,20 520,70 540,20 560,70 580,20 600,70 620,20 640,45"
+          fill="none" stroke="${c}" stroke-width="2" opacity="0.8"/>
+      </g>
+      <text x="160" y="82" text-anchor="middle" font-size="10" fill="${c}" opacity="0.6" font-family="Barlow Condensed">テンポ = 周期の逆数（Hz × 60 = rpm）</text>`;
+  } else if (ind.animType === 'peak') {
+    svg.innerHTML = `
+      <defs><style>
+        @keyframes pb1{0%,100%{height:15px;y:60px}50%{height:55px;y:20px}}
+        @keyframes pb2{0%,100%{height:30px;y:45px}30%{height:65px;y:10px}}
+        @keyframes pb3{0%,100%{height:10px;y:65px}70%{height:45px;y:30px}}
+        .b1{animation:pb1 1.4s ease-in-out infinite}
+        .b2{animation:pb2 1.4s ease-in-out infinite .2s}
+        .b3{animation:pb3 1.4s ease-in-out infinite .4s}
+      </style></defs>
+      <rect class="b1" x="60" width="30" rx="4" fill="${c}" opacity="0.9" y="60" height="15"/>
+      <rect class="b2" x="110" width="30" rx="4" fill="${c}" opacity="0.7" y="45" height="30"/>
+      <rect class="b3" x="160" width="30" rx="4" fill="${c}" opacity="0.5" y="65" height="10"/>
+      <rect class="b1" x="210" width="30" rx="4" fill="${c}" opacity="0.8" y="60" height="15"/>
+      <line x1="30" y1="75" x2="290" y2="75" stroke="${c}" stroke-width="0.5" opacity="0.3"/>
+      <text x="160" y="88" text-anchor="middle" font-size="10" fill="${c}" opacity="0.6" font-family="Barlow Condensed">加速度ピーク = 瞬間の力（G）</text>`;
+  } else if (ind.animType === 'sway') {
+    svg.innerHTML = `
+      <defs><style>
+        @keyframes sw{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+        .swg{transform-origin:160px 75px;animation:sw 1.8s ease-in-out infinite}
+      </style></defs>
+      <g class="swg">
+        <line x1="160" y1="10" x2="160" y2="75" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="160" cy="10" r="10" fill="${c}" opacity="0.8"/>
+        <line x1="130" y1="40" x2="190" y2="40" stroke="${c}" stroke-width="1.5" opacity="0.5"/>
+      </g>
+      <line x1="40" y1="75" x2="280" y2="75" stroke="${c}" stroke-width="0.5" opacity="0.3"/>
+      <text x="160" y="88" text-anchor="middle" font-size="10" fill="${c}" opacity="0.6" font-family="Barlow Condensed">AX標準偏差 σ = ブレの大きさ</text>`;
+  } else if (ind.animType === 'fadedown') {
+    svg.innerHTML = `
+      <defs><style>
+        @keyframes fd{0%{height:50px;y:25px;opacity:1}100%{height:30px;y:45px;opacity:0.4}}
+        .fd1{animation:fd 2s ease-in-out infinite 0s}
+        .fd2{animation:fd 2s ease-in-out infinite .3s}
+        .fd3{animation:fd 2s ease-in-out infinite .6s}
+        .fd4{animation:fd 2s ease-in-out infinite .9s}
+        .fd5{animation:fd 2s ease-in-out infinite 1.2s}
+      </style></defs>
+      <rect class="fd1" x="40"  width="28" rx="3" fill="${c}" y="25" height="50"/>
+      <rect class="fd2" x="88"  width="28" rx="3" fill="${c}" y="25" height="50"/>
+      <rect class="fd3" x="136" width="28" rx="3" fill="${c}" y="25" height="50"/>
+      <rect class="fd4" x="184" width="28" rx="3" fill="${c}" y="25" height="50"/>
+      <rect class="fd5" x="232" width="28" rx="3" fill="${c}" y="25" height="50"/>
+      <text x="160" y="88" text-anchor="middle" font-size="10" fill="${c}" opacity="0.6" font-family="Barlow Condensed">疲労指数 = 後半パワー ÷ 前半パワー</text>`;
+  } else if (ind.animType === 'rotation') {
+    svg.innerHTML = `
+      <defs><style>
+        @keyframes rot{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+        .rg{transform-origin:160px 42px;animation:rot 1.5s linear infinite}
+      </style></defs>
+      <g class="rg">
+        <circle cx="160" cy="42" r="28" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="10 5" opacity="0.7"/>
+        <line x1="160" y1="42" x2="188" y2="42" stroke="${c}" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="188" cy="42" r="5" fill="${c}"/>
+      </g>
+      <circle cx="160" cy="42" r="5" fill="${c}" opacity="0.5"/>
+      <text x="160" y="84" text-anchor="middle" font-size="10" fill="${c}" opacity="0.6" font-family="Barlow Condensed">ジャイロ計測 = 回転速度（°/秒）</text>`;
+  } else if (ind.animType === 'fft') {
+    const bars = [8,14,22,38,60,42,28,16,10,7,5,4,3,3];
+    const bw = 14, gap = 4, total = bars.length * (bw + gap);
+    const startX = (320 - total) / 2;
+    const barsHtml = bars.map((h, i) => {
+      const delay = (i * 0.06).toFixed(2);
+      return `<rect x="${startX + i*(bw+gap)}" y="${75-h}" width="${bw}" height="${h}" rx="2" fill="${c}" opacity="${0.4 + h/100}"
+        style="animation:specBar ${0.8 + i*0.05}s ease-in-out infinite ${delay}s;transform-origin:${startX + i*(bw+gap) + bw/2}px 75px"/>`;
+    }).join('');
+    svg.innerHTML = `<defs><style>@keyframes specBar{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}</style></defs>
+      ${barsHtml}
+      <line x1="20" y1="75" x2="300" y2="75" stroke="${c}" stroke-width="0.5" opacity="0.3"/>
+      <text x="160" y="88" text-anchor="middle" font-size="10" fill="${c}" opacity="0.6" font-family="Barlow Condensed">FFT = 動きの周波数スペクトル</text>`;
+  } else if (ind.animType === 'accumulate') {
+    svg.innerHTML = `
+      <defs><style>
+        @keyframes acc{0%{width:0}100%{width:200px}}
+        .abar{animation:acc 2s ease-out infinite}
+      </style></defs>
+      <rect x="60" y="20" width="200" height="16" rx="4" fill="${c}" opacity="0.15"/>
+      <rect class="abar" x="60" y="20" height="16" rx="4" fill="${c}" opacity="0.8"/>
+      <rect x="60" y="44" width="200" height="16" rx="4" fill="${c}" opacity="0.15"/>
+      <rect class="abar" x="60" y="44" style="animation-delay:.3s" height="16" rx="4" fill="${c}" opacity="0.6"/>
+      <text x="160" y="82" text-anchor="middle" font-size="10" fill="${c}" opacity="0.6" font-family="Barlow Condensed">仕事量 = 力 × 距離（J：ジュール）</text>`;
+  } else if (ind.animType === 'spike') {
+    svg.innerHTML = `
+      <defs><style>
+        @keyframes spk{0%,80%,100%{transform:scaleY(.05)}8%{transform:scaleY(1)}20%{transform:scaleY(.6)}}
+        .spk{transform-origin:160px 70px;animation:spk 2.4s ease-out infinite}
+      </style></defs>
+      <polyline class="spk" points="40,70 100,70 130,70 145,10 160,70 175,50 190,70 250,70 280,70"
+        fill="none" stroke="${c}" stroke-width="2.5" stroke-linejoin="round"/>
+      <text x="160" y="88" text-anchor="middle" font-size="10" fill="${c}" opacity="0.6" font-family="Barlow Condensed">角加速度 = 回転の急激な変化（°/s²）</text>`;
+  }
+  wrap.appendChild(svg);
+}
+
+// ══════════════ 測定画面の指標構築 ══════════════
+function buildActiveMetrics() {
+  const body = document.getElementById('activeMetricsBody');
+  if (selectedIndicators.size === 0) { body.innerHTML = '<div style="font-size:12px;color:var(--text3)">指標が選択されていません</div>'; return; }
+  let html = '';
+  [...selectedIndicators].forEach(id => {
+    const ind = INDICATORS.find(i => i.id === id);
+    if (!ind) return;
+    const label = ind.sportLabels[currentSport] || ind.name;
+    html += `<div class="mcat"><span style="color:${ind.color}">${ind.icon} ${label}</span><div class="mcat-line"></div></div>`;
+    html += '<div class="mgrid">';
+    html += getMetricsHTML(id);
+    html += '</div>';
+  });
+  body.innerHTML = html;
+}
+
+function getMetricsHTML(id) {
+  const defs = {
+    rhythm: `
+      <div class="mi wide"><div><div class="mlbl">テンポ</div><div class="msub">直近10ピーク平均</div><div class="mbar"><div class="mbar-f" id="bCad"></div></div></div><div><div class="mv lg" id="vCad">—</div><div class="munit">rpm</div></div></div>
+      <div class="mi"><div><div class="mlbl">最高テンポ</div><div class="msub">瞬間最大</div></div><div><div class="mv" id="vMaxCad">—</div><div class="munit">rpm</div></div></div>
+      <div class="mi"><div><div class="mlbl">間隔</div><div class="msub">直近1ピーク</div></div><div><div class="mv sm" id="vIntv">—</div><div class="munit">ms</div></div></div>
+      <div class="mi wide"><div><div class="mlbl">テンポ安定性 CV</div><div class="msub">低い=安定</div></div><div><div class="mv sm" id="vPitCV">—</div><div class="munit">%</div></div></div>`,
+    power: `
+      <div class="mi"><div><div class="mlbl">パワー</div><div class="msub">最新ピーク</div><div class="mbar"><div class="mbar-f" id="bImp" style="background:var(--orange)"></div></div></div><div><div class="mv" id="vImp">—</div><div class="munit">G</div></div></div>
+      <div class="mi"><div><div class="mlbl">最大パワー</div><div class="msub">セッション最高</div></div><div><div class="mv" id="vMaxImp">—</div><div class="munit">G</div></div></div>
+      <div class="mi"><div><div class="mlbl">平均パワー</div><div class="msub">全ピーク</div></div><div><div class="mv" id="vAvgImp">—</div><div class="munit">G</div></div></div>
+      <div class="mi"><div><div class="mlbl">パワー CV</div><div class="msub">ばらつき</div></div><div><div class="mv sm" id="vImpCV">—</div><div class="munit">%</div></div></div>`,
+    balance: `
+      <div class="mi"><div><div class="mlbl">横ブレ σ</div><div class="msub">AX標準偏差</div></div><div><div class="mv sm" id="vLatBr">—</div><div class="munit">G</div></div></div>
+      <div class="mi"><div><div class="mlbl">上下振幅</div><div class="msub">AZ ピーク-谷</div></div><div><div class="mv sm" id="vVertAmp">—</div><div class="munit">G</div></div></div>
+      <div class="mi"><div><div class="mlbl">上下動量</div><div class="msub">換算</div></div><div><div class="mv sm" id="vVertAmpCm">—</div><div class="munit">cm</div></div></div>
+      <div class="mi"><div><div class="mlbl">安定性</div><div class="msub">総合スコア</div></div><div><div class="mv" id="vStability">—</div><div class="munit">/100</div></div></div>`,
+    fatigue: `
+      <div class="mi wide"><div><div class="mlbl">フォームスコア</div><div class="msub">テンポ安定40%+パワー均一40%+強度率20%</div><div class="mbar"><div class="mbar-f" id="bForm" style="background:var(--blue)"></div></div></div><div><div class="mv lg" id="vForm">—</div><div class="munit">/100</div></div></div>
+      <div class="mi"><div><div class="mlbl">疲労指数</div><div class="msub">後半÷前半パワー</div></div><div><div class="mv sm" id="vFat">—</div><div class="munit">倍</div></div></div>
+      <div class="mi"><div><div class="mlbl">アクティブ率</div><div class="msub">高強度割合</div></div><div><div class="mv" id="vRunPct">—</div><div class="munit">%</div></div></div>`,
+    rotation: `
+      <div class="mi"><div><div class="mlbl">最大角速度</div><div class="msub">GX/GY/GZ最大</div></div><div><div class="mv sm" id="vMaxG">—</div><div class="munit">°/s</div></div></div>
+      <div class="mi"><div><div class="mlbl">平均角速度</div><div class="msub">直近10ピーク</div></div><div><div class="mv sm" id="vAvgG">—</div><div class="munit">°/s</div></div></div>
+      <div class="mi wide"><div><div class="mlbl">角加速度</div><div class="msub">回転の急激な変化</div></div><div><div class="mv sm" id="vAngAcc">—</div><div class="munit">°/s²</div></div></div>`,
+    fft: `
+      <div class="mi"><div><div class="mlbl">主要周波数</div><div class="msub">支配的な周期</div></div><div><div class="mv sm" id="vFFTFreq">—</div><div class="munit">Hz</div></div></div>
+      <div class="mi"><div><div class="mlbl">FFTテンポ</div><div class="msub">Hz×60</div></div><div><div class="mv sm" id="vFFTCad">—</div><div class="munit">rpm</div></div></div>
+      <div class="mi"><div><div class="mlbl">ピーク強度</div></div><div><div class="mv sm" id="vFFTPeak">—</div><div class="munit">power</div></div></div>
+      <div class="mi"><div><div class="mlbl">パターン判定</div></div><div><div class="mv sm" id="vFFTPattern" style="font-size:12px">—</div></div></div>`,
+    work: `
+      <div class="mi"><div><div class="mlbl">推定仕事量</div><div class="msub">累積</div></div><div><div class="mv" id="vDist">—</div><div class="munit">J</div></div></div>
+      <div class="mi"><div><div class="mlbl">パワー出力</div><div class="msub">仕事量÷時間</div></div><div><div class="mv sm" id="vPace">—</div><div class="munit">W</div></div></div>
+      <div class="mi wide"><div><div class="mlbl">消費カロリー</div><div class="msub">MET概算</div></div><div><div class="mv" id="vCal">—</div><div class="munit">kcal</div></div></div>`,
+    reaction: `
+      <div class="mi"><div><div class="mlbl">現在の角加速度</div><div class="msub">微分値</div></div><div><div class="mv sm" id="vAngAcc2">—</div><div class="munit">°/s²</div></div></div>
+      <div class="mi"><div><div class="mlbl">最大角加速度</div><div class="msub">セッション最高</div></div><div><div class="mv sm" id="vMaxAngAcc">—</div><div class="munit">°/s²</div></div></div>
+      <div class="mi wide"><div><div class="mlbl">急転換検出</div><div class="msub">閾値2000°/s²</div></div><div><div class="mv sm" id="vAngAccAlert" style="font-size:12px">—</div></div></div>`,
+  };
+  return defs[id] || '';
+}
+
+// ══════════════ WAVE CHART ══════════════
+const wCtx = document.getElementById('waveChart').getContext('2d');
+const axisColors = { abs:'#E88A0A', ax:'#3AABA8', ay:'#2E8EC4', az:'#9b59b6', gyro:'#2ecc71' };
+const waveChart = new Chart(wCtx, {
+  type: 'line',
+  data: { labels: Array(WAVE_BUF).fill(''), datasets: [{ data: wBuf.abs, borderColor: '#E88A0A', borderWidth: 1.5, pointRadius: 0, fill: true, backgroundColor: 'rgba(232,138,10,0.06)', tension: .3, spanGaps: false }] },
+  options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { min: -.5, max: 2.5, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#484f58', font: { family: "'Barlow Condensed',sans-serif", size: 10 }, callback: v => v.toFixed(1) }, border: { display: false } } } }
+});
+
+document.querySelectorAll('.axis-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.axis-btn').forEach(x => x.classList.remove('active-abs','active-ax','active-ay','active-az','active-gyro'));
+    const ax = b.dataset.axis;
+    b.classList.add('active-' + ax);
+    curAxis = ax;
+    const c = axisColors[ax] || '#E88A0A';
+    waveChart.data.datasets[0].data = wBuf[ax] || wBuf.abs;
+    waveChart.data.datasets[0].borderColor = c;
+    waveChart.data.datasets[0].backgroundColor = c + '18';
+    if (ax === 'gyro') { waveChart.options.scales.y.min = -200; waveChart.options.scales.y.max = 200; }
+    else if (baseline) { waveChart.options.scales.y.min = Math.max(-2, baseline - 1.5); waveChart.options.scales.y.max = baseline + 2.5; }
+    else { waveChart.options.scales.y.min = -.5; waveChart.options.scales.y.max = 2.5; }
+    waveChart.update('none');
+  });
+});
+
+// ══════════════ PEAK CHART ══════════════
+const sCtx = document.getElementById('strChart').getContext('2d');
+const strChart = new Chart(sCtx, {
+  type: 'bar',
+  data: { labels: [], datasets: [{ data: [], backgroundColor: [], borderRadius: 3, borderSkipped: false }] },
+  options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { min: 0, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#484f58', font: { family: "'Barlow Condensed',sans-serif", size: 9 }, callback: v => v.toFixed(1) }, border: { display: false } } } }
+});
+
+// ══════════════ BLE ══════════════
+const SVC_UUID = '6e400001-b5b3-f393-e0a9-e50e24dcca9e';
+const TX_UUID  = '6e400003-b5b3-f393-e0a9-e50e24dcca9e';
+const RX_UUID  = '6e400002-b5b3-f393-e0a9-e50e24dcca9e';
+
+document.getElementById('connectBtn').addEventListener('click', async () => {
+  if (bleConn) { disconnect(); return; }
+  try {
+    bleDevice = await navigator.bluetooth.requestDevice({ filters: [{ name: 'SchooMy_001' }], optionalServices: [SVC_UUID] });
+    bleDevice.addEventListener('gattserverdisconnected', onDisconn);
+    const srv = await bleDevice.gatt.connect();
+    const svc = await srv.getPrimaryService(SVC_UUID);
+    bleTX = await svc.getCharacteristic(TX_UUID);
+    await bleTX.startNotifications();
+    bleTX.addEventListener('characteristicvaluechanged', onBleData);
+    try { bleRX = await svc.getCharacteristic(RX_UUID); } catch(e) { bleRX = null; }
+    setConn(true);
+    baseline = null; calibBuf = [];
+    setStatus('接続済 — スタートを押してください', 'connected');
+    document.getElementById('gaugeRow').style.display = 'flex';
+    document.getElementById('sessStatus').textContent = 'スタートを押してください';
+    document.getElementById('startBtn').disabled = false;
+    Object.keys(wBuf).forEach(k => wBuf[k].fill(null));
+    smoothBuf = []; sPrev2 = null; sPrev1 = null; peakCooldownUntil = 0;
+    // 測定画面にいなければ移動
+    if (!document.getElementById('v-meas').classList.contains('active')) goTo('v-meas');
+  } catch(e) { setStatus('接続失敗: ' + e.message, ''); }
+});
+
+let rxBuf = '';
+function onBleData(e) {
+  rxBuf += new TextDecoder().decode(e.target.value);
+  let idx;
+  while ((idx = rxBuf.indexOf('\n')) >= 0) {
+    const line = rxBuf.slice(0, idx).trim();
+    rxBuf = rxBuf.slice(idx + 1);
+    if (!line) continue;
+    if (line.startsWith('CAL:') || line.startsWith('STATUS:')) {
+      if (line.startsWith('CAL:DONE')) { document.getElementById('calibOv').classList.remove('active'); setStatus('キャリブ完了', 'connected'); }
+      continue;
+    }
+    const parts = line.split(',');
+    if (parts.length < 4) continue;
+    const ax = parseFloat(parts[0]), ay = parseFloat(parts[1]), az = parseFloat(parts[2]);
+    const gx = parts.length > 3 ? parseFloat(parts[3]) : 0;
+    const gy = parts.length > 4 ? parseFloat(parts[4]) : 0;
+    const gz = parts.length > 5 ? parseFloat(parts[5]) : 0;
+    const abs = parts.length > 7 ? parseFloat(parts[7]) : Math.sqrt(ax*ax + ay*ay + az*az);
+    if (isNaN(abs)) continue;
+    totalSamps++;
+    if (isRec) fullLog.push({ t: Date.now(), ax, ay, az, gx, gy, gz, abs });
+    if (baseline === null) { calibBuf.push({ abs, ax, ay, az }); processFrame(ax, ay, az, gx, gy, gz, abs); return; }
+    processFrame(ax, ay, az, gx, gy, gz, abs);
+  }
+}
+
+function processFrame(ax, ay, az, gx, gy, gz, abs) {
+  const delta = baseline ? abs - baseline : 0;
+  Object.keys(wBuf).forEach(k => wBuf[k].shift());
+  wBuf.abs.push(abs); wBuf.ax.push(ax); wBuf.ay.push(ay); wBuf.az.push(az);
+  wBuf.gyro.push(Math.sqrt(gx*gx + gy*gy + gz*gz));
+  waveChart.data.datasets[0].data = wBuf[curAxis] || wBuf.abs;
+  waveChart.update('none');
+
+  const pct = (v, mn, mx) => Math.round(Math.max(0, Math.min(100, (v - mn) / (mx - mn) * 100)));
+  document.getElementById('livAbs').innerHTML = abs.toFixed(3) + '<span>G</span>';
+  ['Ax','Ay','Az'].forEach((k,i) => {
+    const vs = [ax,ay,az][i];
+    document.getElementById('liv' + k).textContent = vs.toFixed(3);
+  });
+  document.getElementById('livGx').textContent = gx.toFixed(1);
+  document.getElementById('livGy').textContent = gy.toFixed(1);
+  document.getElementById('livGz').textContent = gz.toFixed(1);
+  document.getElementById('barAx').style.width = pct(ax,-2,2) + '%';
+  document.getElementById('barAy').style.width = pct(ay,-2,2) + '%';
+  document.getElementById('barAz').style.width = pct(az,-2,2) + '%';
+  document.getElementById('barGx').style.width = pct(Math.abs(gx),0,250) + '%';
+  document.getElementById('barGy').style.width = pct(Math.abs(gy),0,250) + '%';
+  document.getElementById('barGz').style.width = pct(Math.abs(gz),0,250) + '%';
+  document.getElementById('gTot').textContent = totalSamps;
+
+  const gMag = Math.sqrt(gx*gx + gy*gy + gz*gz);
+  if (gMag > maxGyro) maxGyro = gMag;
+  sumGyro += gMag; gyroCount++;
+  axBufs.ax.push(ax); axBufs.ay.push(ay); axBufs.az.push(az);
+  if (axBufs.ax.length > 100) { axBufs.ax.shift(); axBufs.ay.shift(); axBufs.az.shift(); }
+
+  // 角加速度
+  const nowT = Date.now();
+  if (prevGx !== null && prevGt !== null) {
+    const dt = (nowT - prevGt) / 1000;
+    if (dt > 0 && dt < 0.5) {
+      const aaMag = Math.sqrt(((gx-prevGx)/dt)**2 + ((gy-prevGy)/dt)**2 + ((gz-prevGz)/dt)**2);
+      if (aaMag > maxAngAcc) maxAngAcc = aaMag;
+      angAccBuf.push(aaMag);
+      if (angAccBuf.length > 50) angAccBuf.shift();
+      const alEl = document.getElementById('vAngAccAlert');
+      if (alEl) { alEl.textContent = aaMag > 2000 ? '⚠ 急転換' : '正常'; alEl.style.color = aaMag > 2000 ? '#e74c3c' : 'var(--teal)'; }
+      const aaEl = document.getElementById('vAngAcc'); if (aaEl) aaEl.textContent = Math.round(aaMag);
+      const aa2El = document.getElementById('vAngAcc2'); if (aa2El) aa2El.textContent = Math.round(aaMag);
+      const maaEl = document.getElementById('vMaxAngAcc'); if (maaEl) maaEl.textContent = Math.round(maxAngAcc);
+    }
+  }
+  prevGx = gx; prevGy = gy; prevGz = gz; prevGt = nowT;
+
+  // 上下動
+  azAmpBuf.shift(); azAmpBuf.push(az);
+  if (azAmpBuf.length >= 20) {
+    vertAmp = parseFloat(((Math.max(...azAmpBuf) - Math.min(...azAmpBuf)) / 2).toFixed(4));
+    vertAmpCm = parseFloat((vertAmp * 25).toFixed(1));
+    const vaEl = document.getElementById('vVertAmp'); if (vaEl) vaEl.textContent = vertAmp.toFixed(3);
+    const vcEl = document.getElementById('vVertAmpCm'); if (vcEl) vcEl.textContent = vertAmpCm;
+  }
+
+  // FFT
+  fftBufAbs.shift(); fftBufAbs.push(abs);
+  fftFrameCount++;
+  if (fftFrameCount >= FFT_N) {
+    fftFrameCount = 0;
+    fftResult = calcFFT(fftBufAbs, 50);
+    const ffEl = document.getElementById('vFFTFreq'); if (ffEl) ffEl.textContent = fftResult.freq.toFixed(2);
+    const fcEl = document.getElementById('vFFTCad'); if (fcEl) fcEl.textContent = Math.round(fftResult.freq * 60);
+    const fpEl = document.getElementById('vFFTPeak'); if (fpEl) fpEl.textContent = fftResult.power.toFixed(3);
+    let pat = '—';
+    if (fftResult.freq < 0.5) pat = '静止';
+    else if (fftResult.freq < 1.0) pat = '低速';
+    else if (fftResult.freq < 2.0) pat = '中速';
+    else pat = '高速';
+    const ptEl = document.getElementById('vFFTPattern'); if (ptEl) ptEl.textContent = pat;
+  }
+
+  // ── 改善されたピーク検出（スムージング + 動的閾値） ──
+  if (!isRec) {
+    // 計測開始前もスムージングバッファだけ維持
+    smoothBuf.push(abs);
+    if (smoothBuf.length > SMOOTH_N) smoothBuf.shift();
+    return;
+  }
+
+  // 移動平均（スムージング）
+  smoothBuf.push(abs);
+  if (smoothBuf.length > SMOOTH_N) smoothBuf.shift();
+  const sVal = smoothBuf.reduce((a,b)=>a+b,0) / smoothBuf.length;
+
+  // 3点比較でピーク検出（スムージング後の値で判定）
+  if (sPrev2 !== null && sPrev1 !== null) {
+    const now = Date.now();
+    const delta = sVal - baseline;
+    // 条件1: 前の値がその前後より大きい（局所最大値）
+    // 条件2: ベースラインからの上昇が動的閾値を超える
+    // 条件3: クールダウン期間を過ぎている
+    // 条件4: 最小ピーク間隔を満たす
+    const isLocalMax = sPrev1 > sPrev2 && sPrev1 > sVal;
+    const prevDelta = sPrev1 - baseline;
+    const aboveThresh = prevDelta > dynamicThresh;
+    const afterCooldown = now > peakCooldownUntil;
+    const afterMinInterval = peakTimes.length === 0 || (now - peakTimes[peakTimes.length-1]) >= MIN_INTERVAL;
+
+    if (isLocalMax && aboveThresh && afterCooldown && afterMinInterval) {
+      const impact = prevDelta + (sPrev1 - sVal); // ピーク高さ
+      onPeak(sPrev1, impact, gx, gy, gz);
+      peakCooldownUntil = now + PEAK_COOLDOWN;
+    }
+  }
+  sPrev2 = sPrev1;
+  sPrev1 = sVal;
+}
+
+function onPeak(peakV, impact, gx, gy, gz) {
+  const now = Date.now();
+  clearTimeout(stoppedTmr);
+  stoppedTmr = setTimeout(() => { if (isRec) setABadge('stopped'); }, STOP_MS);
+  peakCount++; peakTimes.push(now); peakImpacts.push(impact);
+  sumImpact += impact; if (impact > maxImpact) maxImpact = impact;
+  let cad = 0;
+  if (peakTimes.length >= 2) {
+    const n = Math.min(10, peakTimes.length);
+    const sl = peakTimes.slice(-n);
+    const span = (sl[sl.length-1] - sl[0]) / 1000;
+    cad = span > 0 ? (n-1) / span * 60 : 0;
+  }
+  if (cad > maxCadence) maxCadence = cad;
+  const isHigh = cad >= HIGH_RPM;
+  if (isHigh) highFrames++;
+  if (lastPeakTs !== null) {
+    const dt = (now - lastPeakTs) / 1000;
+    if (lastPeakIsHigh) highTimeSec += dt;
+    else lowTimeSec += dt;
+  }
+  lastPeakIsHigh = isHigh; lastPeakTs = now;
+  updateMetrics(cad, impact);
+  const sd = strChart.data;
+  if (sd.labels.length >= 60) { sd.labels.shift(); sd.datasets[0].data.shift(); sd.datasets[0].backgroundColor.shift(); }
+  sd.labels.push(peakCount);
+  sd.datasets[0].data.push(parseFloat(impact.toFixed(3)));
+  sd.datasets[0].backgroundColor.push(isHigh ? '#E88A0A' : '#2E8EC4');
+  strChart.update('none');
+  if (peakCount >= 3) {
+    const rb = document.getElementById('reviewBtn'); rb.disabled = false; rb.style.opacity = '1';
+    document.getElementById('nextPlayerBtn').disabled = false;
+    document.getElementById('addTakeBtn').disabled = false;
+  }
+}
+
+function updateMetrics(cad, impact) {
+  const n = peakCount, imps = peakImpacts, times = peakTimes;
+  const weight = (currentPlayerIdx >= 0 && players[currentPlayerIdx]) ? players[currentPlayerIdx].weight : 50;
+  const secEl = sessStart ? Math.floor((Date.now() - sessStart) / 1000) : 0;
+  const avgImp = n > 0 ? sumImpact / n : 0;
+  const fmt = s => { const m = Math.floor(s/60); return m + ':' + (Math.round(s%60)+'').padStart(2,'0'); };
+
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  const setW = (id, w) => { const el = document.getElementById(id); if (el) el.style.width = w; };
+
+  // RHYTHM
+  set('vCad', cad > 0 ? Math.round(cad) : '—');
+  setW('bCad', Math.min(100, cad / 120 * 100) + '%');
+  set('vMaxCad', maxCadence > 0 ? Math.round(maxCadence) : '—');
+  if (times.length >= 2) set('vIntv', Math.round(times[times.length-1] - times[times.length-2]));
+  if (times.length >= 5) {
+    const rc = times.slice(-10), cs = rc.map((t,i) => i===0 ? null : 60000/(t-rc[i-1])).filter(Boolean);
+    const cm = cs.reduce((a,b)=>a+b,0)/cs.length;
+    set('vPitCV', cm > 0 ? Math.round(Math.sqrt(cs.reduce((a,x)=>a+(x-cm)**2,0)/cs.length)/cm*100) : '—');
+  }
+
+  // POWER
+  set('vImp', impact.toFixed(2));
+  setW('bImp', Math.min(100, impact/3*100) + '%');
+  set('vMaxImp', maxImpact > 0 ? maxImpact.toFixed(2) : '—');
+  set('vAvgImp', n > 0 ? avgImp.toFixed(2) : '—');
+  if (imps.length >= 3) {
+    const cv = avgImp > 0 ? Math.round(Math.sqrt(imps.reduce((a,x)=>a+(x-avgImp)**2,0)/n)/avgImp*100) : 0;
+    set('vImpCV', cv);
+  }
+
+  // BALANCE
+  if (axBufs.ax.length >= 10) {
+    const m = axBufs.ax.reduce((a,b)=>a+b,0)/axBufs.ax.length;
+    const sd = Math.sqrt(axBufs.ax.reduce((a,x)=>a+(x-m)**2,0)/axBufs.ax.length);
+    set('vLatBr', sd.toFixed(4));
+    const stab = Math.max(0, Math.round(100 - sd*200 - vertAmp*100));
+    set('vStability', stab);
+  }
+
+  // GYRO
+  set('vMaxG', maxGyro > 0 ? Math.round(maxGyro) : '—');
+  set('vAvgG', gyroCount > 0 ? Math.round(sumGyro/gyroCount) : '—');
+
+  // FATIGUE / FORM
+  if (n >= 5) {
+    let tempoSc = 0;
+    if (times.length >= 5) {
+      const cs2 = times.slice(-10).map((t,i)=>i===0?null:60000/(t-times.slice(-10)[i-1])).filter(Boolean);
+      const cm2 = cs2.reduce((a,b)=>a+b,0)/cs2.length;
+      const cv2 = cm2 > 0 ? Math.sqrt(cs2.reduce((a,x)=>a+(x-cm2)**2,0)/cs2.length)/cm2 : 1;
+      tempoSc = Math.max(0, Math.min(100, Math.round((1-cv2)*100)));
+    }
+    const pwSc = avgImp > 0 ? Math.max(0, Math.min(100, Math.round((1 - Math.sqrt(imps.reduce((a,x)=>a+(x-avgImp)**2,0)/n)/avgImp)*100))) : 0;
+    const inSc = Math.round(highFrames / n * 100);
+    const fs = Math.round(tempoSc * .4 + pwSc * .4 + inSc * .2);
+    set('vForm', fs); setW('bForm', fs + '%');
+  }
+  if (imps.length >= 10) {
+    const th = Math.floor(imps.length/3);
+    const fa = imps.slice(0,th).reduce((a,b)=>a+b)/th;
+    const la = imps.slice(-th).reduce((a,b)=>a+b)/th;
+    set('vFat', fa > 0 ? (la/fa).toFixed(2) : '—');
+  }
+  set('vRunPct', n > 0 ? Math.round(highFrames/n*100) : '—');
+
+  // WORK
+  const estWork = n > 0 ? Math.round(n * weight * 9.8 * 0.25) : 0;
+  set('vDist', estWork > 0 ? estWork : '—');
+  if (secEl > 0 && estWork > 0) set('vPace', Math.round(estWork / secEl));
+  const met = highTimeSec > lowTimeSec ? 8.0 : 5.0;
+  const kcal = Math.round(met * weight * (secEl / 3600));
+  set('vCal', kcal > 0 ? kcal : '—');
+
+  // TIME display
+  document.getElementById('vTime') && (document.getElementById('vTime').textContent = fmt(secEl));
+
+  setABadge(cad >= HIGH_RPM ? 'active' : 'stopped');
+  if (times.length >= 2) {
+    const allC = times.map((t,i)=>i?60000/(t-times[i-1]):0);
+    set('sCad', Math.round(Math.max(...allC)));
+    set('sAct', Math.round(highFrames/n*100));
+    if (imps.length >= 3) { const cv3 = Math.sqrt(imps.reduce((a,x)=>a+(x-avgImp)**2,0)/n)/avgImp; set('sCons', Math.max(0,Math.round((1-cv3)*100))); }
+  }
+}
+
+// ══════════════ FFT ══════════════
+function calcFFT(buf, fsHz) {
+  const N = buf.length;
+  const windowed = buf.map((v,i) => v * (0.54 - 0.46 * Math.cos(2*Math.PI*i/(N-1))));
+  const re = new Array(N).fill(0), im = new Array(N).fill(0);
+  for (let k = 0; k < N/2; k++) for (let n = 0; n < N; n++) { const a = 2*Math.PI*k*n/N; re[k] += windowed[n]*Math.cos(a); im[k] -= windowed[n]*Math.sin(a); }
+  const spectrum = [];
+  for (let k = 0; k < N/2; k++) spectrum.push(Math.sqrt(re[k]*re[k]+im[k]*im[k])/N);
+  const minBin = Math.floor(0.3*N/fsHz), maxBin = Math.ceil(5*N/fsHz);
+  let peakPow = 0, peakBin = minBin;
+  for (let k = minBin; k < Math.min(maxBin, N/2); k++) if (spectrum[k] > peakPow) { peakPow = spectrum[k]; peakBin = k; }
+  return { freq: peakBin * fsHz / N, power: peakPow, spectrum };
+}
+
+// ══════════════ CALIB ══════════════
+const CALIB_SEC = 2;
+function startCalib() {
+  calibBuf = []; baseline = null;
+  document.getElementById('calibOv').classList.add('active');
+  let rem = CALIB_SEC;
+  document.getElementById('calibNum').textContent = rem;
+  const t = setInterval(() => {
+    rem--; document.getElementById('calibNum').textContent = rem;
+    if (rem <= 0) { clearInterval(t); finishCalib(); }
+  }, 1000);
+  setStatus('キャリブレーション中...', 'cal');
+}
+function finishCalib() {
+  baseline = calibBuf.length ? calibBuf.reduce((a,b) => a+b.abs, 0) / calibBuf.length : 1.0;
+  document.getElementById('calibOv').classList.remove('active');
+  document.getElementById('baseDisp').textContent = baseline.toFixed(4) + ' G';
+  setStatus('接続済 — スタート待機', 'connected');
+  document.getElementById('gaugeRow').style.display = 'flex';
+  document.getElementById('sessStatus').textContent = 'スタートを押してください';
+  Object.keys(wBuf).forEach(k => wBuf[k].fill(null));
+  if (baseline) { waveChart.options.scales.y.min = Math.max(-2, baseline-1.5); waveChart.options.scales.y.max = baseline+2.5; waveChart.update('none'); }
+  document.getElementById('startBtn').disabled = false;
+}
+
+// ══════════════ START/STOP ══════════════
+function startRec() {
+  if (isRec) return;
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('startBtn').textContent = '⏳ ベースライン取得中...';
+  calibBuf = []; baseline = null;
+  document.getElementById('calibOv').classList.add('active');
+  let rem = CALIB_SEC;
+  document.getElementById('calibNum').textContent = rem;
+  const t = setInterval(() => {
+    rem--; document.getElementById('calibNum').textContent = rem;
+    if (rem <= 0) {
+      clearInterval(t);
+      baseline = calibBuf.length ? calibBuf.reduce((a,b)=>a+b.abs,0)/calibBuf.length : 1.0;
+      // 動的閾値: ベースラインサンプルの標準偏差 × K（最小0.08G）
+      if (calibBuf.length > 5) {
+        const mean = baseline;
+        const sigma = Math.sqrt(calibBuf.reduce((s,b)=>(s+(b.abs-mean)**2),0)/calibBuf.length);
+        dynamicThresh = Math.max(0.08, sigma * NOISE_SIGMA_K);
+      } else {
+        dynamicThresh = 0.15;
+      }
+      document.getElementById('baseDisp').textContent = baseline.toFixed(4) + ' G (閾値:' + dynamicThresh.toFixed(3) + ')';
+      // スムージング・ピーク検出バッファをリセット
+      smoothBuf = []; sPrev2 = null; sPrev1 = null; peakCooldownUntil = 0;
+      document.getElementById('calibOv').classList.remove('active');
+      waveChart.options.scales.y.min = Math.max(-2, baseline-1.5);
+      waveChart.options.scales.y.max = baseline+2.5;
+      waveChart.update('none');
+      isRec = true; fullLog = [];
+      sessStart = Date.now(); clearInterval(sessTmr);
+      sessTmr = setInterval(updateTimer, 1000);
+      document.getElementById('sessStatus').textContent = '計測中';
+      document.getElementById('startBtn').textContent = '■ ストップ';
+      document.getElementById('startBtn').classList.add('rec');
+      document.getElementById('startBtn').disabled = false;
+      smoothBuf=[]; sPrev2=null; sPrev1=null; peakCooldownUntil=0;
+    }
+  }, 1000);
+  setStatus('ベースライン取得中...', 'cal');
+}
+function stopRec() {
+  if (!isRec) return;
+  isRec = false; clearInterval(sessTmr); clearTimeout(stoppedTmr);
+  document.getElementById('startBtn').textContent = '▶ スタート';
+  document.getElementById('startBtn').classList.remove('rec');
+  document.getElementById('sessStatus').textContent = fullLog.length > 0 ? '計測完了 — 区間分析へ' : 'ストップ済';
+  setABadge('stopped');
+  if (peakCount >= 3) {
+    document.getElementById('nextPlayerBtn').disabled = false;
+    document.getElementById('addTakeBtn').disabled = false;
+    const rb = document.getElementById('reviewBtn'); rb.disabled = false; rb.style.opacity = '1';
+  }
+}
+document.getElementById('startBtn').addEventListener('click', () => { isRec ? stopRec() : startRec(); });
+document.getElementById('calBtn').addEventListener('click', () => { if (bleRX) bleRX.writeValue(new TextEncoder().encode('CAL\n')).catch(()=>{}); startCalib(); });
+
+// ══════════════ REVIEW ══════════════
+document.getElementById('reviewBtn').addEventListener('click', enterReview);
+document.getElementById('backBtn').addEventListener('click', () => {
+  goTo('v-meas');
+  if (revChart) { revChart.destroy(); revChart = null; }
+});
+
+function enterReview() {
+  if (!fullLog.length) { alert('記録データがありません'); return; }
+  goTo('v-review');
+  const sec = sessStart ? Math.floor((Date.now()-sessStart)/1000) : 0;
+  const m = Math.floor(sec/60), s = sec%60;
+  document.getElementById('rv_peaks').textContent = peakCount;
+  document.getElementById('rv_dur').textContent = m+':'+(s+'').padStart(2,'0');
+  document.getElementById('rv_maxImp').textContent = maxImpact > 0 ? maxImpact.toFixed(2) : '—';
+  document.getElementById('rv_maxG').textContent = maxGyro > 0 ? Math.round(maxGyro) : '—';
+  buildRevChart(revAxis);
+  buildTaxis();
+  setupDrag();
+  selStart = null; selEnd = null; selData = null;
+  document.getElementById('selInfo').style.display = 'none';
+  document.getElementById('selOv').style.display = 'none';
+  document.getElementById('rangeCard').classList.remove('active');
+  document.getElementById('rangeAiBtn').disabled = true;
+}
+
+document.querySelectorAll('.ras-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.ras-btn').forEach(x => x.classList.remove('sel'));
+    b.classList.add('sel'); revAxis = b.dataset.rax;
+    if (revChart) { revChart.destroy(); revChart = null; }
+    buildRevChart(revAxis);
+  });
+});
+
+function getLogVal(d, ax) {
+  const map = {abs:'abs',ax:'ax',ay:'ay',az:'az',gx:'gx',gy:'gy',gz:'gz'};
+  return d[map[ax]] || d.abs;
+}
+function buildRevChart(ax) {
+  if (revChart) { revChart.destroy(); revChart = null; }
+  const ctx = document.getElementById('revCanvas').getContext('2d');
+  const MAX = 2000, step = Math.max(1, Math.floor(fullLog.length/MAX));
+  const pts = [], labels = [];
+  for (let i = 0; i < fullLog.length; i += step) { pts.push(getLogVal(fullLog[i], ax)); labels.push(i); }
+  const radii = pts.map(() => 0);
+  peakTimes.forEach(t => { const idx = fullLog.findIndex(d => d.t >= t); if (idx >= 0) { const ci = Math.floor(idx/step); if (ci < radii.length) radii[ci] = 5; } });
+  const col = axisColors[ax==='gx'||ax==='gy'||ax==='gz'?'gyro':ax] || '#E88A0A';
+  revChart = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets: [{ data: pts, borderColor: col, borderWidth: 1.2, pointRadius: radii, pointBackgroundColor: '#E88A0A', pointBorderColor: '#E88A0A', fill: true, backgroundColor: col+'18', tension: .2, spanGaps: false }] },
+    options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#484f58', font: { family: "'Barlow Condensed',sans-serif", size: 9 }, callback: v => v.toFixed(1) }, border: { display: false } } } }
+  });
+}
+function buildTaxis() {
+  if (!fullLog.length) return;
+  const dur = (fullLog[fullLog.length-1].t - fullLog[0].t) / 1000;
+  const ax = document.getElementById('taxis'); ax.innerHTML = '';
+  for (let i = 0; i <= 6; i++) { const sec = Math.round(dur*i/6); const sp = document.createElement('span'); sp.textContent = Math.floor(sec/60)+':'+(sec%60+'').padStart(2,'0'); ax.appendChild(sp); }
+}
+
+// ══════════════ DRAG ══════════════
+function setupDrag() {
+  const outer = document.getElementById('revOuter'), ov = document.getElementById('selOv');
+  outer.addEventListener('mousedown', e => { isDrag=true; const r=outer.getBoundingClientRect(); dragX0=e.clientX-r.left; selStart=dragX0/r.width; selEnd=selStart; ov.style.display='block'; ov.style.left=dragX0+'px'; ov.style.width='0'; e.preventDefault(); });
+  outer.addEventListener('mousemove', e => { if(!isDrag)return; const r=outer.getBoundingClientRect(); const x=Math.max(0,Math.min(r.width,e.clientX-r.left)); selEnd=x/r.width; const l=Math.min(dragX0,x),w=Math.abs(x-dragX0); ov.style.left=l+'px'; ov.style.width=w+'px'; });
+  const endDrag = e => { if(!isDrag)return; isDrag=false; const r=outer.getBoundingClientRect(); const x=Math.max(0,Math.min(r.width,e.clientX-r.left)); selEnd=x/r.width; if(Math.abs(selEnd-selStart)<.01){ov.style.display='none';return;} computeSel(); };
+  outer.addEventListener('mouseup', endDrag); outer.addEventListener('mouseleave', endDrag);
+  outer.addEventListener('touchstart', e=>{const t=e.touches[0],r=outer.getBoundingClientRect();isDrag=true;dragX0=t.clientX-r.left;selStart=dragX0/r.width;selEnd=selStart;ov.style.display='block';ov.style.left=dragX0+'px';ov.style.width='0';e.preventDefault();},{passive:false});
+  outer.addEventListener('touchmove', e=>{if(!isDrag)return;const t=e.touches[0],r=outer.getBoundingClientRect();const x=Math.max(0,Math.min(r.width,t.clientX-r.left));selEnd=x/r.width;const l=Math.min(dragX0,x),w=Math.abs(x-dragX0);ov.style.left=l+'px';ov.style.width=w+'px';e.preventDefault();},{passive:false});
+  outer.addEventListener('touchend',e=>{if(!isDrag)return;isDrag=false;if(Math.abs(selEnd-selStart)<.01){ov.style.display='none';return;}computeSel();});
+}
+
+function computeSel() {
+  if (!fullLog.length) return;
+  const lo = Math.min(selStart,selEnd), hi = Math.max(selStart,selEnd);
+  const n = fullLog.length, iS = Math.max(0,Math.floor(lo*n)), iE = Math.min(n-1,Math.ceil(hi*n));
+  const slice = fullLog.slice(iS,iE+1); if (slice.length < 2) return;
+  const tS = slice[0].t, tE = slice[slice.length-1].t;
+  const durSec = (tE-tS)/1000;
+  const seStr = peakTimes.reduce((a,t,i)=>{if(t>=tS&&t<=tE)a.push({t,impact:peakImpacts[i]});return a;},[]);
+  let cad=0, avgImp=0;
+  if (seStr.length>=2){const span=(seStr[seStr.length-1].t-seStr[0].t)/1000;cad=span>0?(seStr.length-1)/span*60:0;}
+  if (seStr.length>=1) avgImp=seStr.reduce((s,x)=>s+x.impact,0)/seStr.length;
+  const maxGSel = Math.max(...slice.map(d=>Math.sqrt(d.gx*d.gx+d.gy*d.gy+d.gz*d.gz)));
+  const m=Math.floor(durSec/60),s=Math.round(durSec%60);
+  document.getElementById('sDur').textContent=m+':'+(s+'').padStart(2,'0');
+  document.getElementById('sPeaks').textContent=seStr.length;
+  document.getElementById('sCadR').textContent=cad>0?Math.round(cad):'—';
+  document.getElementById('sImpR').textContent=seStr.length?avgImp.toFixed(2):'—';
+  document.getElementById('sMaxG').textContent=isFinite(maxGSel)?Math.round(maxGSel):'—';
+  document.getElementById('selInfo').style.display='block';
+  document.getElementById('rangeAiBtn').disabled=seStr.length<2;
+  selData={slice,seStr,durSec,cad,avgImp,lo,hi,maxGSel};
+}
+
+// ══════════════ AI 分析 ══════════════
+document.getElementById('rangeAiBtn').addEventListener('click', async () => {
+  if (!selData) return;
+  const sd = selData, btn = document.getElementById('rangeAiBtn'), out = document.getElementById('rangeOut'), card = document.getElementById('rangeCard');
+  btn.disabled = true; card.classList.add('active');
+  const pct = v => Math.round(v*100);
+  document.getElementById('rangeLbl').textContent = `選択: ${pct(sd.lo)}%〜${pct(sd.hi)}% | ${sd.seStr.length}ピーク`;
+  const m=Math.floor(sd.durSec/60),s=Math.round(sd.durSec%60);
+  const maxImpSel=sd.seStr.length?Math.max(...sd.seStr.map(x=>x.impact)):0;
+  let consist='—';
+  if(sd.seStr.length>=3){const imps2=sd.seStr.map(x=>x.impact);const mean=imps2.reduce((a,b)=>a+b)/imps2.length;const cv=Math.sqrt(imps2.reduce((a,x)=>a+(x-mean)**2,0)/imps2.length)/mean;consist=Math.max(0,Math.round((1-cv)*100));}
+  const sportInfo = SPORT_INFO[currentSport] || {name:'スポーツ'};
+  const selIndNames = [...selectedIndicators].map(id => INDICATORS.find(i=>i.id===id)?.sportLabels[currentSport]||id).join('、');
+  out.innerHTML='<div style="display:flex;align-items:center;gap:8px;color:var(--teal);font-size:13px">分析中 <div class="ai-dots"><span></span><span></span><span></span></div></div>';
+  out.classList.add('active');
+  setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+  const prompt=`あなたはスポーツデータサイエンスの専門家です。小学生〜中学生のスポーツクラブ活動のセンサーデータを分析してください。
+
+【種目】${sportInfo.name}
+【測定した指標】${selIndNames}
+【選択区間データ】
+- 区間長: ${m}分${s}秒
+- ピーク数: ${sd.seStr.length}回
+- 平均テンポ: ${sd.cad>0?Math.round(sd.cad):'—'} rpm
+- 平均パワー: ${sd.avgImp.toFixed(3)} G
+- 最大パワー: ${maxImpSel.toFixed(3)} G
+- パワー均一性: ${consist}/100
+- 最大角速度: ${isFinite(sd.maxGSel)?Math.round(sd.maxGSel):'—'} °/s
+- ベースライン加速度: ${baseline?baseline.toFixed(4):'—'} G
+【全体比較】
+- 全体平均パワー: ${peakCount>0?(sumImpact/peakCount).toFixed(3):'—'} G
+- 全体最大パワー: ${maxImpact.toFixed(3)} G
+- 総ピーク数: ${peakCount}
+
+この選択区間を分析し：
+1. この区間の動きの特徴（パワー・テンポ・安定性から）
+2. ${sportInfo.name}の文脈で読み取れること
+3. 全体と比べて気になる点
+4. 小学生・中学生向けの改善アドバイス
+日本語で箇条書きを交えて350字程度で。`;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{role:'user',content:prompt}] }) });
+    const data = await res.json();
+    out.textContent = data.content?.map(b=>b.text||'').join('') || 'エラーが発生しました';
+  } catch(e) { out.textContent = 'AI分析エラー: ' + e.message; }
+  btn.disabled = false;
+});
+
+// ══════════════ HELPERS ══════════════
+function setABadge(t) {
+  const b=document.getElementById('actBadge'),ic=document.getElementById('actIcon'),lb=document.getElementById('actLbl');
+  if(t==='active'){b.className='abadge active';ic.textContent='▶';lb.textContent='ACTIVE';}
+  else{b.className='abadge';ic.textContent='■';lb.textContent='停止中';}
+}
+function updateTimer() {
+  if(!sessStart)return;
+  const sec=Math.floor((Date.now()-sessStart)/1000),m=Math.floor(sec/60),s=sec%60;
+  const str=m+':'+(s+'').padStart(2,'0');
+  const el=document.getElementById('vTime'); if(el) el.textContent=str;
+  document.getElementById('gDur').textContent=str;
+}
+function setConn(on){bleConn=on;document.getElementById('connectBtn').textContent=on?'切断':'BLE 接続';document.getElementById('connectBtn').className=on?'on':'';}
+function setStatus(msg,t){document.getElementById('slabel').textContent=msg;const d=document.getElementById('sdot');d.className='sdot';if(t==='connected')d.classList.add('on');if(t==='cal')d.classList.add('cal');}
+function onDisconn(){setConn(false);setStatus('切断されました','');clearInterval(sessTmr);}
+function disconnect(){if(bleDevice&&bleDevice.gatt.connected)bleDevice.gatt.disconnect();setConn(false);setStatus('未接続','');clearInterval(sessTmr);}
+
+document.getElementById('csvBtn').addEventListener('click',()=>{
+  if(!fullLog.length){alert('データなし');return;}
+  const hdr='t,ax,ay,az,gx,gy,gz,abs\n';
+  const rows=fullLog.map(d=>`${d.t},${d.ax.toFixed(4)},${d.ay.toFixed(4)},${d.az.toFixed(4)},${d.gx.toFixed(2)},${d.gy.toFixed(2)},${d.gz.toFixed(2)},${d.abs.toFixed(4)}`).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([hdr+rows],{type:'text/csv'}));
+  a.download='gutsgear_'+currentSport+'_'+new Date().toISOString().slice(0,16).replace('T','_')+'.csv';a.click();
+});
+
+document.getElementById('clearBtn').addEventListener('click',()=>{
+  if(!confirm('現在の計測データをリセットしますか？'))return;
+  resetMeasState();
+  document.getElementById('sessStatus').textContent='リセット済 — スタートを押してください';
+});
+</script>
+</body>
 </html>
