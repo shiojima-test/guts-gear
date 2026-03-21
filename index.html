@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GUTS GEAR - 限界を超えろ</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Inter:wght@400;600;800;900&display=swap');
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --bg-primary: #0a0a0a; --bg-secondary: #111111; --bg-card: #1a1a1a; --accent: #ff3c00; --accent-glow: rgba(255, 60, 0, 0.3); --text-primary: #ffffff; --text-secondary: #a0a0a0; --text-muted: #666666; --border: #2a2a2a; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', 'Noto Sans JP', sans-serif; background: var(--bg-primary); color: var(--text-primary); overflow-x: hidden; line-height: 1.6; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-size: 1.4rem; font-weight: 900; letter-spacing: 0.15em; color: var(--text-primary); text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text-secondary); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta { background: var(--accent); color: #fff; padding: 0.6rem 1.5rem; border: none; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 25px var(--accent-glow); }
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 6rem 2rem 4rem; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, transparent 50%); opacity: 0.15; animation: pulse 8s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.15; } 50% { transform: scale(1.1); opacity: 0.25; } }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-tagline-top { font-size: 0.9rem; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; }
+    .hero-title { font-size: clamp(4rem, 12vw, 10rem); font-weight: 900; letter-spacing: 0.05em; line-height: 0.95; margin-bottom: 1rem; }
+    .hero-title .accent { color: var(--accent); }
+    .hero-tagline { font-family: 'Noto Sans JP', sans-serif; font-size: clamp(1.5rem, 4vw, 2.8rem); font-weight: 700; color: var(--text-secondary); margin-bottom: 0.8rem; letter-spacing: 0.15em; }
+    .hero-sub { font-size: 1rem; color: var(--text-muted); max-width: 500px; margin: 0 auto 3rem; line-height: 1.8; }
+    .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn { display: inline-block; padding: 1rem 2.5rem; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: all 0.3s; border: none; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px var(--accent-glow); }
+    .btn-outline { background: transparent; color: var(--text-primary); border: 2px solid var(--border); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 1; animation: bounce 2s infinite; }
+    .hero-scroll span { display: block; width: 2px; height: 40px; background: linear-gradient(to bottom, var(--accent), transparent); margin: 0 auto; }
+    @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stat { padding: 2.5rem 2rem; text-align: center; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: none; }
+    .stat-number { font-size: 2.5rem; font-weight: 900; color: var(--accent); letter-spacing: -0.02em; }
+    .stat-label { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.3rem; }
+    section { padding: 6rem 2rem; }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+    .section-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; letter-spacing: -0.02em; margin-bottom: 1rem; }
+    .section-desc { font-size: 1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+    .categories { background: var(--bg-secondary); }
+    .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
+    .category-card { position: relative; background: var(--bg-card); border: 1px solid var(--border); padding: 3rem 2rem; overflow: hidden; transition: all 0.4s; cursor: pointer; }
+    .category-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+    .category-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.4s; }
+    .category-card:hover::after { transform: scaleX(1); }
+    .category-icon { font-size: 3rem; margin-bottom: 1.5rem; display: block; }
+    .category-name { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .category-name-jp { font-family: 'Noto Sans JP', sans-serif; font-size: 0.85rem; color: var(--accent); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 1rem; }
+    .category-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; }
+    .category-link { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-primary); text-decoration: none; transition: color 0.3s; }
+    .category-link:hover { color: var(--accent); }
+    .category-link::after { content: ' \2192'; }
+    .featured { max-width: 1200px; margin: 0 auto; }
+    .featured-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .featured-visual { background: var(--bg-card); border: 1px solid var(--border); aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 8rem; position: relative; }
+    .featured-visual::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 40%, var(--accent-glow), transparent 60%); opacity: 0.3; }
+    .featured-info .section-label { text-align: left; }
+    .featured-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; }
+    .featured-title-jp { font-family: 'Noto Sans JP', sans-serif; font-size: 1.1rem; color: var(--accent); font-weight: 700; margin-bottom: 1.5rem; }
+    .featured-desc { font-size: 1rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 2rem; }
+    .featured-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+    .spec { padding: 1rem; background: var(--bg-card); border: 1px solid var(--border); }
+    .spec-value { font-size: 1.2rem; font-weight: 800; color: var(--accent); }
+    .spec-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .philosophy { background: var(--bg-secondary); text-align: center; }
+    .philosophy-quote { font-family: 'Noto Sans JP', sans-serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; line-height: 1.6; max-width: 800px; margin: 0 auto 2rem; letter-spacing: 0.05em; }
+    .philosophy-quote span { color: var(--accent); }
+    .philosophy-text { font-size: 1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; line-height: 1.8; }
+    .cta-section { text-align: center; padding: 8rem 2rem; }
+    .cta-section .section-title { margin-bottom: 1.5rem; }
+    .cta-form { display: flex; gap: 0; max-width: 500px; margin: 2rem auto 0; }
+    .cta-form input { flex: 1; padding: 1rem 1.5rem; border: 2px solid var(--border); background: var(--bg-card); color: var(--text-primary); font-size: 0.9rem; font-family: inherit; outline: none; transition: border-color 0.3s; }
+    .cta-form input:focus { border-color: var(--accent); }
+    .cta-form input::placeholder { color: var(--text-muted); }
+    .cta-form button { padding: 1rem 2rem; background: var(--accent); color: #fff; border: none; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
+    .cta-form button:hover { box-shadow: 0 6px 25px var(--accent-glow); }
+    footer { border-top: 1px solid var(--border); padding: 4rem 2rem 2rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto 3rem; }
+    .footer-brand .nav-logo { font-size: 1.6rem; }
+    .footer-brand p { color: var(--text-muted); font-size: 0.85rem; margin-top: 1rem; line-height: 1.7; }
+    .footer-col h4 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 1.2rem; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.6rem; }
+    .footer-col a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
+    .footer-col a:hover { color: var(--accent); }
+    .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-muted); }
+    @media (max-width: 768px) { .nav-links { display: none; } .featured-grid { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr 1fr; } .stats { grid-template-columns: 1fr 1fr; } .stat { border-right: none; border-bottom: 1px solid var(--border); } .categories-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } .stats { grid-template-columns: 1fr; } .cta-form { flex-direction: column; } .hero-buttons { flex-direction: column; align-items: center; } }
+  </style>
+</head>
+<body>
+  <nav><a href="#" class="nav-logo">GUTS <span>GEAR</span></a><ul class="nav-links"><li><a href="#categories">コレクション</a></li><li><a href="#featured">注目商品</a></li><li><a href="#philosophy">哲学</a></li><li><a href="#contact">お問い合わせ</a></li></ul><button class="nav-cta">今すぐ購入</button></nav>
+  <section class="hero"><div class="hero-content"><div class="hero-tagline-top">Running &amp; Fitness Gear</div><h1 class="hero-title">GUTS<br><span class="accent">GEAR</span></h1><p class="hero-tagline">限界を超えろ</p><p class="hero-sub">すべてのランナーに、妥協のないパフォーマンスを。最先端テクノロジーと洗練されたデザインの融合。</p><div class="hero-buttons"><a href="#categories" class="btn btn-primary">コレクションを見る</a><a href="#philosophy" class="btn btn-outline">ブランドストーリー</a></div></div><div class="hero-scroll"><span></span></div></section>
+  <div class="stats"><div class="stat"><div class="stat-number">150+</div><div class="stat-label">アスリート契約</div></div><div class="stat"><div class="stat-number">42K</div><div class="stat-label">コミュニティメンバー</div></div><div class="stat"><div class="stat-number">98%</div><div class="stat-label">満足度</div></div><div class="stat"><div class="stat-number">12</div><div class="stat-label">開発拠点（国）</div></div></div>
+  <section class="categories" id="categories"><div class="section-header"><div class="section-label">Collection</div><h2 class="section-title">ギアカテゴリ</h2><p class="section-desc">あなたのパフォーマンスを最大化するために設計された、3つのコアカテゴリ。</p></div><div class="categories-grid"><div class="category-card"><span class="category-icon">👟</span><h3 class="category-name">SHOES</h3><div class="category-name-jp">シューズ</div><p class="category-desc">カーボンプレート搭載の最新レーシングシューズから、毎日のトレーニングを支えるデイリートレーナーまで。あらゆる路面と距離に対応。</p><a href="#" class="category-link">詳しく見る</a></div><div class="category-card"><span class="category-icon">🏃</span><h3 class="category-name">APPAREL</h3><div class="category-name-jp">アパレル</div><p class="category-desc">独自の吸湿速乾テクノロジーと空力デザイン。軽量かつ高機能なウェアが、あなたの走りを自由にする。</p><a href="#" class="category-link">詳しく見る</a></div><div class="category-card"><span class="category-icon">⌚</span><h3 class="category-name">ACCESSORIES</h3><div class="category-name-jp">アクセサリー</div><p class="category-desc">GPSウォッチ、ハイドレーションベスト、コンプレッションギアなど。細部にまでこだわったアクセサリーコレクション。</p><a href="#" class="category-link">詳しく見る</a></div></div></section>
+  <section id="featured"><div class="featured"><div class="section-header"><div class="section-label">Featured</div><h2 class="section-title">注目の新作</h2></div><div class="featured-grid"><div class="featured-visual">👟</div><div class="featured-info"><div class="section-label">New Release — 2026 Spring</div><h3 class="featured-title">GUTS RACER X</h3><div class="featured-title-jp">ガッツ レーサー エックス</div><p class="featured-desc">次世代カーボンプレートと反発性に優れたGUTSフォームを搭載。マラソンからスピードワークまで、すべてのランナーに最高の推進力を提供する一足。</p><div class="featured-specs"><div class="spec"><div class="spec-value">198g</div><div class="spec-label">重量 (27cm)</div></div><div class="spec"><div class="spec-value">40mm</div><div class="spec-label">スタック高</div></div><div class="spec"><div class="spec-value">8mm</div><div class="spec-label">ドロップ</div></div><div class="spec"><div class="spec-value">¥24,200</div><div class="spec-label">税込価格</div></div></div><a href="#" class="btn btn-primary">予約注文する</a></div></div></div></section>
+  <section class="philosophy" id="philosophy"><div class="section-header"><div class="section-label">Philosophy</div><h2 class="section-title">ブランド哲学</h2></div><p class="philosophy-quote">走ることは、<span>自分との約束</span>を守ること。<br>私たちは、その一歩一歩に<span>覚悟</span>を込める。</p><p class="philosophy-text">GUTS GEARは「根性」と「ギア」を掛け合わせたブランドです。どんな天候でも、どんな距離でも、最後まで走り抜く強い意志をサポートするギアを作り続けます。妥協のないものづくりで、すべてのランナーの挑戦に応えます。</p></section>
+  <section class="cta-section" id="contact"><div class="section-label">Newsletter</div><h2 class="section-title">最新情報を受け取る</h2><p class="section-desc">新商品やイベント情報をいち早くお届け。メンバー限定の特典も。</p><form class="cta-form" onsubmit="event.preventDefault(); alert('登録ありがとうございます！');"><input type="email" placeholder="メールアドレスを入力" required><button type="submit">登録する</button></form></section>
+  <footer><div class="footer-grid"><div class="footer-brand"><a href="#" class="nav-logo">GUTS <span>GEAR</span></a><p>すべてのランナーに、妥協のないパフォーマンスを。東京発、世界基準のランニングギアブランド。</p></div><div class="footer-col"><h4>製品</h4><ul><li><a href="#">シューズ</a></li><li><a href="#">アパレル</a></li><li><a href="#">アクセサリー</a></li><li><a href="#">新作</a></li></ul></div><div class="footer-col"><h4>サポート</h4><ul><li><a href="#">サイズガイド</a></li><li><a href="#">配送について</a></li><li><a href="#">返品・交換</a></li><li><a href="#">FAQ</a></li></ul></div><div class="footer-col"><h4>ブランド</h4><ul><li><a href="#">ストーリー</a></li><li><a href="#">アスリート</a></li><li><a href="#">イベント</a></li><li><a href="#">採用情報</a></li></ul></div></div><div class="footer-bottom"><span>&copy; 2026 GUTS GEAR. All rights reserved.</span><span>東京都渋谷区</span></div></footer>
+</body>
+</html>
