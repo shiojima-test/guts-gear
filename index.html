@@ -91,7 +91,11 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
   /* セッションサマリー */
   .rmet-grid{grid-template-columns:repeat(2,1fr) !important}
   /* レビュー画面 */
-  .rev-outer{height:160px}
+  .rev-outer{height:160px;overflow:hidden}
+  /* グラフはみ出し防止 */
+  .wave-wrap{height:140px;overflow:hidden}
+  .card{overflow:hidden}
+  canvas{max-width:100% !important}
   /* 参加者フォーム */
   #addPlayerForm input, #addPlayerForm select{font-size:13px}
 }
@@ -154,7 +158,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
 ══════════════════════════ */
 .meas-layout{display:grid;grid-template-columns:1fr 300px;gap:14px;align-items:start}
 @media(max-width:860px){.meas-layout{grid-template-columns:1fr}}
-.wave-wrap{height:180px;position:relative}
+.wave-wrap{height:180px;position:relative;overflow:hidden;width:100%}
 .axis-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .axis-btn{flex:1;min-width:44px;padding:5px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--fn);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
 .axis-btn.active-abs{border-color:var(--orange);background:var(--orange-dim);color:var(--orange)}
@@ -1992,14 +1996,13 @@ document.getElementById('connectBtn').addEventListener('click', async () => {
     try { bleRX = await svc.getCharacteristic(RX_UUID); } catch(e) { bleRX = null; }
     setConn(true);
     baseline = null; calibBuf = [];
-    setStatus('接続済 — スタートを押してください', 'connected');
+    setStatus('接続済 — 種目・指標を選んで測定へ', 'connected');
     document.getElementById('gaugeRow').style.display = 'flex';
     document.getElementById('sessStatus').textContent = 'スタートを押してください';
     document.getElementById('startBtn').disabled = false;
     Object.keys(wBuf).forEach(k => wBuf[k].fill(null));
     smoothBuf = []; sPrev2 = null; sPrev1 = null; peakCooldownUntil = 0;
-    // 測定画面にいなければ移動
-    if (!document.getElementById('v-meas').classList.contains('active')) goTo('v-meas');
+    // 接続後は自動遷移しない（種目・指標を選んでから測定へ）
   } catch(e) { setStatus('接続失敗: ' + e.message, ''); }
 });
 
