@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SchooMy センサーモニター（デモ）</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap');
+  :root {
+    --teal:#3AABA8;--orange:#E88A0A;--blue:#2E8EC4;--cream:#F5E4C4;
+    --dark:#0f1923;--panel:#162333;--border:rgba(58,171,168,0.25);
+    --text:#e8f4f4;--muted:#8ab4bf;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{background:#0f1923}
+  body{background:#0f1923 !important;color:#e8f4f4 !important;font-family:'Outfit',sans-serif;min-height:100vh;-webkit-text-fill-color:#e8f4f4}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(58,171,168,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(58,171,168,0.06) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+
+  header{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border);background:#0d1a28;backdrop-filter:blur(12px)}
+  .logo{display:flex;align-items:center;gap:10px}
+  .logo-mark{width:44px;height:44px;flex-shrink:0}
+  .logo-text{font-size:17px;font-weight:700;color:#3AABA8 !important;-webkit-text-fill-color:#3AABA8}
+  .logo-sub{font-size:10px;color:#8ab4bf !important;-webkit-text-fill-color:#8ab4bf;letter-spacing:.1em;text-transform:uppercase}
+  .demo-badge{background:rgba(232,138,10,0.2);border:1px solid rgba(232,138,10,0.5);color:#E88A0A !important;-webkit-text-fill-color:#E88A0A;font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;animation:blink 2s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0.5}}
+
+  /* ── 選択画面 ── */
+  #select-screen{position:relative;z-index:10;padding:28px 20px;max-width:600px;margin:0 auto}
+  .select-title{font-size:22px;font-weight:800;margin-bottom:4px;color:#e8f4f4 !important;-webkit-text-fill-color:#e8f4f4}
+  .select-sub{font-size:14px;color:#8ab4bf !important;-webkit-text-fill-color:#8ab4bf;margin-bottom:24px}
+  .sensor-list{display:flex;flex-direction:column;gap:10px}
+
+  .sensor-item{
+    display:flex;align-items:center;gap:16px;
+    background:#162333;border:1px solid rgba(58,171,168,0.25);
+    border-radius:16px;padding:14px 18px;
+    cursor:pointer;transition:all .18s;position:relative;overflow:hidden;
+  }
+  .sensor-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--item-color,#3AABA8);border-radius:3px 0 0 3px}
+  .sensor-item:hover{border-color:var(--item-color,#3AABA8);transform:translateX(4px);box-shadow:-4px 0 16px rgba(0,0,0,0.4)}
+  .sensor-item:active{transform:translateX(2px)}
+
+  .item-svg{width:52px;height:52px;flex-shrink:0}
+  .item-svg svg{width:100%;height:100%}
+  .item-info{flex:1}
+  .item-name{font-size:16px;font-weight:700;margin-bottom:2px;color:#e8f4f4 !important;-webkit-text-fill-color:#e8f4f4}
+  .item-desc{font-size:12px;color:#8ab4bf !important;-webkit-text-fill-color:#8ab4bf}
+  .item-arrow{font-size:20px;color:#8ab4bf !important;-webkit-text-fill-color:#8ab4bf}
+
+  /* ── モニター画面 ── */
+  #monitor-screen{display:none;position:relative;z-index:10;padding:24px 20px;max-width:680px;margin:0 auto}
+  .monitor-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .btn-back{padding:8px 16px;background:transparent;border:1px solid rgba(58,171,168,0.3);border-radius:8px;color:#8ab4bf !important;-webkit-text-fill-color:#8ab4bf;font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;transition:all .2s}
+  .btn-back:hover{border-color:#3AABA8;color:#3AABA8 !important;-webkit-text-fill-color:#3AABA8}
+  .monitor-title{font-size:18px;font-weight:800;color:#e8f4f4 !important;-webkit-text-fill-color:#e8f4f4}
+
+  /* ── センサーカード ── */
+  .sensor-card{background:#162333;border:1px solid rgba(58,171,168,0.25);border-radius:20px;padding:28px;position:relative;overflow:hidden;animation:fadeIn .35s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .sensor-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--card-color,#3AABA8)}
+
+  .card-top{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+  .card-svg{width:64px;height:64px;flex-shrink:0}
+  .card-svg svg{width:100%;height:100%}
+  .card-name{font-size:20px;font-weight:800;color:#e8f4f4 !important;-webkit-text-fill-color:#e8f4f4}
+  .card-desc{font-size:12px;color:#8ab4bf !important;-webkit-text-fill-color:#8ab4bf;margin-top:2px}
+
+  .value-display{display:flex;align-items:flex-end;gap:8px;margin-bottom:24px}
+  .big-value{font-family:'JetBrains Mono',monospace;font-size:72px;font-weight:600;line-height:1;color:#e8f4f4 !important;-webkit-text-fill-color:#e8f4f4}
+  .big-unit{font-size:22px;color:#8ab4bf !important;-webkit-text-fill-color:#8ab4bf;padding-bottom:10px}
+
+  .digital-display{margin-bottom:24px}
+  .digital-badge{display:inline-block;padding:14px 36px;border-radius:100px;font-size:32px;font-weight:800;font-family:'JetBrains Mono',monospace;transition:all .2s}
+  .digital-badge.on{background:rgba(76,255,145,0.15);color:#4cff91 !important;-webkit-text-fill-color:#4cff91;border:1px solid rgba(76,255,145,0.3);box-shadow:0 0 20px rgba(76,255,145,0.15)}
+  .digital-badge.off{background:rgba(122,157,170,0.08);color:#8ab4bf !important;-webkit-text-fill-color:#8ab4bf;border:1px solid rgba(58,171,168,0.2)}
+
+  .graph-wrap{width:100%;height:100px;background:rgba(255,255,255,0.03);border-radius:12px;overflow:hidden;margin-bottom:16px}
+  .graph-wrap svg{width:100%;height:100%}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .stat-box{background:rgba(255,255,255,0.04);border-radius:10px;padding:12px;text-align:center}
+  .stat-label{font-size:10px;color:#8ab4bf !important;-webkit-text-fill-color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+  .stat-value{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;color:#e8f4f4 !important;-webkit-text-fill-color:#e8f4f4}
+
+  /* ── レスポンシブ ── */
+  @media(max-width:600px){
+    #select-screen{padding:20px 16px}
+    #monitor-screen{padding:16px 14px}
+    .select-title{font-size:18px}
+    .sensor-item{padding:12px 14px;gap:12px}
+    .item-svg{width:44px;height:44px}
+    .item-name{font-size:15px}
+    .sensor-card{padding:20px 16px}
+    .card-svg{width:52px;height:52px}
+    .card-name{font-size:17px}
+    .big-value{font-size:56px}
+    .big-unit{font-size:18px}
+    .digital-badge{font-size:26px;padding:12px 28px}
+    .stat-value{font-size:15px}
+    header{padding:14px 16px}
+  }
+  @media(max-width:380px){
+    .big-value{font-size:44px}
+    .stats{gap:8px}
+    .stat-box{padding:10px 8px}
+    .item-svg{width:38px;height:38px}
+    .sensor-card{padding:16px 14px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="logo-mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.bb1{fill:#ebebeb}.bb2{fill:#3d99ff}.bb3,.bb6{fill:#524e5c}.bb4,.bb5,.bb8,.bb9{fill:none}.bb4,.bb5,.bb6,.bb7{stroke:#524e5c}.bb4,.bb5,.bb6,.bb7,.bb8{stroke-linejoin:round}.bb4,.bb6,.bb7{stroke-width:4px}.bb5{stroke-width:9px}.bb8{stroke:#3d99ff;stroke-width:6px}.bb7{fill:#ebebeb}</style></defs><path class="bb1" d="M196.16,283.46c28.72,0,49.45-3,66.9-20.41s20.41-34.39,20.41-66.89V87.31c0-28.73-3-49.46-20.41-66.9S228.66,0,196.16,0H87.31C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.4,20.41,66.9,20.41Z"/><rect class="bb2" x="52.85" y="52.85" width="177.76" height="177.76" rx="16.88"/><rect class="bb3" x="52.85" y="131.25" width="28.2" height="62.32" rx="5.67"/><rect class="bb4" x="52.85" y="131.25" width="28.2" height="62.32" rx="5.67"/><line class="bb4" x1="81.05" y1="182.06" x2="91.77" y2="182.06"/><line class="bb4" x1="81.05" y1="142.76" x2="91.77" y2="142.76"/><line class="bb4" x1="81.05" y1="152.58" x2="91.77" y2="152.58"/><line class="bb4" x1="81.05" y1="162.41" x2="91.77" y2="162.41"/><line class="bb4" x1="81.05" y1="172.24" x2="91.77" y2="172.24"/><rect class="bb3" x="202.41" y="89.27" width="28.2" height="62.32" rx="5.67"/><rect class="bb4" x="202.41" y="89.27" width="28.2" height="62.32" rx="5.67"/><line class="bb4" x1="202.41" y1="100.77" x2="191.7" y2="100.77"/><line class="bb4" x1="202.41" y1="140.08" x2="191.7" y2="140.08"/><line class="bb4" x1="202.41" y1="130.25" x2="191.7" y2="130.25"/><line class="bb4" x1="202.41" y1="120.42" x2="191.7" y2="120.42"/><line class="bb4" x1="202.41" y1="110.6" x2="191.7" y2="110.6"/><rect class="bb1" x="107.57" y="52.85" width="32.21" height="25.16" rx="3.4"/><rect class="bb4" x="107.57" y="52.85" width="32.21" height="25.16" rx="3.4"/><rect class="bb1" x="164.86" y="52.85" width="32.21" height="25.16" rx="3.4"/><rect class="bb4" x="164.86" y="52.85" width="32.21" height="25.16" rx="3.4"/><rect class="bb1" x="143.69" y="205.45" width="32.21" height="25.16" rx="3.4"/><rect class="bb4" x="143.69" y="205.45" width="32.21" height="25.16" rx="3.4"/><rect class="bb1" x="86.4" y="205.45" width="32.21" height="25.16" rx="3.4"/><rect class="bb4" x="86.4" y="205.45" width="32.21" height="25.16" rx="3.4"/><rect class="bb1" x="52.85" y="86.4" width="25.16" height="32.21" rx="3.4"/><rect class="bb4" x="52.85" y="86.4" width="25.16" height="32.21" rx="3.4"/><rect class="bb5" x="52.85" y="52.85" width="177.76" height="177.76" rx="16.88"/><path class="bb6" d="M170.87,126.35V114.91a6.37,6.37,0,0,0-6.35-6.36h-39.9a6.37,6.37,0,0,0-6.35,6.36v11.44"/><path class="bb7" d="M118.27,126.35v41.14a6.37,6.37,0,0,0,6.35,6.36h39.9a6.37,6.37,0,0,0,6.35-6.36V126.35"/><path class="bb8" d="M157.79,141.19v15.63a4.15,4.15,0,0,1-4.13,4.14H139.22"/><line class="bb4" x1="181.74" y1="158.53" x2="170.87" y2="158.53"/><line class="bb4" x1="181.74" y1="150.1" x2="170.87" y2="150.1"/><line class="bb4" x1="181.74" y1="141.67" x2="170.87" y2="141.67"/><line class="bb4" x1="107.39" y1="158.53" x2="118.27" y2="158.53"/><line class="bb4" x1="107.39" y1="141.67" x2="118.27" y2="141.67"/><line class="bb4" x1="107.39" y1="150.1" x2="118.27" y2="150.1"/></svg></div>
+    <div><div class="logo-text">SchooMy</div><div class="logo-sub">Sensor Monitor</div></div>
+  </div>
+  <div class="demo-badge">DEMO MODE</div>
+</header>
+
+<div id="select-screen">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
+    <div style="width:48px;height:48px;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.s19a{fill:#ebebeb}.s19b{fill:#fff}.s19c{fill:#28cbc1}.s19d,.s19e,.s19f,.s19g,.s19h,.s19i{fill:none}.s19d,.s19e,.s19f,.s19g,.s19h{stroke:#524e5c;stroke-linejoin:round}.s19d{stroke-width:8px}.s19e{stroke-width:9px}.s19f,.s19h{stroke-linecap:round}.s19f,.s19g{stroke-width:6px}.s19h{stroke-width:7px}</style></defs><path class="s19a" d="M196.16,283.46c28.72,0,49.45-3,66.89-20.41s20.41-34.39,20.41-66.89V87.31c0-28.73-3-49.46-20.41-66.9S228.66,0,196.16,0H87.31C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.39,20.41,66.9,20.41Z"/><rect class="s19b" x="60.56" y="67.92" width="162.35" height="145.88" rx="16.88"/><path class="s19c" d="M205.31,67.91H76.71A16.93,16.93,0,0,0,59.84,84.79v26H222.19v-26A16.93,16.93,0,0,0,205.31,67.91Z"/><line class="s19d" x1="60.56" y1="110.76" x2="222.91" y2="110.76"/><rect class="s19e" x="60.56" y="67.92" width="162.35" height="145.88" rx="16.88"/><line class="s19f" x1="85.88" y1="89.34" x2="85.88" y2="89.34"/><line class="s19f" x1="99.1" y1="89.34" x2="99.1" y2="89.34"/><line class="s19f" x1="112.33" y1="89.34" x2="112.33" y2="89.34"/><line class="s19g" x1="202.11" y1="89.34" x2="182.1" y2="89.34"/><polyline class="s19h" points="101.03 144.3 108.01 144.3 108.01 176.57"/><polyline class="s19h" points="130.02 144.3 144.72 144.3 144.72 158.68 130.55 158.68 130.55 175.55 144.72 175.55"/><polyline class="s19h" points="166.56 175.55 180.73 175.55 180.73 158.68"/><polyline class="s19h" points="166.56 144.3 180.73 144.3 180.73 158.68 166.56 158.68"/></svg></div>
+    <div class="select-title">センサーを選んでください</div>
+  </div>
+  <div class="select-sub">繋いでいるセンサーを1つ選ぶとデータが表示されます</div>
+
+  <div class="sensor-list" id="sensor-list"></div>
+</div>
+
+<div id="monitor-screen">
+  <div class="monitor-header">
+    <button class="btn-back" onclick="goBack()">← 戻る</button>
+    <div class="monitor-title" id="monitor-title"></div>
+  </div>
+  <div id="card-area"></div>
+</div>
+
+<script>
+// ── SVGアイコン ───────────────────────────────────────
+const ICONS = {
+  ondo:     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.i1a{fill:#ebebeb}.i1b{fill:#2876ff}.i1c,.i1d,.i1h,.i1i{fill:none}.i1c{stroke:#524e5c;stroke-width:9px}.i1c,.i1d,.i1g,.i1h{stroke-linejoin:round}.i1d,.i1g,.i1h{stroke:#fff}.i1d,.i1g{stroke-linecap:round}.i1d{stroke-width:10px}.i1e{fill:#524e5c}.i1f{fill:#3b3747}.i1g{fill:#fff}.i1g,.i1h{stroke-width:4px}</style></defs><path class="i1a" d="M87.31,0C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.39,20.41,66.9,20.41H196.16c28.72,0,49.45-3,66.89-20.41s20.41-34.39,20.41-66.89V87.31c0-28.73-3-49.46-20.41-66.9S228.66,0,196.16,0Z"/><rect class="i1b" x="84.09" y="51.82" width="115.28" height="115.28" rx="16.07"/><rect class="i1c" x="84.09" y="51.82" width="115.28" height="115.28" rx="16.07"/><rect class="i1a" x="113.27" y="167.1" width="56.92" height="64.86" rx="5.36"/><rect class="i1c" x="113.27" y="167.1" width="56.92" height="64.86" rx="5.36"/><line class="i1c" x1="141.73" y1="167.1" x2="141.73" y2="185.6"/><line class="i1d" x1="182.23" y1="149.96" x2="182.23" y2="149.96"/><line class="i1d" x1="101.24" y1="149.96" x2="101.24" y2="149.96"/><path class="i1e" d="M173.56,98.08a31.83,31.83,0,1,0-62.26,9.33h60.87A31.91,31.91,0,0,0,173.56,98.08Z"/><path class="i1f" d="M111.3,107.41a31.64,31.64,0,0,0,6,11h48.89a32,32,0,0,0,6-11Z"/><circle class="i1g" cx="141.73" cy="149.52" r="4.38"/><line class="i1h" x1="141.73" y1="145.14" x2="141.73" y2="125.85"/><line class="i1h" x1="151.31" y1="139.07" x2="146.32" y2="139.07"/><line class="i1h" x1="151.31" y1="127.93" x2="146.32" y2="127.93"/><line class="i1h" x1="151.31" y1="133.38" x2="146.32" y2="133.38"/></svg>`,
+  akarusa:  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.i2a{fill:#ebebeb}.i2b{fill:#2876ff}.i2c,.i2d,.i2e,.i2g{fill:none}.i2c{stroke:#524e5c;stroke-width:9px}.i2c,.i2d,.i2e{stroke-linejoin:round}.i2d{stroke:#fff;stroke-width:10px}.i2d,.i2e{stroke-linecap:round}.i2e{stroke:#ff3d37;stroke-width:5.85px}.i2f{fill:#fff}</style></defs><path class="i2a" d="M87.31,0C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.4,20.41,66.9,20.41H196.16c28.72,0,49.45-3,66.89-20.41s20.42-34.39,20.42-66.89V87.31c0-28.73-3-49.46-20.42-66.9S228.66,0,196.16,0Z"/><rect class="i2b" x="84.09" y="51.82" width="115.28" height="115.28" rx="16.07"/><rect class="i2c" x="84.09" y="51.82" width="115.28" height="115.28" rx="16.07"/><rect class="i2a" x="113.27" y="167.1" width="56.92" height="64.86" rx="5.36"/><rect class="i2c" x="113.27" y="167.1" width="56.92" height="64.86" rx="5.36"/><line class="i2c" x1="141.73" y1="167.1" x2="141.73" y2="185.6"/><line class="i2d" x1="182.23" y1="149.96" x2="182.23" y2="149.96"/><line class="i2d" x1="101.24" y1="149.96" x2="101.24" y2="149.96"/><path class="i2a" d="M165.89,64.69A10.2,10.2,0,0,0,160.77,63H122.7a10.17,10.17,0,0,0-5.12,1.67s-14.83,8.87-14.83,30.6,14.83,30.59,14.83,30.59a10.09,10.09,0,0,0,5.12,1.68h38.07a10.12,10.12,0,0,0,5.12-1.68s14.82-8.87,14.82-30.59S165.89,64.69,165.89,64.69Z"/><path class="i2e" d="M122.89,116.55h30.89a7.09,7.09,0,1,0,0-14.17"/><path class="i2e" d="M122.89,74h30.89a7.09,7.09,0,1,1,0,14.17H129.69a7.09,7.09,0,0,0,0,14.18h24.09"/><line class="i2d" x1="170.79" y1="95.29" x2="170.79" y2="95.29"/><line class="i2d" x1="112.67" y1="95.29" x2="112.67" y2="95.29"/><path class="i2f" d="M158.14,136.91a8.78,8.78,0,0,1,.68,3.37,8.67,8.67,0,0,1-12,8,8.67,8.67,0,1,0,11.36-11.35Z"/><circle class="i2f" cx="130.66" cy="144.98" r="4.57"/></svg>`,
+  dojou:    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.i3a{fill:#ebebeb}.i3b,.i3c,.i3e,.i3g{fill:none}.i3b,.i3c,.i3d{stroke:#524e5c}.i3b,.i3c,.i3d,.i3e{stroke-linejoin:round}.i3b,.i3d{stroke-width:9px}.i3c,.i3e{stroke-linecap:round;stroke-width:8px}.i3d{fill:#2876ff}.i3e{stroke:#fff}.i3f{fill:#fff}</style></defs><path class="i3a" d="M196.16,283.46c28.72,0,49.45-3,66.89-20.41s20.41-34.39,20.41-66.89V87.31c0-28.73-3-49.46-20.41-66.9S228.66,0,196.16,0H87.31C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.39,20.41,66.9,20.41Z"/><rect class="i3a" x="118.61" y="199.71" width="46.25" height="49.74" rx="4.11"/><rect class="i3b" x="118.61" y="199.71" width="46.25" height="49.74" rx="4.11"/><path class="i3a" d="M94.7,145.16V59.65a25.09,25.09,0,0,1,2.83-10.58l5.1-8.86a10.89,10.89,0,0,1,8.5-4.91,10.89,10.89,0,0,1,8.5,4.91l5.1,8.86a25.09,25.09,0,0,1,2.83,10.58v85.51"/><path class="i3b" d="M94.7,145.16V59.65a25.09,25.09,0,0,1,2.83-10.58l5.1-8.86a10.89,10.89,0,0,1,8.5-4.91,10.89,10.89,0,0,1,8.5,4.91l5.1,8.86a25.09,25.09,0,0,1,2.83,10.58v85.51"/><path class="i3a" d="M155.91,145.16V59.65a25.09,25.09,0,0,1,2.83-10.58l5.1-8.86a9.81,9.81,0,0,1,17,0l5.1,8.86a25.24,25.24,0,0,1,2.83,10.58v85.51"/><path class="i3b" d="M155.91,145.16V59.65a25.09,25.09,0,0,1,2.83-10.58l5.1-8.86a9.81,9.81,0,0,1,17,0l5.1,8.86a25.24,25.24,0,0,1,2.83,10.58v85.51"/><path class="i3d" d="M155.9,145.16a14.17,14.17,0,0,1-28.34,0H94.7v38.48a16.12,16.12,0,0,0,16.07,16.07H172.7a16.12,16.12,0,0,0,16.07-16.07V145.16Z"/><line class="i3b" x1="141.73" y1="199.71" x2="141.73" y2="215.23"/><path class="i3f" d="M146.06,177.63l-4.33-8.11-4.33,8.11c-1.76,3.13-2.62,7.12-.14,9.84a5.93,5.93,0,0,0,9,0C148.68,184.75,147.82,180.76,146.06,177.63Z"/></svg>`,
+  jiryoku:  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.i4a{fill:#ebebeb}.i4b{fill:#2876ff}.i4c,.i4d,.i4g,.i4h,.i4i{fill:none}.i4c{stroke:#524e5c;stroke-width:9px}.i4c,.i4d,.i4g,.i4h{stroke-linejoin:round}.i4d,.i4g{stroke:#fff}.i4d,.i4g,.i4h{stroke-linecap:round}.i4d{stroke-width:10px}.i4e{fill:#3b3747}.i4f{fill:#524e5c}.i4g{stroke-width:6px}.i4h{stroke:#2876ff;stroke-width:2px}</style></defs><path class="i4a" d="M87.31,0C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.39,20.41,66.9,20.41H196.16c28.72,0,49.45-3,66.89-20.41s20.41-34.39,20.41-66.89V87.31c0-28.73-3-49.46-20.41-66.9S228.66,0,196.16,0Z"/><rect class="i4b" x="84.09" y="51.82" width="115.28" height="115.28" rx="16.07"/><rect class="i4c" x="84.09" y="51.82" width="115.28" height="115.28" rx="16.07"/><rect class="i4a" x="113.27" y="167.1" width="56.92" height="64.86" rx="5.36"/><rect class="i4c" x="113.27" y="167.1" width="56.92" height="64.86" rx="5.36"/><line class="i4c" x1="141.73" y1="167.1" x2="141.73" y2="185.6"/><line class="i4d" x1="182.23" y1="149.96" x2="182.23" y2="149.96"/><line class="i4d" x1="101.24" y1="149.96" x2="101.24" y2="149.96"/><polygon class="i4e" points="172.89 109.64 110.58 109.64 108.88 96.64 174.59 96.64 172.89 109.64"/><path class="i4f" d="M167.53,83.19a10.48,10.48,0,0,0-8.69-5.53H124.62a10.48,10.48,0,0,0-8.69,5.53l-7.05,13.45h65.71Z"/><path class="i4g" d="M134.59,150V137.52a7.15,7.15,0,1,1,14.29,0V150"/><rect class="i4b" x="129.35" y="150.57" width="24.77" height="4.91"/><line class="i4h" x1="154.67" y1="145.03" x2="128.8" y2="145.03"/></svg>`,
+  kasokudo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.i5a{fill:#ebebeb}.i5b{fill:#2876ff}.i5c,.i5d,.i5e,.i5f,.i5h,.i5i,.i5j{fill:none}.i5c,.i5f{stroke:#524e5c}.i5c,.i5d,.i5f,.i5h,.i5i{stroke-linejoin:round}.i5c{stroke-width:9px}.i5d,.i5h,.i5i{stroke:#fff}.i5d,.i5i{stroke-linecap:round}.i5d{stroke-width:10px}.i5e{stroke:#ebebeb;stroke-miterlimit:10;stroke-width:8px}.i5f,.i5h,.i5i{stroke-width:4px}.i5g{fill:#524e5c}</style></defs><path class="i5a" d="M87.31,0C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.39,20.41,66.9,20.41H196.16c28.72,0,49.45-3,66.89-20.41s20.41-34.39,20.41-66.89V87.31c0-28.73-3-49.46-20.41-66.9S228.66,0,196.16,0Z"/><rect class="i5b" x="84.09" y="51.82" width="115.28" height="115.28" rx="16.07"/><rect class="i5c" x="84.09" y="51.82" width="115.28" height="115.28" rx="16.07"/><rect class="i5a" x="113.27" y="167.1" width="56.92" height="64.86" rx="5.36"/><rect class="i5c" x="113.27" y="167.1" width="56.92" height="64.86" rx="5.36"/><line class="i5c" x1="141.73" y1="167.1" x2="141.73" y2="185.6"/><line class="i5d" x1="182.23" y1="149.96" x2="182.23" y2="149.96"/><line class="i5d" x1="101.24" y1="149.96" x2="101.24" y2="149.96"/><rect class="i5g" x="121.1" y="72.44" width="41.27" height="41.27" rx="6.35"/><rect class="i5f" x="121.1" y="72.44" width="41.27" height="41.27" rx="6.35"/><path class="i5h" d="M152.12,89.69v10a4.14,4.14,0,0,1-4.13,4.13h-8.77"/><line class="i5i" x1="129.26" y1="138.21" x2="135.21" y2="132.26"/><line class="i5i" x1="143.43" y1="155.22" x2="149.38" y2="149.27"/><polyline class="i5i" points="129.26 138.21 143.43 138.21 143.43 155.22"/></svg>`,
+  oto:      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.i6a{fill:#ebebeb}.i6b{fill:#2876ff}.i6c,.i6d,.i6f,.i6g,.i6h{fill:none}.i6c{stroke:#524e5c}.i6c,.i6d,.i6f,.i6g{stroke-linejoin:round}.i6c,.i6f{stroke-width:9px}.i6d,.i6f,.i6g{stroke:#fff;stroke-linecap:round}.i6d{stroke-width:10px}.i6e{fill:#524e5c}.i6g{stroke-width:3px}</style></defs><path class="i6a" d="M87.31,0C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.39,20.41,66.9,20.41H196.16c28.72,0,49.45-3,66.89-20.41s20.41-34.39,20.41-66.89V87.31c0-28.73-3-49.46-20.41-66.9S228.66,0,196.16,0Z"/><rect class="i6b" x="84.09" y="51.82" width="115.28" height="115.28" rx="16.07"/><rect class="i6c" x="84.09" y="51.82" width="115.28" height="115.28" rx="16.07"/><rect class="i6a" x="113.27" y="167.1" width="56.92" height="64.86" rx="5.36"/><rect class="i6c" x="113.27" y="167.1" width="56.92" height="64.86" rx="5.36"/><line class="i6c" x1="141.73" y1="167.1" x2="141.73" y2="185.6"/><line class="i6d" x1="182.23" y1="149.96" x2="182.23" y2="149.96"/><line class="i6d" x1="101.24" y1="149.96" x2="101.24" y2="149.96"/><circle class="i6a" cx="141.73" cy="97.66" r="37.22"/><circle class="i6e" cx="141.73" cy="97.66" r="32.09"/><line class="i6f" x1="141.73" y1="143.32" x2="141.73" y2="148.67"/><path class="i6g" d="M133.2,150.68a8.87,8.87,0,0,0,17.06,0"/></svg>`,
+  kyori:    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.i7a{fill:#ebebeb}.i7b,.i7c,.i7e,.i7g,.i7h{fill:none}.i7b,.i7c{stroke:#524e5c}.i7b,.i7c,.i7e,.i7g{stroke-linejoin:round}.i7b{stroke-width:8px}.i7c{stroke-width:10px}.i7d{fill:#2876ff}.i7e,.i7g{stroke:#fff;stroke-linecap:round}.i7e{stroke-width:6.98px}.i7f{fill:#524e5c}.i7g{stroke-width:4px}</style></defs><path class="i7a" d="M87.31,0C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.39,20.41,66.9,20.41H196.16c28.72,0,49.45-3,66.89-20.41s20.41-34.39,20.41-66.89V87.31c0-28.73-3-49.46-20.41-66.9S228.66,0,196.16,0Z"/><path class="i7a" d="M111.88,108.18V63.56a6,6,0,0,0-5.95-6H49.69a6,6,0,0,0-6,6v44.62"/><path class="i7b" d="M111.88,108.18V63.56a6,6,0,0,0-5.95-6H49.69a6,6,0,0,0-6,6v44.62"/><path class="i7a" d="M171.58,108.18V63.56a6,6,0,0,1,6-6h56.24a6,6,0,0,1,5.95,6v44.62"/><path class="i7b" d="M171.58,108.18V63.56a6,6,0,0,1,6-6h56.24a6,6,0,0,1,5.95,6v44.62"/><line class="i7c" x1="30.36" y1="108.18" x2="253.1" y2="108.18"/><rect class="i7d" x="101.49" y="124.27" width="80.49" height="74.82" rx="11.22"/><rect class="i7b" x="101.49" y="124.27" width="80.49" height="74.82" rx="11.22"/><rect class="i7a" x="121.86" y="199.1" width="39.74" height="45.29" rx="3.74"/><rect class="i7b" x="121.86" y="199.1" width="39.74" height="45.29" rx="3.74"/><path class="i7f" d="M156,90.54a3,3,0,0,0-3-3H130.45a3,3,0,0,0-3,3v17.64H156Z"/><polyline class="i7g" points="128.53 152.04 123.72 157.67 128.53 162.49"/><polyline class="i7g" points="154.94 152.04 159.75 157.67 154.93 162.49"/><line class="i7g" x1="123.72" y1="157.67" x2="159.75" y2="157.67"/></svg>`,
+  touch:    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.i8a{fill:#ebebeb}.i8b{fill:#2876ff}.i8c,.i8d,.i8e,.i8g{fill:none}.i8c{stroke:#524e5c;stroke-width:9px}.i8c,.i8d{stroke-linejoin:round}.i8d,.i8e{stroke:#fff}.i8d{stroke-linecap:round;stroke-width:10px}.i8e{stroke-miterlimit:10;stroke-width:4px}.i8f{fill:#fff}</style></defs><path class="i8a" d="M87.31,0C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.39,20.41,66.9,20.41H196.16c28.72,0,49.45-3,66.89-20.41s20.41-34.39,20.41-66.89V87.31c0-28.73-3-49.46-20.41-66.9S228.66,0,196.16,0Z"/><rect class="i8b" x="84.09" y="51.82" width="115.28" height="115.28" rx="16.07"/><rect class="i8c" x="84.09" y="51.82" width="115.28" height="115.28" rx="16.07"/><rect class="i8a" x="113.27" y="167.1" width="56.92" height="64.86" rx="5.36"/><rect class="i8c" x="113.27" y="167.1" width="56.92" height="64.86" rx="5.36"/><line class="i8c" x1="141.73" y1="167.1" x2="141.73" y2="185.6"/><circle class="i8a" cx="141.73" cy="97.66" r="37.22"/><circle class="i8e" cx="141.73" cy="147.76" r="4.53"/><path class="i8f" d="M157.52,140.61a8.6,8.6,0,0,1,0,14.3l-.06.06,2.79,2.89a12.56,12.56,0,0,0,0-20.19l-2.79,2.89Z"/><path class="i8f" d="M125.94,140.61a8.6,8.6,0,0,0,0,14.3l.06.06-2.79,2.89a12.56,12.56,0,0,1,0-20.19l2.79,2.89Z"/></svg>`,
+  switch_s: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.i9a,.i9f{fill:#ebebeb}.i9b{fill:#2876ff}.i9c,.i9e,.i9h{fill:none}.i9c,.i9f{stroke:#524e5c;stroke-width:9px}.i9c,.i9e,.i9f{stroke-linejoin:round}.i9d{fill:#524e5c}.i9e{stroke:#fff;stroke-linecap:round;stroke-width:10px}.i9g{fill:#fff}</style></defs><path class="i9a" d="M87.31,0C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.39,20.41,66.9,20.41H196.16c28.72,0,49.45-3,66.89-20.41s20.41-34.39,20.41-66.89V87.31c0-28.73-3-49.46-20.41-66.9S228.66,0,196.16,0Z"/><rect class="i9b" x="86.93" y="39.4" width="109.61" height="147.4" rx="16.07"/><rect class="i9c" x="86.93" y="39.4" width="109.61" height="147.4" rx="16.07"/><rect class="i9d" x="96.38" y="53.58" width="90.71" height="90.71" rx="10.2"/><rect class="i9a" x="113.27" y="186.81" width="56.92" height="59.19" rx="5.36"/><rect class="i9c" x="113.27" y="186.81" width="56.92" height="59.19" rx="5.36"/><circle class="i9f" cx="141.73" cy="98.93" r="45.22"/><circle class="i9g" cx="141.73" cy="98.93" r="31.61"/></svg>`,
+  tusuka:   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.iaa{fill:#ebebeb}.iab{fill:#2876ff}.iac,.iad,.iae,.iag,.iai{fill:none}.iac{stroke:#524e5c;stroke-width:9px}.iac,.iad,.iae{stroke-linejoin:round}.iad,.iae{stroke:#fff;stroke-linecap:round}.iad{stroke-width:10px}.iae{stroke-width:4px}.iaf{fill:#524e5c}.iag{stroke:#2876ff;stroke-miterlimit:10;stroke-width:8px}.iah{fill:#3b3747}</style></defs><path class="iaa" d="M87.31,0C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.39,20.41,66.9,20.41H196.16c28.72,0,49.45-3,66.89-20.41s20.41-34.39,20.41-66.89V87.31c0-28.73-3-49.46-20.41-66.9S228.66,0,196.16,0Z"/><rect class="iab" x="89.76" y="39.4" width="103.94" height="147.4" rx="16.07"/><rect class="iac" x="89.76" y="39.4" width="103.94" height="147.4" rx="16.07"/><rect class="iaa" x="113.27" y="186.81" width="56.92" height="59.19" rx="5.36"/><rect class="iac" x="113.27" y="186.81" width="56.92" height="59.19" rx="5.36"/><polyline class="iae" points="149.47 167.33 141.51 174.37 134.47 167.33"/><path class="iaf" d="M174.33,63.49a5.68,5.68,0,0,0-5.67-5.67H114.8a5.68,5.68,0,0,0-5.67,5.67V92.7h65.2Z"/><line class="iag" x1="141.73" y1="66.32" x2="141.73" y2="53.37"/><rect class="iah" x="109.13" y="92.7" width="65.2" height="17.01"/><path class="iaf" d="M109.13,138.91a5.68,5.68,0,0,0,5.67,5.67h53.86a5.68,5.68,0,0,0,5.67-5.67V109.7h-65.2Z"/><line class="iag" x1="141.73" y1="136.08" x2="141.73" y2="149.04"/></svg>`,
+  emoji_hum:   `<div style="font-size:48px;line-height:1;text-align:center">💧</div>`,
+  emoji_pir:   `<div style="font-size:48px;line-height:1;text-align:center">👤</div>`,
+  emoji_pres:  `<div style="font-size:48px;line-height:1;text-align:center">👋</div>`,
+};
+
+// ── センサー定義 ───────────────────────────────────────
+const SENSORS = [
+  {id:'temp',    name:'温度センサー',   desc:'DS18B20 / GPIO33',   iconKey:'ondo',     color:'#E88A0A', unit:'℃',  type:'analog',  min:15,  max:35  },
+  {id:'water',   name:'水温センサー',   desc:'DS18B20 / GPIO33',   iconKey:'ondo',     color:'#2E8EC4', unit:'℃',  type:'analog',  min:5,   max:30  },
+  {id:'light',   name:'明るさセンサー', desc:'CdS / A5',           iconKey:'akarusa',  color:'#E88A0A', unit:'lux',type:'analog',  min:0,   max:500 },
+  {id:'moisture',name:'土壌水分',       desc:'アナログ / A5',      iconKey:'dojou',    color:'#4caf50', unit:'raw',type:'analog',  min:500, max:3500},
+  {id:'sound',   name:'音センサー',     desc:'アナログ / A5',      iconKey:'oto',      color:'#9c27b0', unit:'raw',type:'analog',  min:1800,max:2500},
+  {id:'magnet',  name:'磁力センサー',   desc:'アナログ / A5',      iconKey:'jiryoku',  color:'#795548', unit:'raw',type:'analog',  min:1900,max:2100},
+  {id:'switch',  name:'スイッチ',       desc:'デジタル / GPIO33',  iconKey:'switch_s', color:'#3AABA8', unit:'',   type:'digital'                   },
+  {id:'touch',   name:'タッチセンサー', desc:'デジタル / GPIO33',  iconKey:'touch',    color:'#3AABA8', unit:'',   type:'digital'                   },
+  {id:'pass',    name:'通過センサー',   desc:'デジタル / GPIO33',  iconKey:'tusuka',   color:'#2E8EC4', unit:'',   type:'digital'                   },
+  {id:'dist',    name:'距離センサー',   desc:'超音波 / GPIO17+33', iconKey:'kyori',    color:'#9c27b0', unit:'cm', type:'analog',  min:2,   max:80  },
+  {id:'imu',     name:'加速度センサー', desc:'MPU6050 / I2C',      iconKey:'kasokudo', color:'#3AABA8', unit:'G',  type:'imu' },
+];
+
+function iconHTML(key) {
+  const ic = ICONS[key];
+  if (!ic) return '';
+  if (ic.startsWith('<div')) return ic;
+  return ic;
+}
+
+// ── リスト描画 ────────────────────────────────────────
+function buildList() {
+  const listEl = document.getElementById('sensor-list');
+  SENSORS.forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'sensor-item';
+    el.style.setProperty('--item-color', s.color);
+    el.innerHTML = `
+      <div class="item-svg">${iconHTML(s.iconKey)}</div>
+      <div class="item-info">
+        <div class="item-name">${s.name}</div>
+        <div class="item-desc">${s.desc}</div>
+      </div>
+      <span class="item-arrow">›</span>`;
+    el.onclick = () => startMonitor(s);
+    listEl.appendChild(el);
+  });
+}
+buildList();
+
+// ── モニター ──────────────────────────────────────────
+let animTimer = null, history = [], onCount = 0, elapsed = 0, lastDig = 0, t = 0;
+const HIST = 80;
+
+function startMonitor(s) {
+  history = []; onCount = 0; elapsed = 0; lastDig = 0;
+  document.getElementById('select-screen').style.display = 'none';
+  document.getElementById('monitor-screen').style.display = 'block';
+  document.getElementById('monitor-title').textContent = s.name;
+  buildCard(s);
+  if (animTimer) clearInterval(animTimer);
+  animTimer = setInterval(() => tick(s), 100);
+}
+
+function goBack() {
+  if (animTimer) clearInterval(animTimer);
+  document.getElementById('select-screen').style.display = 'block';
+  document.getElementById('monitor-screen').style.display = 'none';
+}
+
+// IMU用履歴
+const imuHist = {ax:[],ay:[],az:[],gx:[],gy:[],gz:[]};
+
+function getDummy(s) {
+  t += 0.06;
+  if (s.type === 'digital') return Math.sin(t * 0.7) > 0.2 ? 1 : 0;
+  if (s.type === 'imu') {
+    return {
+      ax: +(Math.sin(t*1.1)*0.35 + Math.random()*0.02-0.01).toFixed(3)*1,
+      ay: +(Math.cos(t*0.8)*0.25 + Math.random()*0.02-0.01).toFixed(3)*1,
+      az: +(0.98 + Math.sin(t*0.4)*0.06 + Math.random()*0.01).toFixed(3)*1,
+      gx: +(Math.sin(t*1.3)*12 + Math.random()*0.5-0.25).toFixed(2)*1,
+      gy: +(Math.cos(t*0.9)*8  + Math.random()*0.5-0.25).toFixed(2)*1,
+      gz: +(Math.sin(t*0.5)*5  + Math.random()*0.5-0.25).toFixed(2)*1,
+      temp: +(26.5 + Math.sin(t*0.05)*1.5).toFixed(1)*1,
+      abs: +(1.02 + Math.sin(t*0.6)*0.04 + Math.random()*0.005).toFixed(4)*1,
+    };
+  }
+  const mid = (s.min + s.max) / 2, range = (s.max - s.min) * 0.35;
+  return +(mid + Math.sin(t * 0.5) * range + Math.random() * range * 0.08 - range * 0.04).toFixed(1);
+}
+
+function buildCard(s) {
+  const area = document.getElementById('card-area');
+  if (s.type === 'imu') {
+    // IMU専用カード：8データ全表示
+    area.innerHTML = `
+    <div class="sensor-card" style="--card-color:#3AABA8">
+      <div class="card-top">
+        <div class="card-svg">${iconHTML(s.iconKey)}</div>
+        <div style="flex:1"><div class="card-name">${s.name}</div><div class="card-desc">${s.desc}</div></div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;color:#3AABA8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">加速度 (G)</div>
+      <div class="imu-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+        <div class="imu-cell" style="background:rgba(58,171,168,0.08);border:1px solid rgba(58,171,168,0.2);border-radius:12px;padding:12px;text-align:center">
+          <div style="font-size:10px;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">X軸</div>
+          <div id="imu-ax" style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#3AABA8">-</div>
+        </div>
+        <div class="imu-cell" style="background:rgba(46,142,196,0.08);border:1px solid rgba(46,142,196,0.2);border-radius:12px;padding:12px;text-align:center">
+          <div style="font-size:10px;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Y軸</div>
+          <div id="imu-ay" style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#2E8EC4">-</div>
+        </div>
+        <div class="imu-cell" style="background:rgba(232,138,10,0.08);border:1px solid rgba(232,138,10,0.2);border-radius:12px;padding:12px;text-align:center">
+          <div style="font-size:10px;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Z軸</div>
+          <div id="imu-az" style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#E88A0A">-</div>
+        </div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;color:#9c27b0;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">ジャイロ (°/s)</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+        <div style="background:rgba(156,39,176,0.08);border:1px solid rgba(156,39,176,0.2);border-radius:12px;padding:12px;text-align:center">
+          <div style="font-size:10px;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">X軸</div>
+          <div id="imu-gx" style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#ce93d8">-</div>
+        </div>
+        <div style="background:rgba(156,39,176,0.08);border:1px solid rgba(156,39,176,0.2);border-radius:12px;padding:12px;text-align:center">
+          <div style="font-size:10px;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Y軸</div>
+          <div id="imu-gy" style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#ce93d8">-</div>
+        </div>
+        <div style="background:rgba(156,39,176,0.08);border:1px solid rgba(156,39,176,0.2);border-radius:12px;padding:12px;text-align:center">
+          <div style="font-size:10px;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Z軸</div>
+          <div id="imu-gz" style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#ce93d8">-</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+        <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;text-align:center">
+          <div style="font-size:10px;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">合成加速度</div>
+          <div id="imu-abs" style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;color:#e8f4f4">-</div>
+          <div style="font-size:11px;color:#8ab4bf;margin-top:2px">G</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;text-align:center">
+          <div style="font-size:10px;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">チップ温度</div>
+          <div id="imu-temp" style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;color:#e8f4f4">-</div>
+          <div style="font-size:11px;color:#8ab4bf;margin-top:2px">℃</div>
+        </div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">合成加速度グラフ</div>
+      <div class="graph-wrap"><svg id="graph-svg"></svg></div>
+    </div>`;
+  } else if (s.type === 'digital') {
+    area.innerHTML = `
+    <div class="sensor-card" style="--card-color:${s.color}">
+      <div class="card-top">
+        <div class="card-svg">${iconHTML(s.iconKey)}</div>
+        <div style="flex:1"><div class="card-name">${s.name}</div><div class="card-desc">${s.desc}</div></div>
+      </div>
+      <div class="digital-display"><span class="digital-badge off" id="d-badge">OFF</span></div>
+      <div class="stats">
+        <div class="stat-box"><div class="stat-label">現在</div><div class="stat-value" id="st-now">-</div></div>
+        <div class="stat-box"><div class="stat-label">ON回数</div><div class="stat-value" id="st-count">0</div></div>
+        <div class="stat-box"><div class="stat-label">経過時間</div><div class="stat-value" id="st-time">0s</div></div>
+      </div>
+    </div>`;
+  } else {
+    area.innerHTML = `
+    <div class="sensor-card" style="--card-color:${s.color}">
+      <div class="card-top">
+        <div class="card-svg">${iconHTML(s.iconKey)}</div>
+        <div style="flex:1"><div class="card-name">${s.name}</div><div class="card-desc">${s.desc}</div></div>
+      </div>
+      <div class="value-display">
+        <span class="big-value" id="main-val">-</span>
+        <span class="big-unit">${s.unit}</span>
+      </div>
+      <div class="graph-wrap"><svg id="graph-svg"></svg></div>
+      <div class="stats">
+        <div class="stat-box"><div class="stat-label">最大</div><div class="stat-value" id="st-max">-</div></div>
+        <div class="stat-box"><div class="stat-label">最小</div><div class="stat-value" id="st-min">-</div></div>
+        <div class="stat-box"><div class="stat-label">平均</div><div class="stat-value" id="st-avg">-</div></div>
+      </div>
+    </div>`;
+  }
+}
+
+function tick(s) {
+  const val = getDummy(s);
+
+  // IMU専用処理
+  if (s.type === 'imu') {
+    imuHist.ax.push(val.ax); if(imuHist.ax.length>HIST) imuHist.ax.shift();
+    history.push(val.abs);   if(history.length>HIST) history.shift();
+    set('imu-ax',   val.ax.toFixed(3));
+    set('imu-ay',   val.ay.toFixed(3));
+    set('imu-az',   val.az.toFixed(3));
+    set('imu-gx',   val.gx.toFixed(1));
+    set('imu-gy',   val.gy.toFixed(1));
+    set('imu-gz',   val.gz.toFixed(1));
+    set('imu-abs',  val.abs.toFixed(4));
+    set('imu-temp', val.temp.toFixed(1));
+    drawGraph('#3AABA8');
+    return;
+  }
+  history.push(val);
+  if (history.length > HIST) history.shift();
+  if (s.type === 'digital') {
+    elapsed++;
+    if (val === 1 && lastDig === 0) onCount++;
+    lastDig = val;
+    const b = document.getElementById('d-badge');
+    if (b) { b.textContent = val ? 'ON' : 'OFF'; b.className = 'digital-badge ' + (val ? 'on' : 'off'); }
+    set('st-now', val ? 'ON' : 'OFF');
+    set('st-count', onCount);
+    set('st-time', Math.floor(elapsed / 10) + 's');
+  } else {
+    set('main-val', val);
+    drawGraph(s.color);
+    const n = history.map(Number);
+    set('st-max', Math.max(...n).toFixed(1));
+    set('st-min', Math.min(...n).toFixed(1));
+    set('st-avg', (n.reduce((a,b) => a+b, 0) / n.length).toFixed(1));
+  }
+}
+
+function drawGraph(color) {
+  const svg = document.getElementById('graph-svg');
+  if (!svg || history.length < 2) return;
+  const W = svg.parentElement.offsetWidth || 300, H = 100;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('preserveAspectRatio', 'none');
+  const mn = Math.min(...history), mx = Math.max(...history), rng = mx - mn || 1;
+  const pts = history.map((v,i) => `${(i/(HIST-1))*W},${H-((v-mn)/rng)*(H-10)-5}`).join(' ');
+  svg.innerHTML = `<defs><linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.25"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs><polygon points="0,${H} ${pts} ${W},${H}" fill="url(#gr)"/><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+}
+
+function set(id, v) { const e = document.getElementById(id); if (e) e.textContent = v; }
+</script>
+</body>
+</html>
