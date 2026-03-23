@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SchooMy センサーモニター（デモ）</title>
+<title>SchooMy センサーモニター</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap');
   :root {
@@ -23,6 +23,10 @@
   .logo-sub{font-size:10px;color:#8ab4bf !important;-webkit-text-fill-color:#8ab4bf;letter-spacing:.1em;text-transform:uppercase}
   .demo-badge{background:rgba(232,138,10,0.2);border:1px solid rgba(232,138,10,0.5);color:#E88A0A !important;-webkit-text-fill-color:#E88A0A;font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;animation:blink 2s infinite}
   @keyframes blink{0%,100%{opacity:1}50%{opacity:0.5}}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:#8ab4bf;flex-shrink:0;transition:all .3s}
+  .status-dot.connected{background:#4cff91;box-shadow:0 0 8px #4cff91;animation:pulse 2s infinite}
+  .status-dot.connecting{background:#E88A0A;animation:pulse 0.8s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 
   /* ── 選択画面 ── */
   #select-screen{position:relative;z-index:10;padding:28px 20px;max-width:600px;margin:0 auto}
@@ -114,10 +118,22 @@
     <div class="logo-mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.bb1{fill:#ebebeb}.bb2{fill:#3d99ff}.bb3,.bb6{fill:#524e5c}.bb4,.bb5,.bb8,.bb9{fill:none}.bb4,.bb5,.bb6,.bb7{stroke:#524e5c}.bb4,.bb5,.bb6,.bb7,.bb8{stroke-linejoin:round}.bb4,.bb6,.bb7{stroke-width:4px}.bb5{stroke-width:9px}.bb8{stroke:#3d99ff;stroke-width:6px}.bb7{fill:#ebebeb}</style></defs><path class="bb1" d="M196.16,283.46c28.72,0,49.45-3,66.9-20.41s20.41-34.39,20.41-66.89V87.31c0-28.73-3-49.46-20.41-66.9S228.66,0,196.16,0H87.31C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.4,20.41,66.9,20.41Z"/><rect class="bb2" x="52.85" y="52.85" width="177.76" height="177.76" rx="16.88"/><rect class="bb3" x="52.85" y="131.25" width="28.2" height="62.32" rx="5.67"/><rect class="bb4" x="52.85" y="131.25" width="28.2" height="62.32" rx="5.67"/><line class="bb4" x1="81.05" y1="182.06" x2="91.77" y2="182.06"/><line class="bb4" x1="81.05" y1="142.76" x2="91.77" y2="142.76"/><line class="bb4" x1="81.05" y1="152.58" x2="91.77" y2="152.58"/><line class="bb4" x1="81.05" y1="162.41" x2="91.77" y2="162.41"/><line class="bb4" x1="81.05" y1="172.24" x2="91.77" y2="172.24"/><rect class="bb3" x="202.41" y="89.27" width="28.2" height="62.32" rx="5.67"/><rect class="bb4" x="202.41" y="89.27" width="28.2" height="62.32" rx="5.67"/><line class="bb4" x1="202.41" y1="100.77" x2="191.7" y2="100.77"/><line class="bb4" x1="202.41" y1="140.08" x2="191.7" y2="140.08"/><line class="bb4" x1="202.41" y1="130.25" x2="191.7" y2="130.25"/><line class="bb4" x1="202.41" y1="120.42" x2="191.7" y2="120.42"/><line class="bb4" x1="202.41" y1="110.6" x2="191.7" y2="110.6"/><rect class="bb1" x="107.57" y="52.85" width="32.21" height="25.16" rx="3.4"/><rect class="bb4" x="107.57" y="52.85" width="32.21" height="25.16" rx="3.4"/><rect class="bb1" x="164.86" y="52.85" width="32.21" height="25.16" rx="3.4"/><rect class="bb4" x="164.86" y="52.85" width="32.21" height="25.16" rx="3.4"/><rect class="bb1" x="143.69" y="205.45" width="32.21" height="25.16" rx="3.4"/><rect class="bb4" x="143.69" y="205.45" width="32.21" height="25.16" rx="3.4"/><rect class="bb1" x="86.4" y="205.45" width="32.21" height="25.16" rx="3.4"/><rect class="bb4" x="86.4" y="205.45" width="32.21" height="25.16" rx="3.4"/><rect class="bb1" x="52.85" y="86.4" width="25.16" height="32.21" rx="3.4"/><rect class="bb4" x="52.85" y="86.4" width="25.16" height="32.21" rx="3.4"/><rect class="bb5" x="52.85" y="52.85" width="177.76" height="177.76" rx="16.88"/><path class="bb6" d="M170.87,126.35V114.91a6.37,6.37,0,0,0-6.35-6.36h-39.9a6.37,6.37,0,0,0-6.35,6.36v11.44"/><path class="bb7" d="M118.27,126.35v41.14a6.37,6.37,0,0,0,6.35,6.36h39.9a6.37,6.37,0,0,0,6.35-6.36V126.35"/><path class="bb8" d="M157.79,141.19v15.63a4.15,4.15,0,0,1-4.13,4.14H139.22"/><line class="bb4" x1="181.74" y1="158.53" x2="170.87" y2="158.53"/><line class="bb4" x1="181.74" y1="150.1" x2="170.87" y2="150.1"/><line class="bb4" x1="181.74" y1="141.67" x2="170.87" y2="141.67"/><line class="bb4" x1="107.39" y1="158.53" x2="118.27" y2="158.53"/><line class="bb4" x1="107.39" y1="141.67" x2="118.27" y2="141.67"/><line class="bb4" x1="107.39" y1="150.1" x2="118.27" y2="150.1"/></svg></div>
     <div><div class="logo-text">SchooMy</div><div class="logo-sub">Sensor Monitor</div></div>
   </div>
-  <div class="demo-badge">DEMO MODE</div>
+  <div style="display:flex;align-items:center;gap:8px"><span class="status-dot" id="dot"></span><span id="status-text" style="font-size:13px;color:#8ab4bf;-webkit-text-fill-color:#8ab4bf">未接続</span></div>
 </header>
 
-<div id="select-screen">
+
+<!-- BLE接続画面 -->
+<div id="connect-screen" style="position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 80px);padding:40px 20px;text-align:center">
+  <div style="background:#162333;border:1px solid rgba(58,171,168,0.25);border-radius:24px;padding:48px 32px;max-width:400px;width:100%">
+    <div style="font-size:56px;margin-bottom:20px;filter:drop-shadow(0 0 16px rgba(58,171,168,0.4))">📡</div>
+    <div style="font-size:24px;font-weight:800;color:#e8f4f4;-webkit-text-fill-color:#e8f4f4;margin-bottom:8px">ブルーボードに接続</div>
+    <div style="font-size:14px;color:#8ab4bf;-webkit-text-fill-color:#8ab4bf;margin-bottom:32px;line-height:1.7">センサーを選んでBLEで接続します<br>ChromeまたはBluefyで開いてください</div>
+    <button id="btn-connect" onclick="connectBLE()" style="width:100%;padding:16px;background:#3AABA8;color:#fff;-webkit-text-fill-color:#fff;border:none;border-radius:14px;font-size:17px;font-weight:700;font-family:Outfit,sans-serif;cursor:pointer;letter-spacing:.04em;transition:all .2s">BLE接続する</button>
+    <p style="margin-top:16px;font-size:12px;color:#8ab4bf;-webkit-text-fill-color:#8ab4bf">※ SafariはBluefyアプリで開いてください</p>
+  </div>
+</div>
+
+<div id="select-screen" style="display:none">
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
     <div style="width:48px;height:48px;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.s19a{fill:#ebebeb}.s19b{fill:#fff}.s19c{fill:#28cbc1}.s19d,.s19e,.s19f,.s19g,.s19h,.s19i{fill:none}.s19d,.s19e,.s19f,.s19g,.s19h{stroke:#524e5c;stroke-linejoin:round}.s19d{stroke-width:8px}.s19e{stroke-width:9px}.s19f,.s19h{stroke-linecap:round}.s19f,.s19g{stroke-width:6px}.s19h{stroke-width:7px}</style></defs><path class="s19a" d="M196.16,283.46c28.72,0,49.45-3,66.89-20.41s20.41-34.39,20.41-66.89V87.31c0-28.73-3-49.46-20.41-66.9S228.66,0,196.16,0H87.31C58.58,0,37.85,3,20.41,20.41S0,54.8,0,87.31V196.16c0,28.72,3,49.45,20.41,66.89s34.39,20.41,66.9,20.41Z"/><rect class="s19b" x="60.56" y="67.92" width="162.35" height="145.88" rx="16.88"/><path class="s19c" d="M205.31,67.91H76.71A16.93,16.93,0,0,0,59.84,84.79v26H222.19v-26A16.93,16.93,0,0,0,205.31,67.91Z"/><line class="s19d" x1="60.56" y1="110.76" x2="222.91" y2="110.76"/><rect class="s19e" x="60.56" y="67.92" width="162.35" height="145.88" rx="16.88"/><line class="s19f" x1="85.88" y1="89.34" x2="85.88" y2="89.34"/><line class="s19f" x1="99.1" y1="89.34" x2="99.1" y2="89.34"/><line class="s19f" x1="112.33" y1="89.34" x2="112.33" y2="89.34"/><line class="s19g" x1="202.11" y1="89.34" x2="182.1" y2="89.34"/><polyline class="s19h" points="101.03 144.3 108.01 144.3 108.01 176.57"/><polyline class="s19h" points="130.02 144.3 144.72 144.3 144.72 158.68 130.55 158.68 130.55 175.55 144.72 175.55"/><polyline class="s19h" points="166.56 175.55 180.73 175.55 180.73 158.68"/><polyline class="s19h" points="166.56 144.3 180.73 144.3 180.73 158.68 166.56 158.68"/></svg></div>
     <div class="select-title">センサーを選んでください</div>
@@ -196,11 +212,9 @@ function buildList() {
 buildList();
 
 // ── モニター ──────────────────────────────────────────
-let animTimer = null, history = [], onCount = 0, elapsed = 0, lastDig = 0, t = 0;
-const HIST = 80;
 
 function startMonitor(s) {
-  history = []; onCount = 0; elapsed = 0; lastDig = 0;
+  sensorHistory = []; onCount = 0; elapsed = 0; lastDig = 0;
   document.getElementById('select-screen').style.display = 'none';
   document.getElementById('monitor-screen').style.display = 'block';
   document.getElementById('monitor-title').textContent = s.name;
@@ -215,55 +229,185 @@ function goBack() {
   document.getElementById('monitor-screen').style.display = 'none';
 }
 
-// IMU用履歴
-const imuHist = {ax:[],ay:[],az:[],gx:[],gy:[],gz:[]};
 
-function getDummy(s) {
-  t += 0.06;
-  if (s.type === 'digital') return Math.sin(t * 0.7) > 0.2 ? 1 : 0;
-  if (s.type === 'imu') {
-    return {
-      ax: +(Math.sin(t*1.1)*0.35 + Math.random()*0.02-0.01).toFixed(3)*1,
-      ay: +(Math.cos(t*0.8)*0.25 + Math.random()*0.02-0.01).toFixed(3)*1,
-      az: +(0.98 + Math.sin(t*0.4)*0.06 + Math.random()*0.01).toFixed(3)*1,
-      gx: +(Math.sin(t*1.3)*12 + Math.random()*0.5-0.25).toFixed(2)*1,
-      gy: +(Math.cos(t*0.9)*8  + Math.random()*0.5-0.25).toFixed(2)*1,
-      gz: +(Math.sin(t*0.5)*5  + Math.random()*0.5-0.25).toFixed(2)*1,
-      temp: +(26.5 + Math.sin(t*0.05)*1.5).toFixed(1)*1,
-      abs: +(1.02 + Math.sin(t*0.6)*0.04 + Math.random()*0.005).toFixed(4)*1,
-    };
+// ─── BLE設定 ─────────────────────────────────────────
+const SERVICE_UUID = '6e400001-b5b3-f393-e0a9-e50e24dcca9e';
+const CHAR_TX_UUID = '6e400003-b5b3-f393-e0a9-e50e24dcca9e';
+const CHAR_RX_UUID = '6e400002-b5b3-f393-e0a9-e50e24dcca9e';
+
+let bleDevice = null, charTX = null, charRX = null;
+
+async function connectBLE() {
+  const btn = document.getElementById('btn-connect');
+  const dot = document.getElementById('dot');
+  const st  = document.getElementById('status-text');
+  try {
+    btn.disabled = true;
+    btn.textContent = '接続中...';
+    dot.className = 'status-dot connecting';
+    st.textContent = '接続中...';
+
+    bleDevice = await navigator.bluetooth.requestDevice({
+      filters: [{ name: 'SchooMy_001' }],
+      optionalServices: [SERVICE_UUID]
+    });
+    bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
+
+    const server  = await bleDevice.gatt.connect();
+    const service = await server.getPrimaryService(SERVICE_UUID);
+    charRX = await service.getCharacteristic(CHAR_RX_UUID);
+    charTX = await service.getCharacteristic(CHAR_TX_UUID);
+    await charTX.startNotifications();
+    charTX.addEventListener('characteristicvaluechanged', onData);
+
+    await sendCmd('SENSOR_MODE');
+
+    dot.className = 'status-dot connected';
+    st.textContent = 'SchooMy_001';
+    document.getElementById('connect-screen').style.display = 'none';
+    document.getElementById('select-screen').style.display = 'block';
+
+  } catch(e) {
+    console.error(e);
+    dot.className = 'status-dot';
+    st.textContent = '未接続';
+    btn.disabled = false;
+    btn.textContent = 'BLE接続する';
+    if (e.name !== 'NotFoundError') alert('接続失敗: ' + e.message);
   }
-  const mid = (s.min + s.max) / 2, range = (s.max - s.min) * 0.35;
-  return +(mid + Math.sin(t * 0.5) * range + Math.random() * range * 0.08 - range * 0.04).toFixed(1);
+}
+
+async function sendCmd(cmd) {
+  if (!charRX) return;
+  await charRX.writeValue(new TextEncoder().encode(cmd + '\n'));
+}
+
+function onDisconnected() {
+  document.getElementById('connect-screen').style.display = 'flex';
+  document.getElementById('select-screen').style.display = 'none';
+  document.getElementById('monitor-screen').style.display = 'none';
+  document.getElementById('btn-connect').disabled = false;
+  document.getElementById('btn-connect').textContent = 'BLE接続する';
+  document.getElementById('dot').className = 'status-dot';
+  document.getElementById('status-text').textContent = '未接続';
+  bleDevice = null; charTX = null; charRX = null;
+}
+
+function onData(event) {
+  const raw = new TextDecoder().decode(event.target.value).trim();
+  try {
+    const d = JSON.parse(raw);
+    updateFromBLE(d);
+  } catch(e) {}
+}
+
+function updateFromBLE(d) {
+  if (!currentSensor) return;
+  const s = currentSensor;
+
+  if (s.type === 'imu' && d.imu) {
+    sensorHistory.push(d.imu.abs);
+    if (sensorHistory.length > HIST) sensorHistory.shift();
+    set('imu-ax',   d.imu.ax.toFixed(3));
+    set('imu-ay',   d.imu.ay.toFixed(3));
+    set('imu-az',   d.imu.az.toFixed(3));
+    set('imu-gx',   d.imu.gx.toFixed(1));
+    set('imu-gy',   d.imu.gy.toFixed(1));
+    set('imu-gz',   d.imu.gz.toFixed(1));
+    set('imu-abs',  d.imu.abs.toFixed(4));
+    set('imu-temp', d.imu.temp.toFixed(1));
+    drawGraph('#3AABA8');
+    return;
+  }
+
+  if (s.type === 'digital') {
+    const val = d.d33 !== undefined ? d.d33 : 0;
+    elapsed++;
+    if (val === 1 && lastDig === 0) onCount++;
+    lastDig = val;
+    const b = document.getElementById('d-badge');
+    if (b) { b.textContent = val ? 'ON' : 'OFF'; b.className = 'digital-badge ' + (val ? 'on' : 'off'); }
+    set('st-now', val ? 'ON' : 'OFF');
+    set('st-count', onCount);
+    set('st-time', Math.floor(elapsed / 10) + 's');
+    return;
+  }
+
+  // アナログ系
+  let val = null;
+  if (s.id === 'temp' || s.id === 'water') val = d.temp;
+  else if (s.id === 'dist') val = d.dist;
+  else if (d.a5 !== undefined) {
+    // A5センサー各種
+    if (s.id === 'light') {
+      const v = d.a5 * 3.3 / 4095;
+      const vr = Math.max(3.3 - v, 0.01);
+      val = +(10000 * v / vr / 1000).toFixed(1);
+    } else {
+      val = Math.round(d.a5);
+    }
+  }
+  if (val === null || val === undefined) return;
+
+  sensorHistory.push(val);
+  if (sensorHistory.length > HIST) sensorHistory.shift();
+  set('main-val', typeof val === 'number' ? val.toFixed(s.id === 'light' ? 1 : s.id === 'temp' || s.id === 'water' ? 1 : 0) : val);
+  drawGraph(s.color);
+  const n = sensorHistory.map(Number);
+  set('st-max', Math.max(...n).toFixed(1));
+  set('st-min', Math.min(...n).toFixed(1));
+  set('st-avg', (n.reduce((a,b)=>a+b,0)/n.length).toFixed(1));
+}
+
+// ─── モニター管理 ─────────────────────────────────────
+let currentSensor = null, sensorHistory = [], onCount = 0, elapsed = 0, lastDig = 0;
+const HIST = 80;
+
+function startMonitor(s) {
+  currentSensor = s;
+  sensorHistory = []; onCount = 0; elapsed = 0; lastDig = 0;
+  // GPIO33モードをブルーボードに送信
+  if (s.type === 'digital') sendCmd('GPIO33:DIGITAL');
+  else if (s.id === 'dist') sendCmd('GPIO33:DISTANCE');
+  else sendCmd('GPIO33:AUTO');
+
+  document.getElementById('select-screen').style.display = 'none';
+  document.getElementById('monitor-screen').style.display = 'block';
+  document.getElementById('monitor-title').textContent = s.name;
+  buildCard(s);
+}
+
+function goBack() {
+  sendCmd('GPIO33:AUTO');
+  document.getElementById('select-screen').style.display = 'block';
+  document.getElementById('monitor-screen').style.display = 'none';
+  currentSensor = null;
 }
 
 function buildCard(s) {
   const area = document.getElementById('card-area');
   if (s.type === 'imu') {
-    // IMU専用カード：8データ全表示
     area.innerHTML = `
     <div class="sensor-card" style="--card-color:#3AABA8">
       <div class="card-top">
         <div class="card-svg">${iconHTML(s.iconKey)}</div>
         <div style="flex:1"><div class="card-name">${s.name}</div><div class="card-desc">${s.desc}</div></div>
       </div>
-
       <div style="font-size:11px;font-weight:700;color:#3AABA8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">加速度 (G)</div>
-      <div class="imu-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
-        <div class="imu-cell" style="background:rgba(58,171,168,0.08);border:1px solid rgba(58,171,168,0.2);border-radius:12px;padding:12px;text-align:center">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+        <div style="background:rgba(58,171,168,0.08);border:1px solid rgba(58,171,168,0.2);border-radius:12px;padding:12px;text-align:center">
           <div style="font-size:10px;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">X軸</div>
           <div id="imu-ax" style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#3AABA8">-</div>
         </div>
-        <div class="imu-cell" style="background:rgba(46,142,196,0.08);border:1px solid rgba(46,142,196,0.2);border-radius:12px;padding:12px;text-align:center">
+        <div style="background:rgba(46,142,196,0.08);border:1px solid rgba(46,142,196,0.2);border-radius:12px;padding:12px;text-align:center">
           <div style="font-size:10px;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Y軸</div>
           <div id="imu-ay" style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#2E8EC4">-</div>
         </div>
-        <div class="imu-cell" style="background:rgba(232,138,10,0.08);border:1px solid rgba(232,138,10,0.2);border-radius:12px;padding:12px;text-align:center">
+        <div style="background:rgba(232,138,10,0.08);border:1px solid rgba(232,138,10,0.2);border-radius:12px;padding:12px;text-align:center">
           <div style="font-size:10px;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Z軸</div>
           <div id="imu-az" style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#E88A0A">-</div>
         </div>
       </div>
-
       <div style="font-size:11px;font-weight:700;color:#9c27b0;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">ジャイロ (°/s)</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
         <div style="background:rgba(156,39,176,0.08);border:1px solid rgba(156,39,176,0.2);border-radius:12px;padding:12px;text-align:center">
@@ -279,7 +423,6 @@ function buildCard(s) {
           <div id="imu-gz" style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#ce93d8">-</div>
         </div>
       </div>
-
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
         <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;text-align:center">
           <div style="font-size:10px;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">合成加速度</div>
@@ -292,7 +435,6 @@ function buildCard(s) {
           <div style="font-size:11px;color:#8ab4bf;margin-top:2px">℃</div>
         </div>
       </div>
-
       <div style="font-size:11px;font-weight:700;color:#8ab4bf;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">合成加速度グラフ</div>
       <div class="graph-wrap"><svg id="graph-svg"></svg></div>
     </div>`;
@@ -331,57 +473,19 @@ function buildCard(s) {
   }
 }
 
-function tick(s) {
-  const val = getDummy(s);
-
-  // IMU専用処理
-  if (s.type === 'imu') {
-    imuHist.ax.push(val.ax); if(imuHist.ax.length>HIST) imuHist.ax.shift();
-    history.push(val.abs);   if(history.length>HIST) history.shift();
-    set('imu-ax',   val.ax.toFixed(3));
-    set('imu-ay',   val.ay.toFixed(3));
-    set('imu-az',   val.az.toFixed(3));
-    set('imu-gx',   val.gx.toFixed(1));
-    set('imu-gy',   val.gy.toFixed(1));
-    set('imu-gz',   val.gz.toFixed(1));
-    set('imu-abs',  val.abs.toFixed(4));
-    set('imu-temp', val.temp.toFixed(1));
-    drawGraph('#3AABA8');
-    return;
-  }
-  history.push(val);
-  if (history.length > HIST) history.shift();
-  if (s.type === 'digital') {
-    elapsed++;
-    if (val === 1 && lastDig === 0) onCount++;
-    lastDig = val;
-    const b = document.getElementById('d-badge');
-    if (b) { b.textContent = val ? 'ON' : 'OFF'; b.className = 'digital-badge ' + (val ? 'on' : 'off'); }
-    set('st-now', val ? 'ON' : 'OFF');
-    set('st-count', onCount);
-    set('st-time', Math.floor(elapsed / 10) + 's');
-  } else {
-    set('main-val', val);
-    drawGraph(s.color);
-    const n = history.map(Number);
-    set('st-max', Math.max(...n).toFixed(1));
-    set('st-min', Math.min(...n).toFixed(1));
-    set('st-avg', (n.reduce((a,b) => a+b, 0) / n.length).toFixed(1));
-  }
-}
-
 function drawGraph(color) {
   const svg = document.getElementById('graph-svg');
-  if (!svg || history.length < 2) return;
+  if (!svg || sensorHistory.length < 2) return;
   const W = svg.parentElement.offsetWidth || 300, H = 100;
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   svg.setAttribute('preserveAspectRatio', 'none');
-  const mn = Math.min(...history), mx = Math.max(...history), rng = mx - mn || 1;
-  const pts = history.map((v,i) => `${(i/(HIST-1))*W},${H-((v-mn)/rng)*(H-10)-5}`).join(' ');
+  const mn = Math.min(...sensorHistory), mx = Math.max(...sensorHistory), rng = mx - mn || 1;
+  const pts = sensorHistory.map((v,i) => `${(i/(HIST-1))*W},${H-((v-mn)/rng)*(H-10)-5}`).join(' ');
   svg.innerHTML = `<defs><linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.25"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs><polygon points="0,${H} ${pts} ${W},${H}" fill="url(#gr)"/><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
 }
 
 function set(id, v) { const e = document.getElementById(id); if (e) e.textContent = v; }
+
 </script>
 </body>
 </html>
