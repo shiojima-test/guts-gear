@@ -302,15 +302,32 @@ function onDisconnected() {
 function onData(event) {
   const raw = new TextDecoder().decode(event.target.value).trim();
   const dbg = document.getElementById('debug-raw');
-  if (dbg) dbg.textContent = 'RX: ' + raw.substring(0, 100);
+  if (dbg) dbg.textContent = 'RX: ' + raw.substring(0, 120);
   try {
-    const d = JSON.parse(raw);
-    updateFromBLE(d);
-  } catch(e) {
-    if (raw.includes(',') && !raw.startsWith('{')) {
-      sendCmd('SENSOR_MODE');
+    if (raw.startsWith('{')) {
+      const d = JSON.parse(raw);
+      updateFromBLE(d);
+    } else if (raw.includes(',')) {
+      // CSV形式: ax,ay,az,gx,gy,gz,temp,abs
+      const parts = raw.split(',');
+      if (parts.length >= 8) {
+        const d = {
+          imu: {
+            ax: parseFloat(parts[0]),
+            ay: parseFloat(parts[1]),
+            az: parseFloat(parts[2]),
+            gx: parseFloat(parts[3]),
+            gy: parseFloat(parts[4]),
+            gz: parseFloat(parts[5]),
+            temp: parseFloat(parts[6]),
+            abs: parseFloat(parts[7])
+          },
+          a5: 0
+        };
+        updateFromBLE(d);
+      }
     }
-  }
+  } catch(e) { console.error(e); }
 }
 
 function updateFromBLE(d) {
