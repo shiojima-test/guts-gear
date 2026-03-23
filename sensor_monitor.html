@@ -260,7 +260,7 @@ async function connectBLE() {
     await charTX.startNotifications();
     charTX.addEventListener('characteristicvaluechanged', onData);
 
-    await sendCmd('SENSOR_MODE');
+    // await sendCmd('SENSOR_MODE'); // デバッグ用に無効化
 
     dot.className = 'status-dot connected';
     document.getElementById('btn-disconnect').style.display = 'inline-block';
