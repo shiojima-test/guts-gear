@@ -3191,7 +3191,11 @@ function computeSel() {
   const slice = fullLog.slice(iS,iE+1); if (slice.length < 2) return;
   const tS = slice[0].t, tE = slice[slice.length-1].t;
   const durSec = (tE-tS)/1000;
-  const seStr = peakTimes.reduce((a,t,i)=>{if(t>=tS&&t<=tE)a.push({t,impact:peakImpacts[i],val:peakImpacts[i]});return a;},[]);
+  const seStr = peakTimes.reduce((a,t,i)=>{
+    if(t>=tS&&t<=tE && !removedPeakIndices.has(i))
+      a.push({t,impact:peakImpacts[i],val:peakImpacts[i]});
+    return a;
+  },[]);
   let cad=0, avgImp=0;
   if (seStr.length>=2){const span=(seStr[seStr.length-1].t-seStr[0].t)/1000;cad=span>0?(seStr.length-1)/span*60:0;}
   if (seStr.length>=1) avgImp=seStr.reduce((s,x)=>s+x.impact,0)/seStr.length;
