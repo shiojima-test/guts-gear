@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>GUTS GEAR v2.3</title>
+<title>GUTS GEAR v2.0</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
@@ -283,7 +283,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
     <div>
       <div class="logo-text">GUTS GEAR</div>
       <div class="logo-sub">SPORTS SENSOR LAB</div>
-      <div style="font-family:var(--fn);font-size:9px;color:#2a4a6a;letter-spacing:1px">v2.3</div>
+      <div style="font-family:var(--fn);font-size:9px;color:#2a4a6a;letter-spacing:1px">v2.0</div>
     </div>
   </div>
   <div class="hdr-r">
@@ -636,7 +636,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
       </div>
       <div style="text-align:right">
         <div id="rv_datetime" style="font-family:var(--fn);font-size:11px;color:var(--text2)"></div>
-        <div style="font-family:var(--fn);font-size:9px;color:var(--text3);margin-top:2px">GUTS GEAR v2.3</div>
+        <div style="font-family:var(--fn);font-size:9px;color:var(--text3);margin-top:2px">GUTS GEAR v2.0</div>
       </div>
     </div>
   </div>
@@ -727,7 +727,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
       <div class="rmet" style="border-color:rgba(255,107,0,.2)"><div class="rmet-val" id="z_maxCad" style="color:var(--orange)">—</div><div class="rmet-lbl">最高テンポ rpm</div></div>
       <div class="rmet" style="border-color:rgba(255,107,0,.2)"><div class="rmet-val" id="z_avgCad" style="color:var(--orange)">—</div><div class="rmet-lbl">平均テンポ rpm</div></div>
       <div class="rmet" style="border-color:rgba(255,107,0,.2)"><div class="rmet-val" id="z_maxG" style="color:var(--orange)">—</div><div class="rmet-lbl">最大角速度 °/s</div></div>
-      <div class="rmet" style="border-color:rgba(255,107,0,.2)"><div class="rmet-val" id="z_work" style="color:var(--orange)">—</div><div class="rmet-lbl">GUTS POWER<div style="font-size:8px;color:var(--text3);font-weight:400;margin-top:1px">回数×体重×9.8×0.25</div></div></div>
+      <div class="rmet" style="border-color:rgba(255,107,0,.2)"><div class="rmet-val" id="z_work" style="color:var(--orange)">—</div><div class="rmet-lbl">推定仕事量 J</div></div>
       <div class="rmet" style="border-color:rgba(255,107,0,.2)"><div class="rmet-val" id="z_uniform" style="color:var(--orange)">—</div><div class="rmet-lbl">パワー均一性</div></div>
       <div class="rmet" style="border-color:rgba(255,107,0,.2)"><div class="rmet-val" id="z_fatigue" style="color:var(--orange)">—</div><div class="rmet-lbl">疲労指数</div></div>
       <div class="rmet" style="border-color:rgba(255,107,0,.2)"><div class="rmet-val" id="z_active" style="color:var(--orange)">—</div><div class="rmet-lbl">アクティブ率 %</div></div>
@@ -747,7 +747,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
       <div class="rmet"><div class="rmet-val" id="rv_maxCad">—</div><div class="rmet-lbl">最高テンポ rpm</div></div>
       <div class="rmet"><div class="rmet-val" id="rv_avgCad">—</div><div class="rmet-lbl">平均テンポ rpm</div></div>
       <div class="rmet"><div class="rmet-val" id="rv_maxG">—</div><div class="rmet-lbl">最大角速度 °/s</div></div>
-      <div class="rmet"><div class="rmet-val" id="rv_work">—</div><div class="rmet-lbl">GUTS POWER<div style="font-size:8px;color:var(--text3);font-weight:400;margin-top:1px">回数×体重×9.8×0.25</div></div></div>
+      <div class="rmet"><div class="rmet-val" id="rv_work">—</div><div class="rmet-lbl">推定仕事量 J</div></div>
     </div>
   </div>
 
@@ -2809,7 +2809,7 @@ document.getElementById('exportCsvBtn').addEventListener('click', () => {
   const dateStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
 
   // ヘッダー行
-  let csv = '# GUTS GEAR v2.3 - 区間データ\n';
+  let csv = '# GUTS GEAR v2.0 - 区間データ\n';
   csv += `# 日時,${dateStr}\n`;
   csv += `# 種目,${sport}\n`;
   csv += `# 参加者,${player ? player.name : '未登録'}\n`;
@@ -2896,7 +2896,7 @@ function renderSavedList() {
         <div class="rmet"><div class="rmet-val">${s.summary.avgImpact>0?s.summary.avgImpact.toFixed(2):'—'}</div><div class="rmet-lbl">平均パワー G</div></div>
         <div class="rmet"><div class="rmet-val">${s.summary.maxCadence>0?Math.round(s.summary.maxCadence):'—'}</div><div class="rmet-lbl">最高テンポ rpm</div></div>
         <div class="rmet"><div class="rmet-val">${s.summary.maxGyro>0?Math.round(s.summary.maxGyro):'—'}</div><div class="rmet-lbl">最大角速度 °/s</div></div>
-        <div class="rmet"><div class="rmet-val">${s.summary.work>0?s.summary.work:'—'}</div><div class="rmet-lbl">GUTS POWER<div style="font-size:8px;color:var(--text3);font-weight:400;margin-top:1px">回数×体重×9.8×0.25</div></div></div>
+        <div class="rmet"><div class="rmet-val">${s.summary.work>0?s.summary.work:'—'}</div><div class="rmet-lbl">推定仕事量 J</div></div>
       </div>
       ${s.memo ? `<div style="background:var(--bg3);border-radius:6px;padding:8px 10px;font-size:11px;color:var(--text2);font-family:var(--fj);line-height:1.6">📝 ${s.memo}</div>` : ''}
     </div>`;
@@ -3191,7 +3191,7 @@ function computeSel() {
   const slice = fullLog.slice(iS,iE+1); if (slice.length < 2) return;
   const tS = slice[0].t, tE = slice[slice.length-1].t;
   const durSec = (tE-tS)/1000;
-  const seStr = peakTimes.reduce((a,t,i)=>{if(t>=tS&&t<=tE&&!removedPeakIndices.has(i))a.push({t,impact:peakImpacts[i],val:peakImpacts[i]});return a;},[]);
+  const seStr = peakTimes.reduce((a,t,i)=>{if(t>=tS&&t<=tE)a.push({t,impact:peakImpacts[i],val:peakImpacts[i]});return a;},[]);
   let cad=0, avgImp=0;
   if (seStr.length>=2){const span=(seStr[seStr.length-1].t-seStr[0].t)/1000;cad=span>0?(seStr.length-1)/span*60:0;}
   if (seStr.length>=1) avgImp=seStr.reduce((s,x)=>s+x.impact,0)/seStr.length;
