@@ -234,22 +234,12 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
 .sstat{text-align:center}
 .sstat-val{font-family:var(--fn);font-size:18px;font-weight:700;color:var(--orange);line-height:1}
 .sstat-lbl{font-size:9px;color:var(--text2);margin-top:2px}
-#rangeAiBtn{background:linear-gradient(135deg,var(--orange),var(--teal));color:#fff;border:none;border-radius:7px;padding:8px 18px;font-family:var(--fn);font-weight:700;font-size:13px;cursor:pointer;flex-shrink:0;letter-spacing:.5px}
-#rangeAiBtn:disabled{opacity:.4;cursor:not-allowed}
 .rmet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
 @media(max-width:600px){.rmet-grid{grid-template-columns:repeat(2,1fr)}}
 .rmet{background:var(--bg3);border-radius:8px;padding:9px 11px;border:1px solid var(--border)}
 .rmet-val{font-family:var(--fn);font-size:20px;font-weight:700;color:var(--text);line-height:1}
 .rmet-lbl{font-size:10px;color:var(--text2);margin-top:2px}
 .rmet-sub{font-size:9px;color:var(--text3)}
-.range-card{display:none}.range-card.active{display:block}
-.ai-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.aiout{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:14px;min-height:80px;font-size:13px;line-height:1.8;color:var(--text2);white-space:pre-wrap;font-family:var(--fj)}
-.aiout.active{color:var(--text)}
-.ai-dots span{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--teal);animation:bk 1.2s infinite;margin-left:3px}
-.ai-dots span:nth-child(2){animation-delay:.2s}.ai-dots span:nth-child(3){animation-delay:.4s}
-@keyframes bk{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
-
 /* CALIB */
 #calibOv{display:none;position:fixed;inset:0;background:rgba(13,17,23,.93);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:18px}
 #calibOv.active{display:flex}
@@ -722,7 +712,6 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
           <div class="sstat"><div class="sstat-val" id="sImpR">—</div><div class="sstat-lbl">平均パワーG</div></div>
           <div class="sstat"><div class="sstat-val" id="sMaxG">—</div><div class="sstat-lbl">最大角速度</div></div>
         </div>
-        <button id="rangeAiBtn" disabled style="opacity:.4;cursor:not-allowed">🤖 AI分析</button>
       </div>
     </div>
   </div>
@@ -800,13 +789,6 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
     </div>
   </div>
 
-  <div class="card range-card" id="rangeCard">
-    <div class="ai-top">
-      <div class="ctitle" style="margin-bottom:0"><div class="dot" style="background:var(--cream)"></div>AI 区間分析</div>
-      <div id="rangeLbl" style="font-family:var(--fn);font-size:11px;color:var(--orange)"></div>
-    </div>
-    <div class="aiout" id="rangeOut"></div>
-  </div>
 </div>
 
 <!-- ══ VIEW 5.5: 保存済みデータ ══ -->
@@ -3586,83 +3568,12 @@ function computeSel() {
   document.getElementById('sCadR').textContent=cad>0?Math.round(cad):'—';
   document.getElementById('sImpR').textContent=seStr.length?avgImp.toFixed(2):'—';
   document.getElementById('sMaxG').textContent=isFinite(maxGSel)?Math.round(maxGSel):'—';
-  document.getElementById('rangeAiBtn').disabled=seStr.length<2;
   selData={slice,seStr,peaks:seStr,durSec,cad,avgImp,lo,hi,maxGSel};
   // 決定ボタン更新
   const loMs = tS - fullLog[0].t;
   const hiMs = tE - fullLog[0].t;
   onSelectionChange(loMs/1000, hiMs/1000, seStr.length);
 }
-
-// ══════════════ AI 分析 ══════════════
-document.getElementById('rangeAiBtn').addEventListener('click', async () => {
-  if (!selData) return;
-  const sd = selData, btn = document.getElementById('rangeAiBtn'), out = document.getElementById('rangeOut'), card = document.getElementById('rangeCard');
-  btn.disabled = true; card.classList.add('active');
-  const pct = v => Math.round(v*100);
-  document.getElementById('rangeLbl').textContent = `選択: ${pct(sd.lo)}%〜${pct(sd.hi)}% | ${sd.seStr.length}ピーク`;
-  const m=Math.floor(sd.durSec/60),s=Math.round(sd.durSec%60);
-  const maxImpSel=sd.seStr.length?Math.max(...sd.seStr.map(x=>x.impact)):0;
-  let consist='—';
-  if(sd.seStr.length>=3){const imps2=sd.seStr.map(x=>x.impact);const mean=imps2.reduce((a,b)=>a+b)/imps2.length;const cv=Math.sqrt(imps2.reduce((a,x)=>a+(x-mean)**2,0)/imps2.length)/mean;consist=Math.max(0,Math.round((1-cv)*100));}
-  const sportInfo = SPORT_INFO[currentSport] || {name:'スポーツ'};
-  const selIndNames = [...selectedIndicators].map(id => INDICATORS.find(i=>i.id===id)?.sportLabels[currentSport]||id).join('、');
-  out.innerHTML='<div style="display:flex;align-items:center;gap:8px;color:var(--teal);font-size:13px">分析中 <div class="ai-dots"><span></span><span></span><span></span></div></div>';
-  out.classList.add('active');
-  setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
-  const prompt=`あなたはスポーツデータサイエンスの専門家です。小学生〜中学生のスポーツクラブ活動のセンサーデータを分析してください。
-
-【種目】${sportInfo.name}
-【測定した指標】${selIndNames}
-【選択区間データ】
-- 区間長: ${m}分${s}秒
-- ピーク数: ${sd.seStr.length}回
-- 平均テンポ: ${sd.cad>0?Math.round(sd.cad):'—'} rpm
-- 平均パワー: ${sd.avgImp.toFixed(3)} G
-- 最大パワー: ${maxImpSel.toFixed(3)} G
-- パワー均一性: ${consist}/100
-- 最大角速度: ${isFinite(sd.maxGSel)?Math.round(sd.maxGSel):'—'} °/s
-- ベースライン加速度: ${baseline?baseline.toFixed(4):'—'} G
-【全体比較】
-- 全体平均パワー: ${peakCount>0?(sumImpact/peakCount).toFixed(3):'—'} G
-- 全体最大パワー: ${maxImpact.toFixed(3)} G
-- 総ピーク数: ${peakCount}
-
-この選択区間を分析し：
-1. この区間の動きの特徴（パワー・テンポ・安定性から）
-2. ${sportInfo.name}の文脈で読み取れること
-3. 全体と比べて気になる点
-4. 小学生・中学生向けの改善アドバイス
-日本語で箇条書きを交えて350字程度で。`;
-  try {
-    // NOTE: ブラウザから直接 Anthropic API を呼ぶ場合、CORSにより失敗する可能性があります。
-    // 本番環境ではバックエンドプロキシ経由で呼び出すことを推奨します。
-    // APIキーは環境に応じて設定してください。
-    const ANTHROPIC_API_KEY = ''; // ← ここにAPIキーを設定（本番ではサーバー側で管理すること）
-    if (!ANTHROPIC_API_KEY) {
-      out.textContent = 'AI分析を使用するにはAPIキーの設定が必要です。\nindex_fixed.html 内の ANTHROPIC_API_KEY を設定してください。';
-      btn.disabled = false;
-      return;
-    }
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key': ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{role:'user',content:prompt}] })
-    });
-    if (!res.ok) {
-      const errData = await res.json().catch(() => ({}));
-      throw new Error(`API ${res.status}: ${errData.error?.message || res.statusText}`);
-    }
-    const data = await res.json();
-    out.textContent = data.content?.map(b=>b.text||'').join('') || 'エラーが発生しました';
-  } catch(e) { out.textContent = 'AI分析エラー: ' + e.message; }
-  btn.disabled = false;
-});
 
 function setABadge(t) {
   const b=document.getElementById('actBadge'),ic=document.getElementById('actIcon'),lb=document.getElementById('actLbl');
