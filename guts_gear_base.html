@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>GUTS GEAR</title>
+<title>GUTS GEAR v2.8</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
@@ -282,7 +282,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
     <div class="logo-mark">GG</div>
     <div>
       <div class="logo-text">GUTS GEAR</div>
-      <div class="logo-sub">SPORTS SENSOR LAB</div>
+      <div class="logo-sub">SPORTS SENSOR LAB v2.8</div>
     </div>
   </div>
   <div class="hdr-r">
@@ -2174,7 +2174,7 @@ function onPeak(peakV, impact, gx, gy, gz) {
   sd.datasets[0].data.push(parseFloat(impact.toFixed(3)));
   sd.datasets[0].backgroundColor.push(isHigh ? '#E88A0A' : '#2E8EC4');
   strChart.update('none');
-  if (peakCount >= 3) {
+  if (peakCount >= 1) {
     const rb = document.getElementById('reviewBtn'); rb.disabled = false; rb.style.opacity = '1';
     document.getElementById('nextPlayerBtn').disabled = false;
     document.getElementById('addTakeBtn').disabled = false;
@@ -2354,10 +2354,11 @@ function stopRec() {
   document.getElementById('startBtn').classList.remove('rec');
   document.getElementById('sessStatus').textContent = fullLog.length > 0 ? '計測完了 — 区間分析へ' : 'ストップ済';
   setABadge('stopped');
-  if (peakCount >= 3) {
+  if (fullLog.length > 0) {
     document.getElementById('nextPlayerBtn').disabled = false;
     document.getElementById('addTakeBtn').disabled = false;
     const rb = document.getElementById('reviewBtn'); rb.disabled = false; rb.style.opacity = '1';
+    enterReview();
   }
 }
 document.getElementById('startBtn').addEventListener('click', () => { isRec ? stopRec() : startRec(); });
