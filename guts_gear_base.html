@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>GUTS GEAR v2.8</title>
+<title>GUTS GEAR v2.9</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 :root{
-  --teal:#1e90ff;--teal-d:#1470cc;--teal-dim:rgba(30,144,255,.15);
-  --orange:#ff6b00;--orange-dim:rgba(255,107,0,.15);
-  --blue:#1e90ff;--blue-dim:rgba(30,144,255,.12);
-  --cream:#e8f4ff;--cream-dim:rgba(232,244,255,.1);
-  --bg:#0a1628;--bg2:#0d1e34;--bg3:#112240;--bg4:#142850;
-  --border:rgba(30,144,255,.12);--border2:rgba(30,144,255,.22);
-  --text:#e8f4ff;--text2:#4a7aaa;--text3:#2a4a6a;
+  --teal:#3AABA8;--teal-d:#2e918e;--teal-dim:rgba(58,171,168,.15);
+  --orange:#E88A0A;--orange-dim:rgba(232,138,10,.15);
+  --blue:#2E8EC4;--blue-dim:rgba(46,142,196,.12);
+  --cream:#F5E4C4;--cream-dim:rgba(245,228,196,.3);
+  --bg:#F5E4C4;--bg2:#FFF8EE;--bg3:#FFEFD5;--bg4:#FFE4B5;
+  --border:rgba(44,26,14,.12);--border2:rgba(44,26,14,.22);
+  --text:#2C1A0E;--text2:#7A5C3E;--text3:#A08060;
   --fn:'Barlow Condensed',sans-serif;--fj:'Meiryo','Yu Gothic',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -24,7 +24,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fj);min-height:100
 header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 16px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .logo{display:flex;align-items:center;gap:10px}
 .logo-mark{width:32px;height:32px;background:var(--orange);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--fn);font-weight:900;font-size:13px;color:#fff;letter-spacing:1px}
-.logo-text{font-family:var(--fn);font-weight:900;font-size:20px;letter-spacing:2px;color:#fff}
+.logo-text{font-family:var(--fn);font-weight:900;font-size:20px;letter-spacing:2px;color:var(--text)}
 .logo-sub{font-size:9px;color:var(--text2);letter-spacing:3px;font-family:var(--fn)}
 .hdr-r{display:flex;align-items:center;gap:8px}
 .sdot{width:8px;height:8px;border-radius:50%;background:var(--text3);transition:all .3s}
@@ -282,7 +282,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
     <div class="logo-mark">GG</div>
     <div>
       <div class="logo-text">GUTS GEAR</div>
-      <div class="logo-sub">SPORTS SENSOR LAB v2.8</div>
+      <div class="logo-sub">SPORTS SENSOR LAB v2.9</div>
     </div>
   </div>
   <div class="hdr-r">
@@ -300,7 +300,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
     <h1>GUTS <span>GEAR</span></h1>
   </div>
   <div class="sport-grid">
-    <div class="sport-card" onclick="selectSport('ball','#1e90ff')">
+    <div class="sport-card" onclick="selectSport('ball','#3AABA8')">
       <div class="sport-icon-wrap" style="background:rgba(30,144,255,.15)">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
           <circle cx="14" cy="14" r="11" stroke="#1e90ff" stroke-width="2"/>
@@ -312,7 +312,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
       <div class="sport-card-name">球技</div>
       <div class="sport-card-sub">サッカー・バスケ・バレー</div>
     </div>
-    <div class="sport-card" onclick="selectSport('swing','#ff6b00')">
+    <div class="sport-card" onclick="selectSport('swing','#E88A0A')">
       <div class="sport-icon-wrap" style="background:rgba(255,107,0,.15)">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
           <circle cx="22" cy="6" r="3.5" stroke="#ff6b00" stroke-width="2"/>
@@ -324,7 +324,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
       <div class="sport-card-name">スイング系</div>
       <div class="sport-card-sub">野球・テニス・卓球・ゴルフ</div>
     </div>
-    <div class="sport-card" onclick="selectSport('training','#1e90ff')">
+    <div class="sport-card" onclick="selectSport('training','#3AABA8')">
       <div class="sport-icon-wrap" style="background:rgba(30,144,255,.15)">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
           <rect x="3" y="12" width="4" height="8" rx="2" fill="#1e90ff"/>
@@ -336,7 +336,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
       <div class="sport-card-name">体幹トレーニング</div>
       <div class="sport-card-sub">腕立て・スクワット・プランク</div>
     </div>
-    <div class="sport-card" onclick="selectSport('budo','#ff6b00')">
+    <div class="sport-card" onclick="selectSport('budo','#E88A0A')">
       <div class="sport-icon-wrap" style="background:rgba(255,107,0,.15)">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
           <circle cx="14" cy="6" r="3" stroke="#ff6b00" stroke-width="2"/>
@@ -350,7 +350,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
       <div class="sport-card-name">武道・格闘技</div>
       <div class="sport-card-sub">柔道・空手・剣道・ボクシング</div>
     </div>
-    <div class="sport-card" onclick="selectSport('track','#1e90ff')">
+    <div class="sport-card" onclick="selectSport('track','#3AABA8')">
       <div class="sport-icon-wrap" style="background:rgba(30,144,255,.15)">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
           <circle cx="17" cy="5" r="3" stroke="#1e90ff" stroke-width="2"/>
@@ -362,7 +362,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
       <div class="sport-card-name">陸上・走り</div>
       <div class="sport-card-sub">短距離・長距離・跳躍</div>
     </div>
-    <div class="sport-card" onclick="selectSport('gym','#ff6b00')">
+    <div class="sport-card" onclick="selectSport('gym','#E88A0A')">
       <div class="sport-icon-wrap" style="background:rgba(255,107,0,.15)">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
           <circle cx="14" cy="5" r="3" stroke="#ff6b00" stroke-width="2"/>
@@ -392,7 +392,7 @@ main{padding:12px 14px 80px;max-width:1100px;margin:0 auto}
       <div class="sport-card-sub">歩く・階段・立ち座り・荷物</div>
     </div>
     <div class="sport-card" onclick="selectSport('free','#e8f4ff')">
-      <div class="sport-icon-wrap" style="background:rgba(255,255,255,.08)">
+      <div class="sport-icon-wrap" style="background:rgba(44,26,14,.08)">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
           <circle cx="14" cy="14" r="10" stroke="#e8f4ff" stroke-width="2" opacity=".5"/>
           <line x1="14" y1="4" x2="14" y2="8" stroke="#e8f4ff" stroke-width="2" stroke-linecap="round"/>
@@ -929,19 +929,19 @@ const SPORT_IND_ORDER = {
 };
 
 const SPORT_INFO = {
-  ball:     { name: '球技',           color: '#1e90ff', bg: 'rgba(30,144,255,.15)' },
-  swing:    { name: 'スイング系',     color: '#ff6b00', bg: 'rgba(255,107,0,.15)'  },
-  training: { name: '体幹トレーニング',color: '#1e90ff', bg: 'rgba(30,144,255,.15)' },
-  budo:     { name: '武道・格闘技',   color: '#ff6b00', bg: 'rgba(255,107,0,.15)'  },
-  track:    { name: '陸上・走り',     color: '#1e90ff', bg: 'rgba(30,144,255,.15)' },
-  gym:      { name: '体操・ダンス',   color: '#ff6b00', bg: 'rgba(255,107,0,.15)'  },
+  ball:     { name: '球技',           color: '#3AABA8', bg: 'rgba(58,171,168,.15)' },
+  swing:    { name: 'スイング系',     color: '#E88A0A', bg: 'rgba(232,138,10,.15)'  },
+  training: { name: '体幹トレーニング',color: '#3AABA8', bg: 'rgba(58,171,168,.15)' },
+  budo:     { name: '武道・格闘技',   color: '#E88A0A', bg: 'rgba(232,138,10,.15)'  },
+  track:    { name: '陸上・走り',     color: '#3AABA8', bg: 'rgba(58,171,168,.15)' },
+  gym:      { name: '体操・ダンス',   color: '#E88A0A', bg: 'rgba(232,138,10,.15)'  },
   daily:    { name: '日常動作',       color: '#2ecc71', bg: 'rgba(46,204,113,.12)' },
-  free:     { name: '自由測定',       color: '#e8f4ff', bg: 'rgba(232,244,255,.08)'},
+  free:     { name: '自由測定',       color: '#7A5C3E', bg: 'rgba(122,92,62,.1)'},
 };
 
 // ══════════════ STATE ══════════════
 // ── 参加者管理 ──
-const PLAYER_COLORS = ['#ff6b00','#1e90ff','#2ecc71','#e040fb','#ffd700'];
+const PLAYER_COLORS = ['#3AABA8','#E88A0A','#2E8EC4','#C94040','#7B5EA7'];
 // テイクカラー（同一人物の複数テイクを薄い色で区別）
 const TAKE_OPACITY = [1, 0.65, 0.4];
 let players = [];
@@ -1011,7 +1011,7 @@ function renderPlayerList() {
         }).join('') : '';
     return `<div onclick="activatePlayer(${pi},${p.takes.length})"
       style="display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;
-      border:1px solid ${isCurPlayer?p.color:'rgba(255,255,255,.08)'};
+      border:1px solid ${isCurPlayer?p.color:'rgba(44,26,14,.08)'};
       background:${isCurPlayer?p.color+'22':'var(--bg3)'};cursor:pointer;transition:all .15s;flex-wrap:wrap">
       <div style="width:8px;height:8px;border-radius:50%;background:${p.color};flex-shrink:0"></div>
       <div style="font-family:var(--fn);font-size:13px;font-weight:700;color:${isCurPlayer?'#fff':p.color}">${p.name}</div>
@@ -1199,7 +1199,7 @@ function buildCompareView() {
         <button onclick="retakePlayer(${pi},${ti})" style="padding:4px 12px;border-radius:6px;border:1px solid ${p.color}44;background:${p.color}18;color:${p.color};font-family:var(--fn);font-size:11px;font-weight:700;cursor:pointer">
           ${t.label} 再測定
         </button>`).join('')}
-      <button onclick="retakePlayer(${pi},${p.takes.length})" style="padding:4px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--text2);font-family:var(--fn);font-size:11px;cursor:pointer">
+      <button onclick="retakePlayer(${pi},${p.takes.length})" style="padding:4px 12px;border-radius:6px;border:1px solid rgba(44,26,14,.12);background:transparent;color:var(--text2);font-family:var(--fn);font-size:11px;cursor:pointer">
         + テイク追加
       </button>
     </div>`).join('');
@@ -1283,10 +1283,10 @@ function renderTakeCompare(p) {
     ]},
     options: {
       responsive:true, maintainAspectRatio:false, animation:false,
-      plugins:{ legend:{ labels:{ color:'#4a7aaa', font:{family:"'Barlow Condensed',sans-serif",size:11} } } },
+      plugins:{ legend:{ labels:{ color:'#7A5C3E', font:{family:"'Barlow Condensed',sans-serif",size:11} } } },
       scales:{
-        x:{ ticks:{color:'#4a7aaa',font:{family:"'Barlow Condensed',sans-serif"}}, grid:{color:'rgba(255,255,255,.03)'} },
-        y:{ ticks:{color:'#ff6b00',font:{size:9}}, grid:{color:'rgba(255,255,255,.04)'}, border:{display:false} },
+        x:{ ticks:{color:'#7A5C3E',font:{family:"'Barlow Condensed',sans-serif"}}, grid:{color:'rgba(44,26,14,.06)'} },
+        y:{ ticks:{color:'#E88A0A',font:{size:9}}, grid:{color:'rgba(44,26,14,.06)'}, border:{display:false} },
         y2:{ position:'right', ticks:{color:'#1e90ff',font:{size:9}}, grid:{display:false}, border:{display:false} }
       }
     }
@@ -1308,14 +1308,14 @@ function renderTakeCompare(p) {
     };
     return `<div style="background:var(--bg3);border:1px solid ${i===done.length-1?p.color+'55':'rgba(30,144,255,.12)'};border-radius:10px;padding:12px 14px">
       <div style="font-family:var(--fn);font-size:11px;font-weight:700;color:${p.color};margin-bottom:8px">${t.label}</div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(44,26,14,.06)">
         <div style="font-size:11px;color:var(--text2)">最大パワー</div>
         <div style="display:flex;align-items:center;gap:5px">
           <div style="font-family:var(--fn);font-size:15px;font-weight:700;color:var(--text)">${d.maxImpact.toFixed(2)} G</div>
           ${diff(d.maxImpact, prev?.maxImpact, 'maxImpact')}
         </div>
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(44,26,14,.06)">
         <div style="font-size:11px;color:var(--text2)">最高テンポ</div>
         <div style="display:flex;align-items:center;gap:5px">
           <div style="font-family:var(--fn);font-size:15px;font-weight:700;color:var(--text)">${d.maxCadence>0?Math.round(d.maxCadence):'—'} rpm</div>
@@ -1377,9 +1377,9 @@ function buildRadarCharts() {
         pointBackgroundColor:p.color, borderWidth:2
       }))},
       options:{ responsive:true, maintainAspectRatio:false, animation:false,
-        plugins:{legend:{labels:{color:'#4a7aaa',font:{family:"'Barlow Condensed',sans-serif",size:10}}}},
-        scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(255,255,255,.08)'},
-          pointLabels:{color:'#4a7aaa',font:{family:"'Barlow Condensed',sans-serif",size:10}},
+        plugins:{legend:{labels:{color:'#7A5C3E',font:{family:"'Barlow Condensed',sans-serif",size:10}}}},
+        scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(44,26,14,.08)'},
+          pointLabels:{color:'#7A5C3E',font:{family:"'Barlow Condensed',sans-serif",size:10}},
           angleLines:{color:'rgba(255,255,255,.06)'}}}
       }
     }));
@@ -1403,9 +1403,9 @@ function buildRadarCharts() {
         borderDash: ti===done.length-1?[]:[4,3]
       }))},
       options:{ responsive:true, maintainAspectRatio:false, animation:false,
-        plugins:{legend:{labels:{color:'#4a7aaa',font:{family:"'Barlow Condensed',sans-serif",size:10}}}},
-        scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(255,255,255,.08)'},
-          pointLabels:{color:'#4a7aaa',font:{family:"'Barlow Condensed',sans-serif",size:10}},
+        plugins:{legend:{labels:{color:'#7A5C3E',font:{family:"'Barlow Condensed',sans-serif",size:10}}}},
+        scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(44,26,14,.08)'},
+          pointLabels:{color:'#7A5C3E',font:{family:"'Barlow Condensed',sans-serif",size:10}},
           angleLines:{color:'rgba(255,255,255,.06)'}}}
       }
     }));
@@ -1463,8 +1463,8 @@ function buildCmpWave() {
     options: {
       animation: false, responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
-      scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.05)' },
-        ticks: { color: '#2a4a6a', font: { family: "'Barlow Condensed',sans-serif", size: 9 }, callback: v => v.toFixed(1) },
+      scales: { x: { display: false }, y: { grid: { color: 'rgba(44,26,14,0.08)' },
+        ticks: { color: '#7A5C3E', font: { family: "'Barlow Condensed',sans-serif", size: 9 }, callback: v => v.toFixed(1) },
         border: { display: false } } }
     }
   });
@@ -1950,7 +1950,7 @@ const axisColors = { abs:'#E88A0A', ax:'#3AABA8', ay:'#2E8EC4', az:'#9b59b6', gy
 const waveChart = new Chart(wCtx, {
   type: 'line',
   data: { labels: Array(WAVE_BUF).fill(''), datasets: [{ data: wBuf.abs, borderColor: '#E88A0A', borderWidth: 1.5, pointRadius: 0, fill: true, backgroundColor: 'rgba(232,138,10,0.06)', tension: .3, spanGaps: false }] },
-  options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { min: -.5, max: 2.5, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#484f58', font: { family: "'Barlow Condensed',sans-serif", size: 10 }, callback: v => v.toFixed(1) }, border: { display: false } } } }
+  options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { min: -.5, max: 2.5, grid: { color: 'rgba(44,26,14,0.08)' }, ticks: { color: '#484f58', font: { family: "'Barlow Condensed',sans-serif", size: 10 }, callback: v => v.toFixed(1) }, border: { display: false } } } }
 });
 
 document.querySelectorAll('.axis-btn').forEach(b => {
@@ -1975,7 +1975,7 @@ const sCtx = document.getElementById('strChart').getContext('2d');
 const strChart = new Chart(sCtx, {
   type: 'bar',
   data: { labels: [], datasets: [{ data: [], backgroundColor: [], borderRadius: 3, borderSkipped: false }] },
-  options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { min: 0, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#484f58', font: { family: "'Barlow Condensed',sans-serif", size: 9 }, callback: v => v.toFixed(1) }, border: { display: false } } } }
+  options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { min: 0, grid: { color: 'rgba(44,26,14,0.08)' }, ticks: { color: '#484f58', font: { family: "'Barlow Condensed',sans-serif", size: 9 }, callback: v => v.toFixed(1) }, border: { display: false } } } }
 });
 
 // ══════════════ BLE ══════════════
@@ -2415,7 +2415,7 @@ function buildRevChart(ax) {
   revChart = new Chart(ctx, {
     type: 'line',
     data: { labels, datasets: [{ data: pts, borderColor: col, borderWidth: 1.2, pointRadius: radii, pointBackgroundColor: '#E88A0A', pointBorderColor: '#E88A0A', fill: true, backgroundColor: col+'18', tension: .2, spanGaps: false }] },
-    options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#484f58', font: { family: "'Barlow Condensed',sans-serif", size: 9 }, callback: v => v.toFixed(1) }, border: { display: false } } } }
+    options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { grid: { color: 'rgba(44,26,14,0.08)' }, ticks: { color: '#484f58', font: { family: "'Barlow Condensed',sans-serif", size: 9 }, callback: v => v.toFixed(1) }, border: { display: false } } } }
   });
 }
 function buildTaxis() {
